@@ -1,0 +1,2 @@
+*.wasm[[:space:]]--everything[[:space:]]
+git[[:space:]]lfs[[:space:]]migrate[[:space:]]import[[:space:]]--include=*.wasm filter=lfs diff=lfs merge=lfs -text
