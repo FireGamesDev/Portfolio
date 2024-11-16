@@ -52,8 +52,7 @@
 		<![endif]-->
 
 	</head>
-
-    <body data-spy="scroll" data-target="#main-navbar">
+    <body class="parallax" data-spy="scroll" data-target="#main-navbar">
         <div class="page-loader-wrapper">
             <div class="page-loader"></div> <!-- Display loading image while page loads -->
           </div>
@@ -343,7 +342,7 @@
               
               
             <!-- Begin Services -->
-            <section id="services-section" class="page text-center body-background" style="background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px); background-size: 20px 20px; background-attachment: fixed; background-color: #390101; color: white !important;">
+            <section id="services-section" class="page text-center body-background">
                 <!-- Begin page header-->
                 <div class="page-header-wrapper">
                     <div class="container">
@@ -410,7 +409,7 @@
               
             <!-- Begin testimonials -->
             <section id="testimonial-section">
-                <div id="testimonial-trigger" class="testimonial text-white parallax" data-stellar-background-ratio="0.5" style="background-image: url(img/3.jpg);">
+                <div id="testimonial-trigger" class="testimonial text-white parallax" data-stellar-background-ratio="0.5" style="background-image: url(img/logo_banner.png);">
                     <div class="cover"></div>
                     <!-- Begin page header-->
                     <div class="page-header-wrapper">
@@ -458,7 +457,7 @@
                 
                 
             <!-- Begin Portfolio -->
-            <section id="portfolio-section" class="page bg-style1 body-background" style="background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px); background-size: 20px 20px; background-attachment: fixed; background-color: #390101; color: white !important;">
+            <section id="portfolio-section" class="page bg-style1">
             	<div class="container">
                     <div class="row">
                         <div class="col-md-12">
@@ -591,7 +590,7 @@
                 
             <!-- Begin counter up -->
             <section id="counter-section">                					
-				<div id="counter-up-trigger" class="counter-up text-white parallax" data-stellar-background-ratio="0.5" style="background-image: url(img/2.jpg);">
+				<div id="counter-up-trigger" class="counter-up text-white parallax" data-stellar-background-ratio="0.5" style="background-image: url(img/logo_banner.png);">
 					<div class="cover"></div>
                     <!-- Begin page header-->
                     <div class="page-header-wrapper">
@@ -670,8 +669,8 @@
                     </div>
                 </div>
                 <!-- End page header-->
-                <div id="black" class="container partner-logos-bg">
-                    <div id="black" class="container logos">
+                <div class="container">
+                    <div class="container logos">
                         <div id="owl-partners" class="owl-carousel">
                         <img src="img/partners/etherorcs.png" style="height: 250px; width: 100%; object-fit: contain;" alt="img">
                         <img src="img/partners/grumpy crumpet.png" style="height: 250px; width: 100%; object-fit: contain;" alt="img">
@@ -762,8 +761,9 @@
                     <div class="row justify-content-center"> <!-- Center the form -->
                       <div class="col-md-12"> <!-- Adjust column width as needed -->
                         <div class="contact-form">
-                            <p>write to me!</p>
-                            <p><a href="mailto:firedevgames@gmail.com">Send email</a></p>
+                            <form id="contact-form" action="mailto:firedevgames@gmail.com" method="GET" enctype="text/plain">
+                                <button type="submit" class="btn wow bounceInRight" data-wow-delay="0.8s" style="color: white;">Contact me!</button>
+                            </form>                      
                             <!--new mailto-->
                           
                                                

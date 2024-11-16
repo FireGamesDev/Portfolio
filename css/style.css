@@ -1153,13 +1153,13 @@ p.subtitle {
   }
   
   ::-webkit-scrollbar-track {
-	background: #f1f1f1; /* Track color */
+	background: #ee3224; /* Track color */
   }
   
   ::-webkit-scrollbar-thumb {
-	background: #ee3224; /* Thumb color */
+	background: #16171a; /* Thumb color */
 
-	scrollbar-color: #ee3224 #f1f1f1;
+	scrollbar-color: #16171a #f1f1f1;
   
 	-ms-overflow-style: -ms-autohiding-scrollbar;
   }
@@ -1270,6 +1270,7 @@ p.subtitle {
     }
 }
 
+/*
 .body-background {
 	background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px) !important;
 	background-size: 20px 20px !important;
@@ -1277,5 +1278,21 @@ p.subtitle {
 	background-color: #390101 !important;
 	color: white !important;
 }
+*/
 
+#about-section, #partners-section, #social-section, #portfolio-section, #services-section {
+	background-color: #16171a00 !important;
+	color: white;
+}
 
+#social-section {
+	padding-top: 0px;
+}
+
+#about-section a {
+	color: white;
+}
+
+body {
+	background-image: url(../img/logo_banner_red.png) !important;
+}
