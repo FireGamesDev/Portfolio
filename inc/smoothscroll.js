@@ -143,6 +143,10 @@ function init() {
         body.style.backgroundAttachment = "scroll";
         html.style.backgroundAttachment = "scroll";
     }
+
+    document.addEventListener('wheel', wheel, { passive: false });
+
+    document.addEventListener('keydown', keydown, { passive: false });
 }
  
  
