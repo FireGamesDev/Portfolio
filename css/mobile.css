@@ -62,6 +62,23 @@
 		font-size: 14px;
 	}
 
+	#about-section, #partners-section, #social-section, #portfolio-section, #services-section {
+		background-color: #16171a00 !important;
+		color: white;
+	}
+	
+	#social-section {
+		padding-top: 0px;
+	}
+	
+	#about-section a {
+		color: white;
+	}
+	
+	body {
+		background-image: url(../img/logo_banner_red.png) !important;
+		background-color: #1c1c1c;
+	}
 }
 
 /* Medium Devices, Desktops */

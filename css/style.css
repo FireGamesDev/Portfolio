@@ -1296,3 +1296,7 @@ p.subtitle {
 body {
 	background-image: url(../img/logo_banner_red.png) !important;
 }
+
+.copyright {
+	color: white!important;
+}

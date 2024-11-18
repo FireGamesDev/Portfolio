@@ -83,11 +83,11 @@ $(window).load(function() {
 // Intro text carousel
 $("#owl-intro-text").owlCarousel({
     singleItem : true,
-    autoPlay : 6000,
-    stopOnHover : true,
+    autoPlay : 5000,
+    stopOnHover : false,
     navigation : false,
     navigationText : false,
-    pagination : true
+    pagination : false
 })
 
 
@@ -97,16 +97,18 @@ $("#owl-partners").owlCarousel({
     itemsDesktop : [1199,3],
     itemsDesktopSmall : [980,2],
     itemsTablet: [768,2],
-    autoPlay : 5000,
+    loop: true,
+    autoPlay : 2000,
     stopOnHover : true,
-    pagination : false
 })
 
 // Testimonials carousel
 $("#owl-testimonial").owlCarousel({
     singleItem : true,
     pagination : true,
-    autoHeight : true
+    autoHeight : true,
+    autoPlay : 2000,
+    stopOnHover : true
 })
 
 
@@ -224,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
   
         iteration += 1 / 3;
-      }, 15);
+      }, 30);
   
       intervals.push(interval);
     };
