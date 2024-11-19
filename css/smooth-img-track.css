@@ -3,8 +3,9 @@
     width: 40vmin;
     height: 56vmin;
     */
-    width: 40vmin;
-    height: 56vmin;
+
+    width: 350px;
+    height: 400px;
 
     object-fit: cover;
     object-position: center;
@@ -15,10 +16,56 @@
     -moz-user-select: none;
     -o-user-select: none;
     user-select: none;
+
+    object-position: 100%;
 }
 
-#image-track{
+.not-selectable{
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+#image-track {
     display: flex;
     gap: 4vmin;
-    transform: translate(50%, 0%);
+    transform: translate(36.5%, 0%);
+}
+
+#image-container {
+    position: relative;
+}
+
+body {
+    overflow-x: hidden; /* Disables horizontal scrolling */
+}
+
+.overlay {
+    position: absolute; /* Position relative to #image-track */
+    top: 50%; /* Centers vertically */
+    left: 50%; /* Centers horizontally */
+    transform: translate(-50%, -50%); /* Adjusts position for perfect centering */
+    pointer-events: none; /* Ensures the overlay doesn’t block interactions with the images */
+    z-index: 10; /* Makes sure the overlay appears on top */
+}
+
+/* By default, hide both sections */
+.mobile-section, .pc-section {
+    display: none;
+}
+
+/* Mobile - Small screen devices (max-width: 767px) */
+@media (max-width: 767px) {
+    .mobile-section {
+        display: block; /* Show mobile section */
+    }
+}
+
+/* PC - Larger screen devices (min-width: 768px) */
+@media (min-width: 768px) {
+    .pc-section {
+        display: block; /* Show PC section */
+    }
 }
