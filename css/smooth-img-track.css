@@ -1,10 +1,10 @@
-#image-track > img {
+#image-track > a > img {
     /*
     width: 40vmin;
     height: 56vmin;
     */
 
-    width: 350px;
+    width: 300px;
     height: 400px;
 
     object-fit: cover;
@@ -20,6 +20,28 @@
     object-position: 100%;
 }
 
+#image-track > a {
+    /*
+    width: 40vmin;
+    height: 56vmin;
+    */
+
+    width: 200px;
+    height: 200px;
+
+    object-fit: cover;
+    object-position: center;
+
+    /* not selectable */
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
+    cursor: default;
+}
+
 .not-selectable{
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -30,7 +52,7 @@
 
 #image-track {
     display: flex;
-    gap: 4vmin;
+    gap: 20vmin;
     transform: translate(36.5%, 0%);
 }
 
@@ -44,7 +66,7 @@ body {
 
 .overlay {
     position: absolute; /* Position relative to #image-track */
-    top: 50%; /* Centers vertically */
+    top: 100%; /* Centers vertically */
     left: 50%; /* Centers horizontally */
     transform: translate(-50%, -50%); /* Adjusts position for perfect centering */
     pointer-events: none; /* Ensures the overlay doesn’t block interactions with the images */
