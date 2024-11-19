@@ -35,7 +35,7 @@ track.onmousemove = e => {
     let nextPercentage = parseFloat(track.dataset.prevPercentage) + percentage;
 
     // Smooth clamping to prevent abrupt stopping
-    nextPercentage = Math.max(Math.min(nextPercentage, 0), -176.5);
+    nextPercentage = Math.max(Math.min(nextPercentage, 0), -100);
 
     track.dataset.percentage = nextPercentage;
 
