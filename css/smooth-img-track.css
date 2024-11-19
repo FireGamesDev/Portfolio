@@ -4,7 +4,7 @@
     height: 56vmin;
     */
 
-    width: 300px;
+    width: 350px;
     height: 400px;
 
     object-fit: cover;
@@ -52,7 +52,7 @@
 
 #image-track {
     display: flex;
-    gap: 20vmin;
+    gap: 200px;
     transform: translate(36.5%, 0%);
 }
 
