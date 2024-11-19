@@ -1,11 +1,16 @@
 const track = document.getElementById("image-track");
 const container = document.getElementById("image-container");
 const images = document.querySelectorAll("#image-track img");
+const links = document.querySelectorAll("#image-track a");
 
 track.dataset.mouseDownAt = "0";
 track.dataset.prevPercentage = "0";
 
 images.forEach(image => {
+    image.setAttribute('draggable', false);
+});
+
+links.forEach(image => {
     image.setAttribute('draggable', false);
 });
 
@@ -18,7 +23,7 @@ window.onmouseup = () => {
     track.dataset.prevPercentage = track.dataset.percentage || "0";
 };
 
-container.onmousemove = e => {
+track.onmousemove = e => {
     if (track.dataset.mouseDownAt === "0") return;
 
     const mouseDelta = parseFloat(track.dataset.mouseDownAt) - e.clientX;
@@ -30,7 +35,7 @@ container.onmousemove = e => {
     let nextPercentage = parseFloat(track.dataset.prevPercentage) + percentage;
 
     // Smooth clamping to prevent abrupt stopping
-    nextPercentage = Math.max(Math.min(nextPercentage, 0), -300);
+    nextPercentage = Math.max(Math.min(nextPercentage, 0), -276.5);
 
     track.dataset.percentage = nextPercentage;
 
@@ -42,7 +47,7 @@ container.onmousemove = e => {
     const maxPercentage = 100;
 
     images.forEach(image => {
-        const clampedPercentage = Math.min(Math.max(nextPercentage / 3, minPercentage), maxPercentage);
+        const clampedPercentage = Math.min(Math.max(nextPercentage / 2.7, minPercentage), maxPercentage);
 
         image.animate({
             objectPosition: `${clampedPercentage + 100}% center`
