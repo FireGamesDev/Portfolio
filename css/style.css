@@ -1307,7 +1307,7 @@ body {
 	color: white!important;
 }
 
-#dragon { 
+#dragon {
     position: fixed;
     width: 20%;
     height: 42%;
@@ -1315,3 +1315,24 @@ body {
     left: 10px;
     z-index: 1;
 }
+
+@media only screen and (max-width: 768px) { /* For tablets and small devices */
+    #dragon {
+        width: 30%; /* Increase size for better visibility */
+        height: 50%;
+        bottom: 5px; /* Adjust position */
+        left: 5px; 
+		z-index: 0;
+    }
+}
+
+@media only screen and (max-width: 480px) { /* For smartphones */
+    #dragon {
+        width: 40%; /* Make it even larger for smaller screens */
+        height: 60%;
+        bottom: 0; /* Stick closer to the bottom */
+        left: 0; /* Stick to the left edge */
+		z-index: 0;
+    }
+}
+
