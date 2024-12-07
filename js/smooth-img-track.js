@@ -39,18 +39,19 @@ track.onmousemove = e => {
 
     track.dataset.percentage = nextPercentage;
 
-    track.animate({
-        transform: `translate(${nextPercentage + 36.5}%, 0%)`
-    }, { duration: 1200, fill: "forwards" });
+    if (!track.style.transition) {
+        track.style.transition = "transform 1.2s ease-out";
+    }
+    track.style.transform = `translate(${nextPercentage + 36.5}%, 0%)`;
 
     const minPercentage = -100;
     const maxPercentage = 100;
 
-    images.forEach(image => {
-        const clampedPercentage = Math.min(Math.max(nextPercentage / 2.7, minPercentage), maxPercentage);
+    const clampedPercentage = Math.min(Math.max(nextPercentage / 2.7, minPercentage), maxPercentage);
 
-        image.animate({
-            objectPosition: `${clampedPercentage + 100}% center`
-        }, { duration: 1200, fill: "forwards" });
+    images.forEach(image => {
+        image.style.transition = "object-position 1.2s ease-out";
+        image.style.objectPosition = `${clampedPercentage * 1.3 + 100 }% center`;
     });
+    
 }
