@@ -293,9 +293,10 @@ a, a:hover, a:focus {
 }
 
 .logos {
-	width: 99%; /* Take up the entire width of the page */
+	width: 100%; /* Take up the entire width of the page */
 	display: flex; /* Use flexbox for layout */
 	justify-content: center; /* Center contents horizontally */
 	align-items: center; /* Center contents vertically */
-	height: 100vh; /* Set height for centering vertically */
+	padding: 100px;
+	margin: 0px;
 }

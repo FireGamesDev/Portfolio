@@ -1285,6 +1285,11 @@ p.subtitle {
 	color: white;
 }
 
+#partners-section {
+	padding: 0px!important;
+	margin: 0px!important;
+}
+
 #social-section {
 	padding-top: 0px;
 }
