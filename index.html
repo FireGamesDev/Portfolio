@@ -604,10 +604,10 @@
                 <div class="container not-selectable" id="image-container" draggable="false">
                     <div class="not-selectable" id="image-track" draggable="false"> 
                     <!-- Rose of the Fox -->
-                    <a href="https://levimakesgames.itch.io/rose-of-the-fox" target="_blank">
+                    <a onclick="openGameModal()" target="_blank">
                         <img src="img/portfolio/New.gif" alt="Rose of the Fox">
                     </a>
-        
+
                     <!-- Tower of Fera -->
                     <a href="https://levimakesgames.itch.io/tower-of-fera" target="_blank">
                         <img src="img/portfolio/Tower.png" alt="Tower of Fera">
@@ -859,6 +859,19 @@
             <!-- End contact section -->
 
             <a href="#" class="scrolltotop"><i class="fa fa-arrow-up"></i></a> <!-- Scroll to top button -->
+
+            <!-- Modal Structure -->
+            <div id="game-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" onclick="closeGameModal()">&times;</span>
+                    <iframe
+                        src="https://firegamesdev.github.io/Portfolio//RoseOfTheFox/index.html"
+                        frameborder="0"
+                        allowfullscreen
+                        class="game-iframe"
+                    ></iframe>
+                </div>
+            </div>
                                               
         </div><!-- body ends -->
         

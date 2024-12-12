@@ -240,3 +240,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 //hacker letters
+
+
+function openGameModal() {
+    const modal = document.getElementById("game-modal");
+    modal.style.display = "block";
+}
+
+function closeGameModal() {
+    const modal = document.getElementById("game-modal");
+    modal.style.display = "none";
+}
+
+// Close the modal when clicking outside the content
+window.onclick = function (event) {
+    const modal = document.getElementById("game-modal");
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+};
