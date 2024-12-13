@@ -860,20 +860,44 @@
 
             <a href="#" class="scrolltotop"><i class="fa fa-arrow-up"></i></a> <!-- Scroll to top button -->
 
-            <!-- Modal Structure -->
             <div id="game-modal" class="modal">
                 <div class="modal-content">
-                    <iframe
-                        src="https://firegamesdev.github.io/Portfolio/RoseOfTheFox/index.html"
-                        width="960"
-                        height="600"
-                        frameborder="0"
-                        allowfullscreen
-                        sandbox="allow-scripts allow-same-origin allow-modals allow-downloads allow-popups"
-                        class="game-iframe"
-                    ></iframe>
+                  <div id="iframe-container"></div>
                 </div>
-            </div>
+              </div>
+              
+              <script>
+            // Detect if the user is on a mobile device
+            function isMobileDevice() {
+                return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            }
+            
+            // Function to load the iframe if not on mobile
+            function loadIframe() {
+                if (isMobileDevice()) {
+                    console.log("Mobile device detected. Unity iframe will not load.");
+                    alert("This game is not available on mobile devices. Please use a desktop browser.");
+                    return;
+                }
+            
+                const iframe = document.createElement("iframe");
+                iframe.src = "https://firegamesdev.github.io/Portfolio/RoseOfTheFox/index.html";
+                iframe.width = "960";
+                iframe.height = "600";
+                iframe.frameBorder = "0";
+                iframe.allowFullscreen = true;
+                iframe.sandbox = "allow-scripts allow-same-origin allow-modals allow-downloads";
+                iframe.classList.add("game-iframe");
+            
+                const container = document.getElementById("iframe-container");
+                container.appendChild(iframe);
+            
+                console.log("Unity iframe loaded successfully.");
+            }
+            
+            // Call the function to conditionally load the iframe
+            loadIframe();
+            </script>
                                               
         </div><!-- body ends -->
         
