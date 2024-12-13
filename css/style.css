@@ -1355,7 +1355,8 @@ body {
     position: relative;
     margin: auto;
     padding: 20px;
-    background: rgba(232, 63, 51, 0.2);
+    /*background: rgba(232, 63, 51, 0.2);*/
+    background: rgba(0, 0, 0, 0.43);
     width: 80%;
     max-width: 800px;
     height: 80%;
