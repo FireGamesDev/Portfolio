@@ -85,36 +85,63 @@
         document.getElementsByTagName('head')[0].appendChild(meta);
       }
 
-      if (retryCount >= maxRetries) {
-        unityShowBanner("Failed to load the Unity game after multiple attempts.", "error");
-        return;
-      }
-  
-      loadingBar.style.display = "block";
-  
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-        })
-          .then((unityInstance) => {
-            loadingBar.style.display = "none";
+      let retryCount = 0; // Current retry count
+      const maxRetries = 3; // Maximum retries
+      let retryDelay = 2000; // Initial delay between retries (in milliseconds)
+
+      function loadUnity() {
+        // Stop retrying if max retries reached
+        if (retryCount >= maxRetries) {
+          alert("Failed to load the Unity game after multiple attempts.");
+          return;
+        }
+
+        console.log(`Attempt ${retryCount + 1} of ${maxRetries} to load Unity...`);
+
+        // Show loading bar
+        loadingBar.style.display = "block";
+
+        // Create and load the Unity script
+        const script = document.createElement("script");
+        script.src = loaderUrl;
+
+        script.onload = () => {
+          createUnityInstance(canvas, config, (progress) => {
+            progressBarFull.style.width = 100 * progress + "%";
           })
-          .catch((message) => {
-            retryCount++;
-            console.log(`Retrying to load Unity (${retryCount}/${maxRetries})...`, "warning");
-            setTimeout(loadUnity, retryDelay); // Retry after delay
-            retryDelay *= 1.5; // Increase delay for subsequent retries
-          });
-      };
-      script.onerror = () => {
+            .then((unityInstance) => {
+              // Unity loaded successfully, hide loading bar
+              console.log("Unity game loaded successfully.");
+              loadingBar.style.display = "none";
+            })
+            .catch((message) => {
+              console.error("Error during Unity loading:", message);
+              retryUnityLoad();
+            });
+        };
+
+        script.onerror = () => {
+          console.error("Error loading Unity script.");
+          retryUnityLoad();
+        };
+
+        document.body.appendChild(script);
+      }
+
+      function retryUnityLoad() {
         retryCount++;
-        unityShowBanner(`Retrying to load Unity (${retryCount}/${maxRetries})...`, "warning");
-        setTimeout(loadUnity, retryDelay); // Retry after delay
-        retryDelay *= 1.5; // Increase delay for subsequent retries
-      };
-      document.body.appendChild(script);
+        if (retryCount < maxRetries) {
+          console.log(`Retrying to load Unity... (Attempt ${retryCount + 1} of ${maxRetries})`);
+          setTimeout(loadUnity, retryDelay); // Retry after a delay
+          retryDelay *= 1.5; // Increase delay for subsequent retries
+        } else {
+          alert("Failed to load the Unity game after multiple attempts.");
+        }
+      }
+
+      // Start loading Unity
+      loadUnity();
+
     </script>
   </body>
 </html>
