@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Levente Nemeth | Dragon Dev</title>
+    <link rel="shortcut icon" href="img/Levente_ProfPic_gif.gif" type="image/gif">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@200;300;400;600;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="inc/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="inc/bootstrap/css/bootstrap.min.css">
+
+    <style>
+        /* --- VARIABLES --- */
+        :root {
+            --bg: #050505;
+            --fire-primary: #ff3300;
+            --fire-secondary: #ff9900;
+            --void: #111;
+            --text: #fff;
+        }
+
+        /* --- BASE --- */
+        * { box-sizing: border-box; cursor: none !important; -webkit-user-select: none; user-select: none; }
+        input, textarea { -webkit-user-select: text; user-select: text; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; height: 100vh; width: 100vw; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        /* --- PRELOADER --- */
+        #preloader { position: fixed; inset: 0; background: #000; z-index: 20000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s; }
+        .loader-bar-bg { width: 200px; height: 2px; background: #222; overflow: hidden; margin-top: 10px; }
+        .loader-bar-fill { height: 100%; width: 0%; background: var(--fire-secondary); animation: loadProgress 2s forwards; }
+        @keyframes loadProgress { to { width: 100%; } }
+        body.loaded #preloader { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        /* --- MAIN CONTENT WRAPPER (To hide during game) --- */
+        #portfolio-wrapper {
+            transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s;
+            transform-origin: center;
+            will-change: transform, opacity;
+        }
+        body.gaming #portfolio-wrapper {
+            opacity: 0;
+            transform: scale(0.9) translateY(50px);
+            pointer-events: none;
+            filter: blur(10px);
+        }
+
+        /* --- SCROLL & LAYOUT STYLES (From Previous Base) --- */
+        /* ... (Keeping specific layout styles minimal for brevity, assuming previous CSS logic applies) ... */
+        .scroll-track { position: fixed; top: 0; left: 0; height: 100%; display: flex; flex-wrap: nowrap; width: max-content; will-change: transform; }
+        .panel { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 6vw; border-right: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; position: relative; }
+        .panel-hero { min-width: 100vw; }
+        .panel-wide { min-width: 90vw; }
+        
+        /* Headlines & Text */
+        .font-copper { font-family: 'Cinzel', serif; letter-spacing: 1px; }
+        .headline-huge { font-family: 'Cinzel', serif; font-size: 6rem; font-weight: 900; line-height: 0.9; text-shadow: 0 0 40px black; }
+        .sub-headline { font-family: 'Inter'; font-weight: 800; font-size: 3rem; color: var(--fire-secondary); }
+
+        /* --- GAME OVERLAY --- */
+        #game-layer {
+            position: fixed; inset: 0; z-index: 15000;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s;
+            background: radial-gradient(circle at center, #1a0505 0%, #000 100%);
+        }
+        body.gaming #game-layer { opacity: 1; pointer-events: auto; }
+
+        #game-canvas { width: 100%; height: 100%; display: block; }
+        
+        /* Game UI */
+        .game-ui { position: absolute; top: 30px; left: 30px; pointer-events: none; }
+        .score-display { font-family: 'Space Mono', monospace; font-size: 24px; color: var(--fire-secondary); text-shadow: 0 0 10px var(--fire-primary); }
+        .game-instruction { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Cinzel'; font-size: 30px; color: white; opacity: 0; transition: 0.5s; text-shadow: 0 0 20px var(--fire-primary); pointer-events: none; text-align: center;}
+        body.gaming .game-instruction.show { opacity: 1; }
+
+        /* Exit Button */
+        #exit-game-btn {
+            position: absolute; top: 30px; right: 30px;
+            background: rgba(0,0,0,0.5); border: 1px solid var(--fire-primary);
+            color: var(--fire-primary); padding: 10px 20px; font-family: 'Space Mono';
+            cursor: pointer; text-transform: uppercase; pointer-events: auto;
+            transition: 0.3s;
+        }
+        #exit-game-btn:hover { background: var(--fire-primary); color: black; box-shadow: 0 0 20px var(--fire-primary); }
+
+        /* --- THE TRIGGER (SIGIL) --- */
+        .sigil-container {
+            position: fixed; bottom: 40px; right: 40px; z-index: 9000;
+            width: 60px; height: 60px;
+        }
+        #sigil-btn {
+            width: 100%; height: 100%; border-radius: 50%;
+            background: rgba(0,0,0,0.6); border: 2px solid #444;
+            color: #444; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: 0.3s; position: relative;
+            overflow: hidden;
+        }
+        #sigil-btn i { font-size: 20px; transition: 0.3s; }
+        
+        /* Charge Animation */
+        .sigil-ring {
+            position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+            border-radius: 50%; border: 2px solid var(--fire-secondary);
+            border-top-color: transparent; border-left-color: transparent;
+            transform: rotate(0deg); transition: none; opacity: 0;
+        }
+        
+        /* Active/Hover States */
+        .sigil-container:hover #sigil-btn { border-color: var(--fire-secondary); color: var(--fire-secondary); box-shadow: 0 0 20px rgba(255, 100, 0, 0.3); }
+        .sigil-container.charging .sigil-ring { opacity: 1; animation: spin 0.5s linear infinite; border-width: 4px; }
+        .sigil-container.charging #sigil-btn { transform: scale(0.9); }
+        
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Hint Tooltip */
+        .sigil-hint {
+            position: absolute; right: 70px; top: 50%; transform: translateY(-50%);
+            background: var(--fire-primary); color: black; padding: 5px 10px;
+            font-size: 10px; font-weight: bold; font-family: 'Space Mono';
+            opacity: 0; transition: 0.3s; pointer-events: none; white-space: nowrap;
+            clip-path: polygon(5px 0, 100% 0, 100% 100%, 0 100%, 0 5px);
+        }
+        .sigil-container:hover .sigil-hint { opacity: 1; right: 80px; }
+
+        /* --- CURSOR --- */
+        .cursor-dot { position: fixed; width: 8px; height: 8px; background: var(--fire-secondary); border-radius: 50%; pointer-events: none; z-index: 20001; }
+        .cursor-outline { position: fixed; width: 40px; height: 40px; border: 1px solid var(--fire-primary); border-radius: 50%; pointer-events: none; z-index: 20001; transition: width 0.1s, height 0.1s; }
+        
+        /* Game Cursor State */
+        body.gaming .cursor-outline {
+            width: 60px; height: 60px; border: 2px dashed var(--fire-secondary);
+            animation: rotateReticle 4s linear infinite; mix-blend-mode: normal;
+        }
+        body.gaming .cursor-dot { background: red; box-shadow: 0 0 10px red; }
+        @keyframes rotateReticle { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        /* Hide Scrollbar */
+        ::-webkit-scrollbar { width: 0; }
+
+        /* Mobile */
+        @media(max-width:900px) {
+            .sigil-container { display: none; } /* No game on mobile */
+            .scroll-track { position: relative; height: auto; flex-direction: column; width: 100%; transform: none !important; }
+            .panel { height: auto; padding: 100px 20px; border-bottom: 1px solid #222; }
+            body { overflow-y: auto; height: auto; cursor: auto; }
+            .cursor-dot, .cursor-outline { display: none; }
+        }
+
+        /* --- REUSED STYLES FROM BASE (Simplified for brevity) --- */
+        .nav-float { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); padding: 15px 40px; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; display: flex; gap: 30px; background: rgba(0,0,0,0.8); z-index: 100; }
+        .nav-float a { font-weight: 700; font-size: 12px; text-transform: uppercase; color: #888; }
+        .nav-float a:hover { color: var(--fire-secondary); }
+        .hero-content { display: grid; grid-template-columns: 1.5fr 1fr 1.5fr; align-items: center; height: 100%; width: 100%; max-width: 1400px; margin: 0 auto; }
+        .project-card { width: 500px; height: 300px; background: #111; border: 1px solid #333; margin-right: 40px; position: relative; overflow: hidden; }
+        .project-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 0.5s; }
+        .project-card:hover img { opacity: 1; transform: scale(1.1); }
+        .contact-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; padding: 15px 0; color: white; margin-bottom: 20px; }
+        .contact-input:focus { outline: none; border-bottom-color: var(--fire-primary); }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="loader-text" style="font-family:'Space Mono'; letter-spacing: 2px; margin-bottom: 10px;">LOADING REALM</div>
+        <div class="loader-bar-bg"><div class="loader-bar-fill"></div></div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div id="game-layer">
+        <canvas id="game-canvas"></canvas>
+        <div class="game-ui">
+            <div class="score-display">SCORE: <span id="score-val">0</span></div>
+        </div>
+        <div class="game-instruction" id="game-msg">DEFEND THE CORE</div>
+        <button id="exit-game-btn">Return to Reality</button>
+    </div>
+
+    <div class="sigil-container" id="sigil-wrap">
+        <div class="sigil-hint">HOLD TO ENTER VOID</div>
+        <div class="sigil-ring"></div>
+        <div id="sigil-btn">
+            <i class="fa fa-dragon"></i>
+        </div>
+    </div>
+
+    <div id="portfolio-wrapper">
+
+        <nav class="nav-float hover-target">
+            <a href="#" onclick="window.scrollTo(0,0)">
+                <img src="img/dragon_logo_bold.png" style="height:24px;">
+            </a>
+            <a href="#skills" class="js-nav">Skills</a>
+            <a href="#projects" class="js-nav">Games</a>
+            <a href="#contact" class="js-nav">Contact</a>
+        </nav>
+
+        <div class="scroll-track">
+            
+            <section id="hero" class="panel panel-hero">
+                <video autoplay muted loop class="video-bg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.3; z-index:-1;">
+                    <source src="vid/resume_firegames.mp4" type="video/mp4">
+                </video>
+                <div class="hero-content">
+                    <div style="text-align:right">
+                        <h1 class="headline-huge">WHERE<br>REALITY<br>ENDS</h1>
+                    </div>
+                    <div style="text-align:center">
+                         <img src="img/portrait.png" style="width:200px; height:200px; border-radius:50%; border:2px solid var(--fire-primary); box-shadow: 0 0 40px var(--fire-primary);">
+                         <h2 style="margin-top:20px; font-family:'Cinzel'; font-size:2rem;">LEVENTE NEMETH</h2>
+                    </div>
+                    <div style="border-left:2px solid var(--fire-primary); padding-left:20px;">
+                        <p style="font-size:1.2rem; color:#ccc; line-height:1.5;">
+                            Creating digital experiences where <span style="color:var(--fire-secondary)">JOY</span> meets code.<br>
+                            Video Games start here.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="skills" class="panel panel-wide" style="display:flex; flex-direction:row; align-items:center; gap:40px;">
+                <div>
+                    <h2 class="headline-huge" style="font-size:4rem;">THE<br>ARSENAL</h2>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                    <div style="background:rgba(20,20,20,0.6); padding:30px; border:1px solid #333; width:300px;">
+                        <i class="fa fa-code" style="font-size:30px; color:var(--fire-secondary); margin-bottom:10px;"></i>
+                        <h3 style="color:white;">Unity & C#</h3>
+                        <small style="color:#888;">4 YEARS EXP</small>
+                    </div>
+                    <div style="background:rgba(20,20,20,0.6); padding:30px; border:1px solid #333; width:300px;">
+                        <i class="fa fa-cogs" style="font-size:30px; color:var(--fire-secondary); margin-bottom:10px;"></i>
+                        <h3 style="color:white;">Godot</h3>
+                        <small style="color:#888;">3 YEARS EXP</small>
+                    </div>
+                     <div style="background:rgba(20,20,20,0.6); padding:30px; border:1px solid #333; width:300px;">
+                        <i class="fa fa-mobile" style="font-size:30px; color:var(--fire-secondary); margin-bottom:10px;"></i>
+                        <h3 style="color:white;">Mobile Dev</h3>
+                        <small style="color:#888;">iOS / ANDROID</small>
+                    </div>
+                     <div style="background:rgba(20,20,20,0.6); padding:30px; border:1px solid #333; width:300px;">
+                        <i class="fa fa-magic" style="font-size:30px; color:var(--fire-secondary); margin-bottom:10px;"></i>
+                        <h3 style="color:white;">VFX & UI</h3>
+                        <small style="color:#888;">PASSION</small>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects" class="panel panel-wide">
+                <h2 class="headline-huge" style="font-size:4rem; margin-bottom:40px;">PLAYABLE<br>REALMS</h2>
+                <div style="display:flex; gap:40px; align-items:center;">
+                    <a href="https://levimakesgames.itch.io/dragontemples" target="_blank" class="project-card hover-target">
+                        <img src="img/portfolio/dragon_icon.png">
+                        <div style="position:absolute; bottom:20px; left:20px;">
+                            <h3 style="color:white; background:rgba(0,0,0,0.7); padding:5px;">Dragon Temples</h3>
+                        </div>
+                    </a>
+                    <a href="https://levimakesgames.itch.io/rose-of-the-fox" target="_blank" class="project-card hover-target">
+                        <img src="img/portfolio/New.gif">
+                        <div style="position:absolute; bottom:20px; left:20px;">
+                            <h3 style="color:white; background:rgba(0,0,0,0.7); padding:5px;">Rose of the Fox</h3>
+                        </div>
+                    </a>
+                     <a href="https://levimakesgames.itch.io/tower-of-fera" target="_blank" class="project-card hover-target">
+                        <img src="img/portfolio/Tower.png">
+                        <div style="position:absolute; bottom:20px; left:20px;">
+                            <h3 style="color:white; background:rgba(0,0,0,0.7); padding:5px;">Tower of Fera</h3>
+                        </div>
+                    </a>
+                     <a href="https://levimakesgames.itch.io/tanksn-magic" target="_blank" class="project-card hover-target">
+                        <img src="img/portfolio/Tank_icon.png">
+                        <div style="position:absolute; bottom:20px; left:20px;">
+                            <h3 style="color:white; background:rgba(0,0,0,0.7); padding:5px;">Tanks & Magic</h3>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <section id="contact" class="panel panel-hero">
+                <div class="editorial-layout" style="max-width:800px;">
+                    <div>
+                        <h2 class="headline-huge" style="font-size:4rem;">SUMMON<br>ME</h2>
+                        <div style="margin-top:30px; display:flex; gap:20px; font-size:24px;">
+                            <a href="#" class="hover-target"><i class="fa fa-twitter"></i></a>
+                            <a href="#" class="hover-target"><i class="fa fa-gamepad"></i></a>
+                            <a href="#" class="hover-target"><i class="fa fa-github"></i></a>
+                        </div>
+                    </div>
+                    <form style="width:100%;">
+                        <input type="text" class="contact-input hover-target" placeholder="NAME">
+                        <input type="email" class="contact-input hover-target" placeholder="EMAIL">
+                        <textarea class="contact-input hover-target" rows="4" placeholder="MESSAGE"></textarea>
+                        <button type="button" class="hover-target" style="background:var(--fire-primary); color:white; border:none; padding:15px 40px; font-weight:bold; cursor:pointer;">CONTACT</button>
+                    </form>
+                    <div></div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        // --- 1. PRELOADER ---
+        window.addEventListener('load', () => {
+            setTimeout(() => document.body.classList.add('loaded'), 1000);
+        });
+
+        // --- 2. HORIZONTAL SCROLL ENGINE ---
+        const track = document.querySelector('.scroll-track');
+        const body = document.body;
+        
+        function initScroll() {
+            if(window.innerWidth > 900) {
+                body.style.height = track.scrollWidth + 'px';
+            } else {
+                body.style.height = 'auto';
+            }
+        }
+        window.addEventListener('load', initScroll);
+        window.addEventListener('resize', initScroll);
+
+        window.addEventListener('scroll', () => {
+            if(window.innerWidth > 900) {
+                track.style.transform = `translateX(-${window.scrollY}px)`;
+            }
+        });
+
+        // --- 3. CURSOR ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        
+        window.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = e.clientX + 'px'; cursorDot.style.top = e.clientY + 'px';
+            cursorOutline.animate({ left: e.clientX + 'px', top: e.clientY + 'px' }, { duration: 400, fill: "forwards" });
+            
+            // Game Mouse Logic
+            if(gameActive) {
+                gameMouse.x = e.clientX;
+                gameMouse.y = e.clientY;
+            }
+        });
+
+        document.querySelectorAll('.hover-target').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        });
+
+        // --- 4. NAV JUMP ---
+        document.querySelectorAll('.js-nav').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const id = link.getAttribute('href');
+                const section = document.querySelector(id);
+                window.scrollTo({ top: section.offsetLeft, behavior: 'smooth' });
+            });
+        });
+
+        // ==========================================
+        // --- 5. THE HIDDEN REALM (GAME LOGIC) ---
+        // ==========================================
+        
+        const sigilBtn = document.getElementById('sigil-btn');
+        const sigilWrap = document.getElementById('sigil-wrap');
+        let holdTimer = null;
+        let gameActive = false;
+        
+        // HOLD LOGIC
+        sigilBtn.addEventListener('mousedown', () => {
+            sigilWrap.classList.add('charging');
+            holdTimer = setTimeout(enterGame, 2000); // 2 seconds hold
+        });
+
+        const cancelHold = () => {
+            sigilWrap.classList.remove('charging');
+            clearTimeout(holdTimer);
+        };
+        sigilBtn.addEventListener('mouseup', cancelHold);
+        sigilBtn.addEventListener('mouseleave', cancelHold);
+
+        function enterGame() {
+            document.body.classList.add('gaming');
+            document.getElementById('game-msg').classList.add('show');
+            setTimeout(() => document.getElementById('game-msg').classList.remove('show'), 3000);
+            gameActive = true;
+            initGame();
+        }
+
+        document.getElementById('exit-game-btn').addEventListener('click', () => {
+            document.body.classList.remove('gaming');
+            gameActive = false;
+            cancelHold(); // Reset visuals
+        });
+
+        // GAME ENGINE
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const gameMouse = { x: 0, y: 0 };
+        let score = 0;
+        
+        let enemies = [];
+        let bullets = [];
+        let particles = [];
+
+        function initGame() {
+            resizeGame();
+            score = 0;
+            enemies = [];
+            bullets = [];
+            particles = [];
+            updateScore();
+            loop();
+        }
+
+        function resizeGame() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeGame);
+
+        // SHOOTING
+        window.addEventListener('mousedown', () => {
+            if(!gameActive) return;
+            bullets.push(new Bullet(gameMouse.x, gameMouse.y));
+            // Recoil/Juice
+            createExplosion(gameMouse.x, gameMouse.y, 5, '#fff');
+        });
+
+        class Bullet {
+            constructor(x, y) {
+                this.x = window.innerWidth / 2; // Start from center bottom or center
+                this.y = window.innerHeight; 
+                this.targetX = x;
+                this.targetY = y;
+                const angle = Math.atan2(y - this.y, x - this.x);
+                this.vx = Math.cos(angle) * 15;
+                this.vy = Math.sin(angle) * 15;
+                this.size = 4;
+                this.color = '#ff9900';
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                // Trail
+                if(Math.random() > 0.5) particles.push(new Particle(this.x, this.y, 2, this.color));
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
+            }
+        }
+
+        class Enemy {
+            constructor() {
+                // Spawn at edges
+                if(Math.random() < 0.5) {
+                    this.x = Math.random() < 0.5 ? -20 : width + 20;
+                    this.y = Math.random() * height;
+                } else {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() < 0.5 ? -20 : height + 20;
+                }
+                this.size = Math.random() * 15 + 10;
+                this.speed = Math.random() * 2 + 1;
+                this.color = '#555'; // Glitch color
+            }
+            update() {
+                // Move to center
+                const angle = Math.atan2(height/2 - this.y, width/2 - this.x);
+                this.x += Math.cos(angle) * this.speed;
+                this.y += Math.sin(angle) * this.speed;
+            }
+            draw() {
+                ctx.strokeStyle = '#ff3300';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
+            }
+        }
+
+        class Particle {
+            constructor(x, y, size, color) {
+                this.x = x; this.y = y; this.size = size; this.color = color;
+                this.vx = (Math.random() - 0.5) * 4;
+                this.vy = (Math.random() - 0.5) * 4;
+                this.life = 1.0;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy; this.life -= 0.03;
+            }
+            draw() {
+                ctx.globalAlpha = this.life;
+                ctx.fillStyle = this.color;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
+                ctx.globalAlpha = 1.0;
+            }
+        }
+
+        function createExplosion(x, y, count, color) {
+            for(let i=0; i<count; i++) {
+                particles.push(new Particle(x, y, Math.random()*4, color));
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score-val').innerText = score;
+        }
+
+        // GAME LOOP
+        let frame = 0;
+        function loop() {
+            if(!gameActive) return;
+            requestAnimationFrame(loop);
+            frame++;
+
+            // Clear with trail effect
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Spawn Enemies
+            if(frame % 40 === 0) enemies.push(new Enemy());
+
+            // Update & Draw
+            bullets.forEach((b, bi) => {
+                b.update(); b.draw();
+                
+                // Collisions
+                enemies.forEach((e, ei) => {
+                    const dist = Math.hypot(b.x - e.x, b.y - e.y);
+                    if(dist < e.size + b.size) {
+                        createExplosion(e.x, e.y, 10, '#ff3300');
+                        enemies.splice(ei, 1);
+                        bullets.splice(bi, 1);
+                        score += 100;
+                        updateScore();
+                    }
+                });
+
+                // Remove off screen
+                if(b.x < 0 || b.x > width || b.y < 0 || b.y > height) bullets.splice(bi, 1);
+            });
+
+            enemies.forEach((e, ei) => {
+                e.update(); e.draw();
+                // End game check (if reaches center)... kept simple for portfolio
+                const distCenter = Math.hypot(width/2 - e.x, height/2 - e.y);
+                if(distCenter < 20) {
+                    enemies.splice(ei, 1); // Just remove for now, maybe shake screen
+                    score -= 50;
+                    updateScore();
+                }
+            });
+
+            particles.forEach((p, pi) => {
+                p.update(); p.draw();
+                if(p.life <= 0) particles.splice(pi, 1);
+            });
+            
+            // Draw Player Crosshair
+            ctx.strokeStyle = '#ff9900';
+            ctx.beginPath(); ctx.arc(gameMouse.x, gameMouse.y, 20, 0, Math.PI*2); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(gameMouse.x-30, gameMouse.y); ctx.lineTo(gameMouse.x+30, gameMouse.y); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(gameMouse.x, gameMouse.y-30); ctx.lineTo(gameMouse.x, gameMouse.y+30); ctx.stroke();
+        }
+
+    </script>
+</body>
+</html>
