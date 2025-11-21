@@ -8,24 +8,28 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@200;300;400;600;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="inc/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="inc/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="inc/animations/css/animate.min.css">
 
     <style>
         /* --- VARIABLES --- */
         :root {
             --bg: #050505;
-            --bg-card: rgba(15, 15, 15, 0.6);
+            --bg-card: rgba(15, 15, 15, 0.7);
             --fire-primary: #ff3300;
             --fire-secondary: #ff9900;
-            --fire-gradient: linear-gradient(90deg, var(--fire-primary), var(--fire-secondary));
+            --fire-gradient: linear-gradient(135deg, var(--fire-primary), var(--fire-secondary));
             --text-main: #ffffff;
             --text-muted: #a0a0a0;
             --border: rgba(255, 255, 255, 0.1);
         }
+
+        /* --- FONTS --- */
+        @font-face { font-family: 'Copperplate'; src: local('Copperplate'), local('Copperplate Gothic Light'), serif; }
+        .font-copper { font-family: 'Copperplate', 'Cinzel', serif; font-weight: 700; letter-spacing: 1px; }
+        .font-editorial { font-family: 'Inter', sans-serif; }
 
         /* --- BASE --- */
         * { box-sizing: border-box; }
@@ -36,201 +40,143 @@
             font-weight: 300;
             overflow-x: hidden;
             margin: 0;
-            cursor: none; /* Hides system cursor */
+            cursor: none; /* Custom cursor */
         }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: var(--fire-primary); border-radius: 10px; }
 
-        h1, h2, h3, h4 { font-weight: 300; margin: 0; letter-spacing: -0.5px; }
-        .hero-title { font-family: 'Cinzel', serif; font-weight: 700; } 
-
         a { text-decoration: none !important; cursor: none; color: inherit; transition: 0.3s; }
 
-        /* --- CUSTOM CURSOR (PRESERVED) --- */
-        .cursor-dot, .cursor-outline {
-            position: fixed; top: 0; left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 10000; /* Very high Z-index to stay on top */
-            pointer-events: none;
-        }
-        .cursor-dot {
-            width: 8px; height: 8px;
-            background-color: var(--fire-secondary);
-            box-shadow: 0 0 10px var(--fire-primary);
-        }
-        .cursor-outline {
-            width: 40px; height: 40px;
-            border: 1px solid var(--fire-primary);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-        }
-        /* Hover State */
-        body.hovering .cursor-outline {
-            width: 60px; height: 60px;
-            background-color: rgba(255, 60, 0, 0.1);
-            border-color: var(--fire-secondary);
-            mix-blend-mode: screen;
-        }
+        /* --- ANIMATIONS (SCROLL REVEAL) --- */
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
 
-        /* --- GLOBAL MOUSE LIGHT --- */
-        #global-spotlight {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 0;
-            background: radial-gradient(
-                800px circle at var(--mouse-x) var(--mouse-y), 
-                rgba(255, 100, 0, 0.08), 
-                transparent 40%
-            );
-        }
-
-        /* --- SPINE --- */
-        .spine-container {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            pointer-events: none; z-index: 1;
-            display: flex; justify-content: center;
-        }
-        .spine-line {
-            width: 1px; height: 100%;
-            background: rgba(255, 255, 255, 0.1); 
-            position: relative; overflow: hidden;
-            box-shadow: 0 0 15px rgba(255, 69, 0, 0.2);
-        }
+        /* --- SPINE (FAST & BOLD) --- */
+        .spine-container { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 1; display: flex; justify-content: center; }
+        .spine-line { width: 2px; height: 100%; background: rgba(255, 60, 0, 0.1); position: relative; overflow: hidden; }
         .spine-beam {
-            position: absolute; top: 0; left: 0; width: 100%; height: 50vh;
-            background: linear-gradient(to bottom, transparent, var(--fire-primary), transparent);
-            filter: blur(2px); opacity: 0.8;
-            animation: beamDrop 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            position: absolute; top: 0; left: 0; width: 100%; height: 60vh;
+            background: linear-gradient(to bottom, transparent, var(--fire-primary), var(--fire-secondary), transparent);
+            filter: blur(4px); animation: beamDrop 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; /* Fast speed */
         }
         @keyframes beamDrop { 0% { transform: translateY(-100%); } 100% { transform: translateY(150vh); } }
 
-        /* --- STICKY GUARDIAN --- */
-        .sticky-guardian {
-            position: fixed; left: 30px; bottom: 30px;
-            width: 70px; height: 70px; z-index: 990;
-            border-radius: 50%; border: 2px solid var(--fire-secondary);
-            box-shadow: 0 0 20px rgba(255,69,0,0.4);
-            overflow: hidden; transition: 0.3s;
-            animation: floatGuard 4s ease-in-out infinite;
-        }
-        .sticky-guardian img { width: 100%; height: 100%; object-fit: cover; }
-        @keyframes floatGuard { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
-        /* --- SLIDING BUTTONS --- */
-        .btn-slide {
-            position: relative; display: inline-block;
-            padding: 12px 40px;
-            border: 1px solid var(--fire-primary);
-            color: white !important;
-            font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px;
-            text-transform: uppercase; letter-spacing: 2px;
-            background: transparent;
-            border-radius: 50px;
-            overflow: hidden;
-            transition: 0.3s;
-            z-index: 1;
-        }
-        .btn-slide::before {
-            content: ''; position: absolute; top: 0; left: 0;
-            width: 0%; height: 100%;
-            background: var(--fire-gradient);
-            transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            z-index: -1;
-        }
-        .btn-slide:hover::before { width: 100%; }
-        .btn-slide:hover { border-color: var(--fire-secondary); box-shadow: 0 0 25px rgba(255,69,0,0.5); }
-
-        /* --- NAV --- */
+        /* --- NAV BAR (FLAME HOVER) --- */
         .nav-float {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(5, 5, 5, 0.7); backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            padding: 12px 30px; z-index: 1000;
-            display: flex; align-items: center; justify-content: space-between;
-            width: 90%; max-width: 900px; border-radius: 100px;
+            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 100px;
+            padding: 15px 40px; z-index: 1000; display: flex; align-items: center; justify-content: space-between;
+            width: 90%; max-width: 900px; transition: 0.3s;
         }
         .nav-links { display: flex; gap: 40px; }
-        .nav-links a { font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-        .nav-links a:hover { color: white; }
+        .nav-link {
+            font-size: 12px; font-weight: 700; color: var(--text-muted); 
+            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        }
+        /* Flame Hover Effect */
+        .nav-link:hover, .nav-link.active {
+            color: var(--fire-secondary);
+            text-shadow: 0 0 10px var(--fire-primary), 0 0 20px var(--fire-primary);
+        }
 
-        /* --- HERO --- */
+        /* --- HERO: EDITORIAL / NEWSPAPER STYLE --- */
         .hero-section {
-            height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; position: relative; text-align: center; z-index: 2;
+            min-height: 100vh; position: relative; z-index: 2;
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 100px 20px;
         }
         .video-bg {
             position: absolute; inset: 0; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0.2; z-index: -1;
-            mask-image: radial-gradient(circle at center, black 20%, transparent 90%);
+            object-fit: cover; opacity: 0.25; z-index: -1;
+            mask-image: linear-gradient(to bottom, black 0%, black 80%, transparent 100%);
         }
-        .mute-btn {
-            position: absolute; top: 100px; right: 30px; z-index: 10;
-            background: transparent; border: 1px solid var(--border);
-            color: white; width: 40px; height: 40px; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center; transition: 0.3s;
-        }
-        .mute-btn:hover { border-color: var(--fire-primary); background: rgba(255,69,0,0.1); }
-
-        .hero-title { font-size: 4rem; margin-bottom: 20px; text-shadow: 0 0 40px rgba(0,0,0,0.9); letter-spacing: -2px;}
-        .hero-statement { font-size: 1.6rem; font-weight: 200; color: #ddd; line-height: 1.5; margin-bottom: 50px; max-width: 850px; }
         
-        .highlight-text {
-            font-size: 1.4em; 
-            font-weight: 700;
-            color: var(--fire-secondary);
-            text-shadow: 0 0 25px rgba(255, 100, 0, 0.6);
-            display: inline-block;
-            transform: translateY(3px);
+        /* Editorial Grid */
+        .editorial-layout {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1.5fr;
+            grid-template-rows: auto auto;
+            gap: 40px; max-width: 1200px; margin: 0 auto;
+            align-items: center;
         }
+        
+        /* Big Typography */
+        .headline-huge {
+            font-family: 'Cinzel', serif; font-size: 5rem; font-weight: 900;
+            line-height: 0.9; color: white; text-transform: uppercase;
+            text-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+        .sub-headline {
+            font-family: 'Inter'; font-weight: 800; font-size: 3rem;
+            color: var(--fire-secondary); text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255,69,0,0.4);
+        }
+        .text-column {
+            font-family: 'Inter'; font-size: 1.1rem; color: #ccc;
+            line-height: 1.6; text-align: justify;
+            border-left: 2px solid var(--fire-primary); padding-left: 20px;
+        }
+        
+        /* Profile Image Portal */
+        .profile-portal {
+            width: 200px; height: 200px; border-radius: 50%;
+            margin: 0 auto; position: relative; z-index: 2;
+            border: 2px solid var(--fire-primary);
+            box-shadow: 0 0 50px rgba(255, 60, 0, 0.4);
+            overflow: hidden; animation: portalPulse 4s infinite ease-in-out;
+        }
+        .profile-portal img { width: 100%; height: 100%; object-fit: cover; }
+        @keyframes portalPulse { 0%,100% { transform: scale(1); box-shadow: 0 0 30px var(--fire-primary); } 50% { transform: scale(1.05); box-shadow: 0 0 60px var(--fire-secondary); } }
 
-        /* --- SKILLS --- */
+        /* --- SKILLS (Highlight XP) --- */
         .section-container { max-width: 1000px; margin: 0 auto; padding: 120px 20px; position: relative; z-index: 2; }
         .section-header { text-align: center; margin-bottom: 80px; }
-        .section-header h2 { font-size: 2.5rem; color: white; font-weight: 300; letter-spacing: -1px; }
-        .section-header span { color: var(--fire-primary); font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 10px; }
-
+        .section-header h2 { font-size: 2.5rem; margin-top: 10px; color: white; }
+        
         .forge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .forge-card {
-            background: rgba(10, 10, 10, 0.5); border: 1px solid var(--border);
-            border-radius: 12px; padding: 30px; min-height: 220px;
-            display: flex; flex-direction: column; transition: 0.3s; backdrop-filter: blur(5px);
+            background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px; padding: 30px; min-height: 240px;
+            display: flex; flex-direction: column; transition: 0.3s;
+            backdrop-filter: blur(10px);
         }
         .forge-card:hover {
-            background: rgba(20, 10, 10, 0.8); border-color: var(--fire-primary);
-            transform: translateY(-5px); box-shadow: 0 10px 30px -10px rgba(255,69,0,0.15);
+            transform: translateY(-5px); border-color: var(--fire-primary);
+            box-shadow: 0 10px 40px rgba(255,69,0,0.15);
         }
-        .forge-card i { font-size: 24px; color: #555; margin-bottom: 20px; transition: 0.3s; }
-        .forge-card:hover i { color: var(--fire-secondary); text-shadow: 0 0 15px var(--fire-secondary); }
-        .forge-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 5px; color: white; }
-        .xp-badge { font-size: 10px; color: var(--fire-primary); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block;}
-        .forge-card p { font-size: 13px; color: #999; line-height: 1.6; font-weight: 300; }
-        .span-2 { grid-column: span 2; }
+        .forge-card i { font-size: 28px; color: #666; margin-bottom: 15px; transition: 0.3s; }
+        .forge-card:hover i { color: var(--fire-secondary); transform: scale(1.2); text-shadow: 0 0 15px var(--fire-primary); }
+        
+        /* XP Highlight Pill */
+        .xp-pill {
+            display: inline-block; background: rgba(255, 69, 0, 0.15);
+            border: 1px solid var(--fire-primary); color: var(--fire-secondary);
+            font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 50px;
+            margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(255,69,0,0.2);
+        }
 
-        /* --- FUN FACT ICONS --- */
-        .facts-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 100px; border-top: 1px solid var(--border); padding-top: 60px; }
-        .fact-item { text-align: center; }
-        .fact-icon { font-size: 24px; color: var(--fire-secondary); margin-bottom: 15px; display: block; opacity: 0.8; }
-        .fact-number { font-size: 3rem; font-weight: 200; color: white; }
-        .fact-label { font-size: 11px; color: #777; text-transform: uppercase; letter-spacing: 2px; }
-
-        /* --- HOARD --- */
+        /* --- VISUALS (No Hoard Title) --- */
         .hoard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 4px; }
-        .hoard-item {
-            aspect-ratio: 1/1; overflow: hidden; position: relative; background: #000; border: 1px solid rgba(255,255,255,0.05); cursor: none;
-        }
+        .hoard-item { aspect-ratio: 1/1; overflow: hidden; background: #000; border: 1px solid rgba(255,255,255,0.1); cursor: none; }
         .hoard-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 0.3s; filter: grayscale(100%); }
         .hoard-item:hover img { opacity: 1; filter: grayscale(0%); transform: scale(1.1); }
         
+        /* Large Preview */
         #hover-preview {
             position: fixed; pointer-events: none; z-index: 9999;
-            width: 500px; height: 280px; background: #000;
-            border: 1px solid var(--fire-secondary);
-            background-size: cover; background-position: center;
+            width: 500px; height: 300px; background: #000;
+            border: 2px solid var(--fire-secondary); background-size: cover; background-position: center;
             opacity: 0; transition: opacity 0.2s, transform 0.1s; border-radius: 8px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
 
-        /* --- PROJECTS --- */
+        /* --- PROJECTS (Grow + Orange Title) --- */
         .project-wrapper { perspective: 1000px; margin-bottom: 60px; }
         .project-card {
             width: 100%; aspect-ratio: 21/9; background: #050505; border-radius: 16px; overflow: hidden;
@@ -246,59 +192,106 @@
             background: linear-gradient(to top, #000, transparent); opacity: 0; transform: translateZ(30px); transition: 0.4s;
         }
         .project-card:hover .project-info { opacity: 1; }
-        .platform-tags { display: flex; gap: 10px; margin-bottom: 15px; }
-        .p-tag { background: transparent; padding: 4px 10px; font-size: 10px; font-weight: 600; border-radius: 50px; color: var(--fire-secondary); border: 1px solid var(--fire-primary); }
+        
+        /* TITLE ANIMATION ON HOVER */
+        .project-card h3 { transition: 0.4s; font-family: 'Copperplate', serif; color: white; }
+        .project-card:hover h3 {
+            color: var(--fire-secondary);
+            transform: scale(1.2) translateX(20px); /* Grow and move */
+            text-shadow: 0 0 20px var(--fire-primary);
+        }
 
-        /* --- SOCIALS (Big Growth Animation) --- */
+        /* --- PARTNERS (Burning Border) --- */
+        .burning-container {
+            position: relative; padding: 60px 0; background: rgba(0,0,0,0.5); overflow: hidden;
+            border-top: 2px solid transparent; border-bottom: 2px solid transparent;
+        }
+        /* Fire Border Effect */
+        .burning-container::before, .burning-container::after {
+            content: ''; position: absolute; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--fire-primary), var(--fire-secondary), transparent);
+            animation: burnBorder 3s linear infinite;
+        }
+        .burning-container::before { top: 0; }
+        .burning-container::after { bottom: 0; animation-delay: 1.5s; }
+        @keyframes burnBorder { 0% { background-position: -100% 0; } 100% { background-position: 200% 0; } }
+
+        .marquee-track { display: flex; gap: 100px; animation: scroll 40s linear infinite; width: max-content; }
+        .partner-logo { height: 100px; opacity: 0.6; transition: 0.3s; filter: grayscale(100%); }
+        .partner-logo:hover { opacity: 1; filter: grayscale(0%); transform: scale(1.1); drop-shadow: 0 0 15px var(--fire-secondary); }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* --- SOCIALS & CONTACT (Grow Animations) --- */
         .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
         
         .social-link {
-            display: flex; align-items: center; gap: 25px;
-            background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-            padding: 25px; border-radius: 16px; margin-bottom: 20px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; gap: 20px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            padding: 25px; border-radius: 12px; margin-bottom: 20px; transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1.2);
         }
-        .social-link h4 { font-size: 14px; font-weight: 600; color: white; margin: 0; }
-        .social-link span { font-size: 12px; color: #777; }
-        .social-link img { width: 28px; filter: grayscale(100%); transition: 0.3s; }
-        
-        /* Bouncy Scale Effect */
         .social-link:hover {
-            transform: scale(1.1); 
+            transform: scale(1.15); /* BIG GROW */
             border-color: var(--fire-primary);
-            background: rgba(255, 69, 0, 0.08);
-            box-shadow: 0 10px 40px -10px rgba(255,69,0,0.3);
+            background: rgba(255, 69, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .social-link:hover img { filter: grayscale(0%); transform: scale(1.2); }
-
+        
         .contact-input {
             width: 100%; background: transparent; border: 1px solid var(--border);
-            padding: 15px; color: white; margin-bottom: 20px; border-radius: 8px; font-family: 'Inter'; font-weight: 300;
-            transition: 0.3s;
+            padding: 15px; color: white; margin-bottom: 20px; border-radius: 8px; transition: 0.3s;
         }
-        .contact-input:focus { outline: none; border-color: var(--fire-secondary); background: rgba(255,255,255,0.02); }
+        /* INPUT GROW ON SELECT */
+        .contact-input:focus {
+            outline: none; transform: scale(1.05);
+            border-color: var(--fire-secondary);
+            background: rgba(255,255,255,0.02);
+            box-shadow: 0 0 20px rgba(255,100,0,0.2);
+        }
 
-        /* Responsive */
-        @media(max-width:768px) {
-            .sticky-guardian { display: none; }
-            .nav-links { display: none; }
-            .forge-grid, .contact-grid, .facts-grid { grid-template-columns: 1fr; }
-            .span-2 { grid-column: span 1; }
-            .hoard-grid { grid-template-columns: repeat(3, 1fr); }
-            .hero-title { font-size: 2.5rem; }
-            #hover-preview { display: none; }
+        /* --- SCROLL TO TOP --- */
+        #scrollTop {
+            position: fixed; bottom: 40px; right: 40px;
+            width: 60px; height: 60px; background: rgba(0,0,0,0.8);
+            border: 2px solid var(--fire-primary); border-radius: 50%;
+            color: var(--fire-secondary); display: flex; justify-content: center; align-items: center;
+            cursor: pointer; opacity: 0; transition: 0.4s; transform: translateY(20px); z-index: 900;
         }
-        
-        #page-loader { position: fixed; inset: 0; background: #000; z-index: 99999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
-        .loader-img { width: 100px; height: 100px; border-radius: 50%; box-shadow: 0 0 40px var(--fire-primary); }
+        #scrollTop.visible { opacity: 1; transform: translateY(0); }
+        #scrollTop:hover { transform: translateY(-5px); box-shadow: 0 0 30px var(--fire-primary); color: white; }
+
+        /* --- CURSOR & SPOTLIGHT --- */
+        .cursor-dot { position: fixed; width: 8px; height: 8px; background: var(--fire-secondary); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 10px var(--fire-primary); transform: translate(-50%, -50%); }
+        .cursor-outline { position: fixed; width: 40px; height: 40px; border: 1px solid var(--fire-primary); border-radius: 50%; pointer-events: none; z-index: 10000; transition: 0.1s; transform: translate(-50%, -50%); }
+        #global-spotlight { position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 100, 0, 0.08), transparent 40%); }
+
+        /* --- UTILS --- */
+        .btn-slide {
+            position: relative; display: inline-block; padding: 12px 35px;
+            border: 1px solid var(--fire-primary); color: white !important;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+            background: transparent; border-radius: 50px; overflow: hidden; transition: 0.3s;
+        }
+        .btn-slide::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 0%; height: 100%;
+            background: var(--fire-gradient); transition: 0.4s; z-index: -1;
+        }
+        .btn-slide:hover::before { width: 100%; }
+        .btn-slide:hover { border-color: var(--fire-secondary); box-shadow: 0 0 25px rgba(255,69,0,0.5); }
+
+        @media(max-width:900px) {
+            .editorial-layout { grid-template-columns: 1fr; text-align: center; }
+            .text-column { border-left: none; border-top: 2px solid var(--fire-primary); padding-top: 20px; }
+            .nav-links { display: none; }
+            .forge-grid, .contact-grid { grid-template-columns: 1fr; }
+            .span-2 { grid-column: span 1; }
+            #hover-preview, .cursor-dot, .cursor-outline { display: none; }
+            body { cursor: auto; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="page-loader"><img src="img/Levente_ProfPic_gif.gif" class="loader-img"></div>
-
     <div id="global-spotlight"></div>
-
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
@@ -308,20 +301,16 @@
         </div>
     </div>
 
-    <div class="sticky-guardian hover-target">
-        <img src="img/Levente_ProfPic_gif.gif" alt="Profile">
-    </div>
-
     <div id="hover-preview"></div>
 
     <nav class="nav-float hover-target">
         <a href="#" onclick="window.scrollTo(0,0);">
-            <img src="img/dragon_logo_bold.png" style="height: 24px; opacity: 0.8;">
+            <img src="img/dragon_logo_bold.png" style="height: 28px; opacity: 0.9;">
         </a>
         <div class="nav-links">
-            <a href="#skills" class="hover-target">Skills</a>
-            <a href="#hoard" class="hover-target">Visuals</a>
-            <a href="#projects" class="hover-target">Games</a>
+            <a href="#skills" class="nav-link hover-target">Skills</a>
+            <a href="#visuals" class="nav-link hover-target">Visuals</a>
+            <a href="#projects" class="nav-link hover-target">Games</a>
         </div>
         <a href="#contact" class="btn-slide hover-target" style="padding: 8px 24px; font-size: 10px;">Summon Me</a>
     </nav>
@@ -330,96 +319,91 @@
         <video id="hero-vid" autoplay muted loop class="video-bg" playsinline>
             <source src="vid/resume_firegames.mp4" type="video/mp4">
         </video>
-        <button id="mute-toggle" class="mute-btn hover-target"><i class="fa fa-volume-off"></i></button>
+        
+        <div class="editorial-layout reveal active">
+            <div style="text-align: right;">
+                <div class="headline-huge">WHERE<br>REALITY<br>ENDS</div>
+                <div class="sub-headline" style="margin-top: 20px;">VIDEO GAMES<br>START.</div>
+            </div>
 
-        <div class="wow fadeInUp">
-            <h1 class="hero-title">LEVENTE NEMETH</h1>
-            <p class="hero-statement">
-                Forging digital realms where <span class="highlight-text">IMAGINATION</span> becomes <span class="highlight-text">INTERACTION</span>.<br>
-                Where reality ends, the game begins.
-            </p>
-            <div style="margin-top: 40px;">
-                <a href="#contact" class="btn-slide hover-target">Let's Create Experiences</a>
+            <div>
+                <div class="profile-portal hover-target">
+                    <img src="img/portrait.png" alt="Levente">
+                </div>
+                <div style="text-align:center; margin-top:20px;">
+                    <h2 class="font-copper" style="font-size:1.5rem;">LEVENTE NEMETH</h2>
+                    <p style="color:var(--fire-secondary); letter-spacing:2px; font-size:12px; text-transform:uppercase;">Dragon Dev</p>
+                </div>
+            </div>
+
+            <div class="text-column">
+                <p>
+                    <strong style="color:white; font-size:1.2rem;">WHY DO I DO IT?</strong><br><br>
+                    It's about the <span style="color:var(--fire-secondary)">JOY</span>. Creating digital experiences that touch people's lives. 
+                    Witnessing that spark of wonder makes every line of code worthwhile. 
+                    <br><br>
+                    Let's create <span style="color:var(--fire-secondary)">EXPERIENCES</span> together.
+                </p>
+                <div style="margin-top: 30px;">
+                    <a href="#contact" class="btn-slide hover-target">Start The Journey</a>
+                </div>
             </div>
         </div>
     </section>
 
     <section id="skills" class="section-container">
-        <div class="section-header">
-            <span>Expertise</span>
-            <h2>Skills & Core Systems</h2>
+        <div class="section-header reveal">
+            <span class="font-copper">The Arsenal</span>
+            <h2 class="font-copper">Skills & Systems</h2>
         </div>
 
         <div class="forge-grid" id="spotlight-grid">
-            <div class="forge-card span-2 hover-target">
+            <div class="forge-card span-2 hover-target reveal delay-1">
                 <div><i class="fa fa-code"></i></div>
                 <h3>Unity & C#</h3>
-                <span class="xp-badge">4 Years Experience</span>
+                <span class="xp-pill">4 Years Exp</span>
                 <p>Robust system architecture, physics interactions, and scalable gameplay logic for complex projects.</p>
             </div>
-            <div class="forge-card hover-target">
+            <div class="forge-card hover-target reveal delay-2">
                 <div><i class="fa fa-cogs"></i></div>
                 <h3>Godot Engine</h3>
-                <span class="xp-badge">3 Years Experience</span>
+                <span class="xp-pill">3 Years Exp</span>
                 <p>Rapid prototyping and independent 2D/3D game development.</p>
             </div>
-            <div class="forge-card hover-target">
+            <div class="forge-card hover-target reveal delay-1">
                 <div><i class="fa fa-globe"></i></div>
                 <h3>Web Playable Games</h3>
-                <span class="xp-badge">3 Years Experience</span>
+                <span class="xp-pill">3 Years Exp</span>
                 <p>WebGL optimization. Bringing console-quality feel to the browser directly.</p>
             </div>
-            <div class="forge-card span-2 hover-target">
+            <div class="forge-card span-2 hover-target reveal delay-2">
                 <div><i class="fa fa-magic"></i></div>
                 <h3>Effects & UI & Passion</h3>
-                <span class="xp-badge">Gameplay Architecting</span>
-                <p>Creating "juice" with Particle Systems, Shader Graph, and responsive, immersive User Interfaces that feel good to use.</p>
+                <span class="xp-pill">Gameplay Arch</span>
+                <p>Creating "juice" with Particle Systems, Shader Graph, and immersive User Interfaces.</p>
             </div>
-             <div class="forge-card hover-target">
+             <div class="forge-card hover-target reveal delay-1">
                 <div><i class="fa fa-mobile"></i></div>
                 <h3>Mobile Game Dev</h3>
-                <span class="xp-badge">iOS & Android</span>
-                <p>Implementing touch controls, handling different aspect ratios, and performance profiling.</p>
+                <span class="xp-pill">iOS & Android</span>
+                <p>Implementing touch controls, handling different aspect ratios.</p>
             </div>
-             <div class="forge-card hover-target">
+             <div class="forge-card hover-target reveal delay-2">
                 <div><i class="fa fa-terminal"></i></div>
                 <h3>Creating Applications</h3>
-                <span class="xp-badge">Python, Java, C#</span>
-                <p>Building tools and backend logic to support game development pipelines.</p>
-            </div>
-        </div>
-
-        <div class="facts-grid wow fadeInUp">
-            <div class="fact-item">
-                <i class="fa fa-users fact-icon"></i>
-                <div class="fact-number">23+</div>
-                <div class="fact-label">Happy Clients</div>
-            </div>
-            <div class="fact-item">
-                <i class="fa fa-gamepad fact-icon"></i>
-                <div class="fact-number">19+</div>
-                <div class="fact-label">Games Shipped</div>
-            </div>
-             <div class="fact-item">
-                <i class="fa fa-coffee fact-icon"></i>
-                <div class="fact-number">750+</div>
-                <div class="fact-label">Coffees</div>
-            </div>
-             <div class="fact-item">
-                <i class="fa fa-code fact-icon"></i>
-                <div class="fact-number">4+</div>
-                <div class="fact-label">Yrs Exp</div>
+                <span class="xp-pill">Python, Java, C#</span>
+                <p>Building tools and backend logic to support pipelines.</p>
             </div>
         </div>
     </section>
 
-    <section id="hoard" class="section-container">
-        <div class="section-header">
-            <span>Visuals</span>
-            <h2>The Dragon's Hoard</h2>
-            <p style="font-size: 11px; color: #666; margin-top: 5px;">HOVER TO PREVIEW</p>
+    <section id="visuals" class="section-container">
+        <div class="section-header reveal">
+            <span class="font-copper">The Gallery</span>
+            <h2 class="font-copper">Visuals</h2>
+            <p style="font-size: 11px; color: #666; margin-top: 5px;">SCREENSHOTS FROM MY PROJECTS</p>
         </div>
-        <div class="hoard-grid">
+        <div class="hoard-grid reveal">
             <div class="hoard-item hover-target"><img src="img/portfolio/dragon_icon.png" data-src="img/portfolio/dragon_icon.png"></div>
             <div class="hoard-item hover-target"><img src="img/portfolio/Tower.png" data-src="img/portfolio/Tower.png"></div>
             <div class="hoard-item hover-target"><img src="img/portfolio/New.gif" data-src="img/portfolio/New.gif"></div>
@@ -429,31 +413,22 @@
             <div class="hoard-item hover-target"><img src="img/portfolio/DemonPortal.png" data-src="img/portfolio/DemonPortal.png"></div>
             <div class="hoard-item hover-target"><img src="img/portfolio/DuckGame.png" data-src="img/portfolio/DuckGame.png"></div>
             <div class="hoard-item hover-target"><img src="img/portfolio/DeepOfTheWater.png" data-src="img/portfolio/DeepOfTheWater.png"></div>
+            <div class="hoard-item hover-target"><img src="img/portfolio/sorting_cubes.png" data-src="img/portfolio/sorting_cubes.png"></div>
             <div class="hoard-item hover-target"><img src="img/portfolio/dragon_icon.png" data-src="img/portfolio/dragon_icon.png"></div>
             <div class="hoard-item hover-target"><img src="img/portfolio/Tower.png" data-src="img/portfolio/Tower.png"></div>
             <div class="hoard-item hover-target"><img src="img/portfolio/New.gif" data-src="img/portfolio/New.gif"></div>
             <div class="hoard-item hover-target"><img src="img/portfolio/Maceman.png" data-src="img/portfolio/Maceman.png"></div>
             <div class="hoard-item hover-target"><img src="img/portfolio/Tank_icon.png" data-src="img/portfolio/Tank_icon.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/Brothers.png" data-src="img/portfolio/Brothers.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/DemonPortal.png" data-src="img/portfolio/DemonPortal.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/DuckGame.png" data-src="img/portfolio/DuckGame.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/DeepOfTheWater.png" data-src="img/portfolio/DeepOfTheWater.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/dragon_icon.png" data-src="img/portfolio/dragon_icon.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/Tower.png" data-src="img/portfolio/Tower.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/New.gif" data-src="img/portfolio/New.gif"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/Maceman.png" data-src="img/portfolio/Maceman.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/Tank_icon.png" data-src="img/portfolio/Tank_icon.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/Brothers.png" data-src="img/portfolio/Brothers.png"></div>
         </div>
     </section>
 
     <section id="projects" class="section-container">
-        <div class="section-header">
-            <span>Portfolio</span>
-            <h2>Playable Realms</h2>
+        <div class="section-header reveal">
+            <span class="font-copper">Portfolio</span>
+            <h2 class="font-copper">Playable Realms</h2>
         </div>
 
-        <div class="project-wrapper wow fadeInUp">
+        <div class="project-wrapper reveal">
             <div class="project-card hover-target" data-tilt>
                 <a href="https://levimakesgames.itch.io/dragontemples" target="_blank">
                     <img src="img/portfolio/dragon_icon.png">
@@ -464,7 +439,7 @@
                 </a>
             </div>
         </div>
-        <div class="project-wrapper wow fadeInUp">
+        <div class="project-wrapper reveal">
             <div class="project-card hover-target" data-tilt>
                 <a href="https://levimakesgames.itch.io/rose-of-the-fox" target="_blank">
                     <img src="img/portfolio/New.gif">
@@ -475,18 +450,7 @@
                 </a>
             </div>
         </div>
-        <div class="project-wrapper wow fadeInUp">
-            <div class="project-card hover-target" data-tilt>
-                <a href="https://levimakesgames.itch.io/tanksn-magic" target="_blank">
-                    <img src="img/portfolio/Tank_icon.png">
-                    <div class="project-info">
-                        <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
-                        <h3>Tanks & Magic</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
-         <div class="project-wrapper wow fadeInUp">
+        <div class="project-wrapper reveal">
             <div class="project-card hover-target" data-tilt>
                 <a href="https://levimakesgames.itch.io/tower-of-fera" target="_blank">
                     <img src="img/portfolio/Tower.png">
@@ -497,68 +461,155 @@
                 </a>
             </div>
         </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/tanksn-magic" target="_blank">
+                    <img src="img/portfolio/Tank_icon.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MULTIPLAYER</span></div>
+                        <h3>Tanks & Magic</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/maceman" target="_blank">
+                    <img src="img/portfolio/Maceman.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                        <h3>Maceman</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/brothers" target="_blank">
+                    <img src="img/portfolio/Brothers.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">CO-OP</span></div>
+                        <h3>Brothers</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/demon-portal" target="_blank">
+                    <img src="img/portfolio/DemonPortal.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                        <h3>Demon Portal</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/deep-of-the-water" target="_blank">
+                    <img src="img/portfolio/DeepOfTheWater.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">HORROR</span></div>
+                        <h3>Deep of the Water</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/duckgame" target="_blank">
+                    <img src="img/portfolio/DuckGame.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                        <h3>Duck Game</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/sorting-cubes" target="_blank">
+                    <img src="img/portfolio/sorting_cubes.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">MOBILE</span></div>
+                        <h3>Sorting Cubes</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
     </section>
 
     <div class="section-container" style="padding-top:0;">
-        <div class="section-header">
-            <span>Reputation</span>
-            <h2>Whispers from the Realm</h2>
+        <div class="section-header reveal">
+            <span class="font-copper">Reputation</span>
+            <h2 class="font-copper">Whispers from the Realm</h2>
         </div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px;">
-            <div class="hover-target" style="background:rgba(255,255,255,0.02); padding:30px; border-left:3px solid var(--fire-primary); font-style:italic; color:#aaa;">
-                "Levente's passion and dedication truly shine through. He was incredibly helpful in bringing our vision to life, always ready to listen."
-                <span style="display:block; margin-top:15px; font-style:normal; font-weight:700; color:white; font-size:12px;">Client</span>
+        <div class="review-grid">
+            <div class="forge-card reveal delay-1 hover-target">
+                <i class="fa fa-quote-left"></i>
+                <p>"Levente's passion and dedication truly shine through. He was incredibly helpful in bringing our vision to life."</p>
+                <span class="font-copper" style="margin-top:10px; display:block; color:white;">Client</span>
             </div>
-            <div class="hover-target" style="background:rgba(255,255,255,0.02); padding:30px; border-left:3px solid var(--fire-primary); font-style:italic; color:#aaa;">
-                "We love this game already! Levente is not only skilled but a passionate individual who genuinely cares."
-                <span style="display:block; margin-top:15px; font-style:normal; font-weight:700; color:white; font-size:12px;">Studio Lead</span>
+            <div class="forge-card reveal delay-2 hover-target">
+                <i class="fa fa-quote-left"></i>
+                <p>"We love this game already! Levente is not only skilled but a passionate individual who genuinely cares."</p>
+                <span class="font-copper" style="margin-top:10px; display:block; color:white;">Studio Lead</span>
             </div>
-            <div class="hover-target" style="background:rgba(255,255,255,0.02); padding:30px; border-left:3px solid var(--fire-primary); font-style:italic; color:#aaa;">
-                "Delivered exactly what we needed on time and with great quality."
-                <span style="display:block; margin-top:15px; font-style:normal; font-weight:700; color:white; font-size:12px;">Project Manager</span>
+            <div class="forge-card reveal delay-1 hover-target">
+                <i class="fa fa-quote-left"></i>
+                <p>"Delivered exactly what we needed on time and with great quality."</p>
+                <span class="font-copper" style="margin-top:10px; display:block; color:white;">Project Manager</span>
             </div>
-             <div class="hover-target" style="background:rgba(255,255,255,0.02); padding:30px; border-left:3px solid var(--fire-primary); font-style:italic; color:#aaa;">
-                "Amazing work as always. Very clean code."
-                <span style="display:block; margin-top:15px; font-style:normal; font-weight:700; color:white; font-size:12px;">Return Client</span>
+             <div class="forge-card reveal delay-2 hover-target">
+                <i class="fa fa-quote-left"></i>
+                <p>"Amazing work as always. Very clean code."</p>
+                <span class="font-copper" style="margin-top:10px; display:block; color:white;">Return Client</span>
             </div>
         </div>
     </div>
 
+    <div class="section-header reveal" style="margin-top: 100px;">
+        <span class="font-copper">Trusted By</span>
+        <h2 class="font-copper">My Partners</h2>
+    </div>
+    <div class="burning-container">
+        <div class="marquee-track">
+            <img src="img/partners/etherorcs.png" class="partner-logo hover-target">
+            <img src="img/partners/grumpy crumpet.png" class="partner-logo hover-target">
+            <img src="img/partners/logo_with_name.png" class="partner-logo hover-target">
+            <img src="img/partners/rf.png" class="partner-logo hover-target">
+            <img src="img/partners/crixus.png" class="partner-logo hover-target">
+            <img src="img/partners/etherorcs.png" class="partner-logo hover-target">
+            <img src="img/partners/grumpy crumpet.png" class="partner-logo hover-target">
+            <img src="img/partners/logo_with_name.png" class="partner-logo hover-target">
+            <img src="img/partners/rf.png" class="partner-logo hover-target">
+            <img src="img/partners/crixus.png" class="partner-logo hover-target">
+        </div>
+    </div>
+
     <section id="contact" class="section-container" style="padding-top: 100px;">
-        <div class="section-header">
-            <span>Final Zone</span>
-            <h2>Summon The Dev</h2>
+        <div class="section-header reveal">
+            <span class="font-copper">Final Zone</span>
+            <h2 class="font-copper">Summon The Dev</h2>
         </div>
 
-        <div class="contact-grid">
-            <div class="wow fadeInLeft">
-                <h4 style="color:white; margin-bottom: 30px; font-weight:300;">Social Uplink</h4>
-                
+        <div class="contact-grid reveal">
+            <div>
+                <h4 style="color:white; margin-bottom: 30px;">Social Uplink</h4>
                 <a href="https://twitter.com/FireGamesDev1" target="_blank" class="social-link hover-target">
-                    <img src="img/x.png">
-                    <div>
-                        <h4>Twitter / X</h4>
-                        <span>Follow Updates</span>
-                    </div>
+                    <img src="img/x.png" width="24"><span style="color:#aaa">Twitter / X</span>
                 </a>
                 <a href="https://levimakesgames.itch.io/" target="_blank" class="social-link hover-target">
-                    <img src="img/itch.png">
-                    <div>
-                        <h4>Itch.io</h4>
-                        <span>Play Games</span>
-                    </div>
+                    <img src="img/itch.png" width="24"><span style="color:#aaa">Itch.io</span>
                 </a>
                 <a href="https://github.com/FireGamesDev" target="_blank" class="social-link hover-target">
-                    <img src="img/Git.png">
-                    <div>
-                        <h4>Github</h4>
-                        <span>Review Code</span>
-                    </div>
+                    <img src="img/Git.png" width="24"><span style="color:#aaa">Github</span>
                 </a>
             </div>
 
-            <div class="wow fadeInRight">
-                <h4 style="color:white; margin-bottom: 30px; font-weight:300;">Send a Message</h4>
+            <div>
+                <h4 style="color:white; margin-bottom: 30px;">Send a Message</h4>
                 <form action="mail.php" method="POST">
                     <input type="text" name="name" class="contact-input hover-target" placeholder="Name" required>
                     <input type="email" name="email" class="contact-input hover-target" placeholder="Email" required>
@@ -567,83 +618,69 @@
                 </form>
             </div>
         </div>
-        
-        <div style="text-align: center; margin-top: 80px; opacity: 0.4; font-size: 12px;">
-            <p>firedevgames@gmail.com | © 2025 Levente Nemeth</p>
-        </div>
     </section>
 
-    <script src="inc/jquery/jquery-1.11.1.min.js"></script>
-    <script src="inc/animations/js/wow.min.js"></script>
+    <div id="scrollTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+        <i class="fa fa-arrow-up"></i>
+    </div>
+
     <script>
-        new WOW().init();
-
-        // 1. Loader
-        window.onload = function() {
-            const loader = document.getElementById('page-loader');
-            loader.style.opacity = '0';
-            setTimeout(() => { loader.style.display = 'none'; }, 500);
-        }
-
-        // 2. Global Mouse Light & Cursor
+        // 1. CURSOR
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
-        const spotlight = document.getElementById('global-spotlight');
-        const targets = document.querySelectorAll('.hover-target, a, button');
-
         window.addEventListener('mousemove', (e) => {
-            const x = e.clientX;
-            const y = e.clientY;
-            
-            // Update cursor
-            cursorDot.style.left = `${x}px`;
-            cursorDot.style.top = `${y}px`;
-            cursorOutline.animate({ left: `${x}px`, top: `${y}px` }, { duration: 400, fill: "forwards" });
-
-            // Update global spotlight
-            spotlight.style.setProperty('--mouse-x', `${x}px`);
-            spotlight.style.setProperty('--mouse-y', `${y}px`);
+            cursorDot.style.left = `${e.clientX}px`; cursorDot.style.top = `${e.clientY}px`;
+            cursorOutline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 400, fill: "forwards" });
         });
-
-        targets.forEach(el => {
+        document.querySelectorAll('.hover-target, a, button, input, textarea').forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
             el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
         });
 
-        // 3. Hover Preview
-        const hoardItems = document.querySelectorAll('.hoard-item img');
-        const previewPanel = document.getElementById('hover-preview');
+        // 2. INTERSECTION OBSERVER (Dynamic Show/Hide)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    entry.target.classList.remove('active'); // Reversed on scroll up
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        hoardItems.forEach(img => {
+        // 3. ACTIVE NAV
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            let current = '';
+            sections.forEach(section => {
+                if (scrollY >= section.offsetTop - 300) current = section.getAttribute('id');
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) link.classList.add('active');
+            });
+
+            // Scroll Top Button
+            const btn = document.getElementById('scrollTop');
+            if(scrollY > 500) btn.classList.add('visible'); else btn.classList.remove('visible');
+        });
+
+        // 4. HOVER PREVIEW
+        const preview = document.getElementById('hover-preview');
+        document.querySelectorAll('.hoard-item img').forEach(img => {
             img.addEventListener('mouseenter', () => {
-                previewPanel.style.backgroundImage = `url(${img.getAttribute('data-src')})`;
-                previewPanel.style.opacity = '1';
-                previewPanel.style.transform = 'translate(20px, -50%) scale(1)';
+                preview.style.backgroundImage = `url(${img.getAttribute('data-src')})`;
+                preview.style.opacity = '1';
             });
             img.addEventListener('mousemove', (e) => {
-                previewPanel.style.left = `${e.clientX + 20}px`;
-                previewPanel.style.top = `${e.clientY}px`;
+                preview.style.left = `${e.clientX + 20}px`; preview.style.top = `${e.clientY - 150}px`;
             });
-            img.addEventListener('mouseleave', () => {
-                previewPanel.style.opacity = '0';
-                previewPanel.style.transform = 'translate(20px, -50%) scale(0.9)';
-            });
+            img.addEventListener('mouseleave', () => preview.style.opacity = '0');
         });
 
-        // 4. Video Mute
-        const vid = document.getElementById('hero-vid');
-        const muteBtn = document.getElementById('mute-toggle');
-        muteBtn.addEventListener('click', () => {
-            if(vid.muted) {
-                vid.muted = false;
-                muteBtn.innerHTML = '<i class="fa fa-volume-up"></i>';
-            } else {
-                vid.muted = true;
-                muteBtn.innerHTML = '<i class="fa fa-volume-off"></i>';
-            }
-        });
-
-        // 5. 3D Tilt
+        // 5. 3D TILT
         document.querySelectorAll('.project-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
@@ -656,21 +693,16 @@
             });
         });
 
-        // 6. Skills Glow
+        // 6. SPOTLIGHT
         const grid = document.getElementById("spotlight-grid");
-        const cards = document.querySelectorAll(".forge-card");
         grid.addEventListener("mousemove", (e) => {
             const rect = grid.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            grid.style.setProperty("--mouse-x", `${x}px`);
-            grid.style.setProperty("--mouse-y", `${y}px`);
-            cards.forEach((card) => {
-                const cardRect = card.getBoundingClientRect();
-                const cardX = e.clientX - cardRect.left;
-                const cardY = e.clientY - cardRect.top;
-                card.style.setProperty("--card-mouse-x", `${cardX}px`);
-                card.style.setProperty("--card-mouse-y", `${cardY}px`);
+            document.querySelectorAll(".forge-card").forEach(card => {
+                const cRect = card.getBoundingClientRect();
+                card.style.setProperty("--card-mouse-x", `${e.clientX - cRect.left}px`);
+                card.style.setProperty("--card-mouse-y", `${e.clientY - cRect.top}px`);
             });
         });
     </script>
