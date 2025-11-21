@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>The Dragon Chronicle | Levente Nemeth</title>
+    <title>Levente Nemeth | Dragon Dev</title>
     <link rel="shortcut icon" href="img/Levente_ProfPic_gif.gif" type="image/gif">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@200;300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@200;300;400;600;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="inc/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="inc/bootstrap/css/bootstrap.min.css">
@@ -304,8 +304,6 @@
             body { cursor: auto; }
             .nav-float { padding: 10px 20px; width: 95%; }
         }
-        
-        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     </style>
 </head>
 <body>
@@ -392,7 +390,8 @@
                     <a href="#contact" class="btn-slide magnetic-btn">Start The Journey</a>
                 </div>
             </div>
-        </header>
+        </div>
+    </section>
 
     <div class="section-divider"></div>
 
@@ -403,51 +402,42 @@
             <h2 class="font-copper scramble-text" data-text="Skills & Systems">Skills & Systems</h2>
         </div>
 
-        <section class="paper-box span-8 hero-video-box hover-target">
-            <video autoplay muted loop class="video-bg">
-                <source src="vid/resume_firegames.mp4" type="video/mp4">
-            </video>
-            <div class="hero-overlay">
-                <h1 class="hero-headline">FORGING DIGITAL REALMS</h1>
-                <p class="hero-sub">"Witnessing the spark of wonder makes every line of code worthwhile."</p>
+        <div class="forge-grid" id="spotlight-grid">
+            <div class="forge-card span-2 hover-target reveal delay-1">
+                <div><i class="fa fa-code"></i></div>
+                <h3>Unity & C#</h3>
+                <span class="xp-pill">4 Years Exp</span>
+                <p>Robust system architecture, physics interactions, and scalable gameplay logic.</p>
             </div>
-        </section>
-
-        <aside class="paper-box span-4 profile-section hover-target">
-            <img src="img/portrait.png" class="profile-img">
-            <h3>Levente Nemeth</h3>
-            <p class="font-serif" style="font-style:italic; color:var(--muted); margin-bottom:30px;">The Dragon Developer</p>
-            
-            <ul class="nav-list">
-                <li class="nav-item js-scroll" data-target="#skills">The Arsenal <i class="fa fa-arrow-right"></i></li>
-                <li class="nav-item js-scroll" data-target="#projects">Feature Stories <i class="fa fa-arrow-right"></i></li>
-                <li class="nav-item js-scroll" data-target="#visuals">Visual Evidence <i class="fa fa-arrow-right"></i></li>
-                <li class="nav-item js-scroll" data-target="#contact">Letter to Editor <i class="fa fa-arrow-right"></i></li>
-            </ul>
-        </aside>
-
-        <section id="skills" class="paper-box span-4 hover-target">
-            <h4 style="border-bottom:1px solid white; padding-bottom:10px; margin-bottom:20px;">Skill Statistics</h4>
-            
-            <div class="skill-row">
-                <div class="skill-name"><i class="fa fa-code" style="color:var(--ink-secondary)"></i> Unity & C#</div>
-                <div class="skill-xp">4 YRS</div>
+            <div class="forge-card hover-target reveal delay-2">
+                <div><i class="fa fa-cogs"></i></div>
+                <h3>Godot Engine</h3>
+                <span class="xp-pill">3 Years Exp</span>
+                <p>Rapid prototyping and independent 2D/3D game development.</p>
             </div>
-            <div class="skill-row">
-                <div class="skill-name"><i class="fa fa-cogs" style="color:var(--ink-secondary)"></i> Godot Engine</div>
-                <div class="skill-xp">3 YRS</div>
+            <div class="forge-card hover-target reveal delay-1">
+                <div><i class="fa fa-globe"></i></div>
+                <h3>Web Playable Games</h3>
+                <span class="xp-pill">3 Years Exp</span>
+                <p>WebGL optimization. Bringing console-quality feel to the browser.</p>
             </div>
-            <div class="skill-row">
-                <div class="skill-name"><i class="fa fa-globe" style="color:var(--ink-secondary)"></i> Web Games</div>
-                <div class="skill-xp">3 YRS</div>
+            <div class="forge-card span-2 hover-target reveal delay-2">
+                <div><i class="fa fa-magic"></i></div>
+                <h3>Effects & UI & Passion</h3>
+                <span class="xp-pill">Gameplay Arch</span>
+                <p>Creating "juice" with Particle Systems, Shader Graph, and immersive User Interfaces.</p>
             </div>
-            <div class="skill-row">
-                <div class="skill-name"><i class="fa fa-mobile" style="color:var(--ink-secondary)"></i> Mobile Dev</div>
-                <div class="skill-xp">iOS/Android</div>
+             <div class="forge-card hover-target reveal delay-1">
+                <div><i class="fa fa-mobile"></i></div>
+                <h3>Mobile Game Dev</h3>
+                <span class="xp-pill">iOS & Android</span>
+                <p>Implementing touch controls, handling different aspect ratios.</p>
             </div>
-            <div class="skill-row">
-                <div class="skill-name"><i class="fa fa-magic" style="color:var(--ink-secondary)"></i> Effects & UI</div>
-                <div class="skill-xp">Passion</div>
+             <div class="forge-card hover-target reveal delay-2">
+                <div><i class="fa fa-terminal"></i></div>
+                <h3>Creating Applications</h3>
+                <span class="xp-pill">Python, Java, C#</span>
+                <p>Building tools and backend logic to support pipelines.</p>
             </div>
         </div>
     </section>
@@ -489,59 +479,117 @@
             <h2 class="font-copper scramble-text" data-text="Playable Realms">Playable Realms</h2>
         </div>
 
-        <div class="paper-box span-4 hover-target">
-            <h4 style="border-bottom:1px solid white; padding-bottom:10px; margin-bottom:20px;">By The Numbers</h4>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; text-align:center;">
-                <div>
-                    <div style="font-size:2.5rem; font-weight:900;">23+</div>
-                    <div style="font-size:10px; text-transform:uppercase; color:var(--muted);">Clients</div>
-                </div>
-                <div>
-                    <div style="font-size:2.5rem; font-weight:900;">19+</div>
-                    <div style="font-size:10px; text-transform:uppercase; color:var(--muted);">Games</div>
-                </div>
-                <div>
-                    <div style="font-size:2.5rem; font-weight:900;">750</div>
-                    <div style="font-size:10px; text-transform:uppercase; color:var(--muted);">Coffees</div>
-                </div>
-                <div>
-                    <div style="font-size:2.5rem; font-weight:900;">4+</div>
-                    <div style="font-size:10px; text-transform:uppercase; color:var(--muted);">Years</div>
-                </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/dragontemples" target="_blank">
+                    <img src="img/portfolio/dragon_icon.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MOBILE</span></div>
+                        <h3>Dragon Temples</h3>
+                    </div>
+                </a>
             </div>
         </div>
-
-        <div id="visuals" class="span-12 film-strip-box">
-            <div class="film-track">
-                <img src="img/portfolio/dragon_icon.png" class="film-img hover-target">
-                <img src="img/portfolio/Tower.png" class="film-img hover-target">
-                <img src="img/portfolio/New.gif" class="film-img hover-target">
-                <img src="img/portfolio/Maceman.png" class="film-img hover-target">
-                <img src="img/portfolio/Tank_icon.png" class="film-img hover-target">
-                <img src="img/portfolio/Brothers.png" class="film-img hover-target">
-                <img src="img/portfolio/DemonPortal.png" class="film-img hover-target">
-                <img src="img/portfolio/DuckGame.png" class="film-img hover-target">
-                <img src="img/portfolio/DeepOfTheWater.png" class="film-img hover-target">
-                <img src="img/portfolio/dragon_icon.png" class="film-img hover-target">
-                <img src="img/portfolio/Tower.png" class="film-img hover-target">
-                <img src="img/portfolio/New.gif" class="film-img hover-target">
-                <img src="img/portfolio/Maceman.png" class="film-img hover-target">
-                <img src="img/portfolio/Tank_icon.png" class="film-img hover-target">
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/rose-of-the-fox" target="_blank">
+                    <img src="img/portfolio/New.gif">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                        <h3>Rose of the Fox</h3>
+                    </div>
+                </a>
             </div>
         </div>
-
-        <div id="projects" class="span-12" style="margin-top:40px; border-bottom:1px solid white; margin-bottom:20px;">
-            <h2>Feature Stories: Playable Realms</h2>
-        </div>
-
-        <a href="https://levimakesgames.itch.io/dragontemples" target="_blank" class="paper-box span-8 project-article hover-target">
-            <img src="img/portfolio/dragon_icon.png" class="project-bg">
-            <div class="project-content">
-                <span class="project-meta">Strategy • Desktop • Mobile</span>
-                <h2 class="project-title">Dragon Temples</h2>
-                <p>Defend your gold in this atmospheric strategy game.</p>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/tower-of-fera" target="_blank">
+                    <img src="img/portfolio/Tower.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MOBILE</span></div>
+                        <h3>Tower of Fera</h3>
+                    </div>
+                </a>
             </div>
-        </a>
+        </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/tanksn-magic" target="_blank">
+                    <img src="img/portfolio/Tank_icon.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MULTIPLAYER</span></div>
+                        <h3>Tanks & Magic</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/maceman" target="_blank">
+                    <img src="img/portfolio/Maceman.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                        <h3>Maceman</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/brothers" target="_blank">
+                    <img src="img/portfolio/Brothers.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">CO-OP</span></div>
+                        <h3>Brothers</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/demon-portal" target="_blank">
+                    <img src="img/portfolio/DemonPortal.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                        <h3>Demon Portal</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/deep-of-the-water" target="_blank">
+                    <img src="img/portfolio/DeepOfTheWater.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">HORROR</span></div>
+                        <h3>Deep of the Water</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/duckgame" target="_blank">
+                    <img src="img/portfolio/DuckGame.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                        <h3>Duck Game</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="project-wrapper reveal">
+            <div class="project-card hover-target" data-tilt>
+                <a href="https://levimakesgames.itch.io/sorting-cubes" target="_blank">
+                    <img src="img/portfolio/sorting_cubes.png">
+                    <div class="project-info">
+                        <div class="platform-tags"><span class="p-tag">MOBILE</span></div>
+                        <h3>Sorting Cubes</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
 
     <div class="section-divider"></div>
 
@@ -580,7 +628,8 @@
                 <p>"Amazing work as always. Very clean code and easy to communicate with."</p>
                 <span style="font-weight:700; color:white; font-size:12px; letter-spacing: 1px;">RETURN CLIENT</span>
             </div>
-        </a>
+        </div>
+    </div>
 
     <div class="section-header reveal" style="margin-top: 120px; margin-bottom: 40px;">
         <span class="font-copper" style="color: #888; letter-spacing: 2px; font-size: 14px;">TRUSTED BY</span>
@@ -599,6 +648,7 @@
             <img src="img/partners/rf.png" class="partner-logo hover-target">
             <img src="img/partners/crixus.png" class="partner-logo hover-target">
         </div>
+    </div>
 
     <div class="section-divider"></div>
 
@@ -622,8 +672,6 @@
                     <img src="img/Git.png" width="24" style="filter: invert(1);"><span style="color:#ccc; font-weight: 600;">Github</span>
                 </a>
             </div>
-            <div style="text-align:right; font-weight:bold; margin-top:10px;">— Studio Lead</div>
-        </div>
 
             <div>
                 <h4 style="color:white; margin-bottom: 40px; font-family: 'Copperplate'; letter-spacing: 1px;">SEND A MESSAGE</h4>
@@ -635,11 +683,10 @@
                 </form>
             </div>
         </div>
+    </section>
 
-        <footer class="span-12" style="text-align:center; padding:40px; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:1px;">
-            © 2025 Levente Nemeth | The Dragon Chronicle | Printed in Budapest
-        </footer>
-
+    <div id="scrollTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+        <i class="fa fa-arrow-up"></i>
     </div>
 
     <script>
