@@ -35,39 +35,36 @@
         * { 
             box-sizing: border-box; 
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+            cursor: none !important; /* FORCE HIDDEN CURSOR */
         }
         input, textarea { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
         img { -webkit-user-drag: none; pointer-events: auto; }
 
         body {
             background-color: var(--bg); color: var(--text-main); font-family: 'Inter', sans-serif;
-            font-weight: 300; overflow-x: hidden; margin: 0; cursor: none;
+            font-weight: 300; overflow-x: hidden; margin: 0;
         }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: var(--fire-primary); border-radius: 10px; }
-        a { text-decoration: none !important; cursor: none; color: inherit; transition: 0.3s; }
+        a { text-decoration: none !important; color: inherit; transition: 0.3s; }
 
         /* --- ANIMATIONS & EFFECTS --- */
-        /* Updated Reveal with more punch */
         .reveal { opacity: 0; transform: translateY(70px) scale(0.95); transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); filter: blur(4px); }
         .reveal.active { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
 
-        /* Cinematic Grain */
         .grain-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9000; opacity: 0.07; 
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
             animation: noise 2s infinite linear;
         }
-        @keyframes noise { 0% { transform: translate(0,0); } 10% { transform: translate(-5%,-5%); } 20% { transform: translate(-10%,5%); } 30% { transform: translate(5%,-10%); } 40% { transform: translate(-5%,15%); } 50% { transform: translate(-10%,5%); } 60% { transform: translate(15%,0); } 70% { transform: translate(0,10%); } 80% { transform: translate(-15%,0); } 90% { transform: translate(10%,5%); } 100% { transform: translate(5%,0); } }
+        @keyframes noise { 0% { transform: translate(0,0); } 100% { transform: translate(5%,0); } }
 
-        /* Ambient Ember Canvas */
         #ember-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.6; }
 
-        /* Section Divider Expansion */
         .section-divider { width: 100%; height: 1px; background: transparent; margin: 0 auto; position: relative; overflow: hidden; opacity: 0.7; max-width: 1200px; }
         .section-divider::after {
             content: ''; position: absolute; top: 0; left: 50%; width: 0%; height: 100%;
@@ -87,27 +84,59 @@
         }
         @keyframes beamDrop { 0% { transform: translateY(-100%); } 100% { transform: translateY(150vh); } }
 
-        /* --- RIGHT NAV SYSTEM --- */
-        .right-nav-system { position: fixed; right: 30px; top: 15vh; bottom: 15vh; width: 20px; z-index: 950; display: flex; flex-direction: column; align-items: center; }
-        .nav-track { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; overflow: hidden; }
-        .nav-progress-bar { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: var(--fire-gradient); box-shadow: 0 0 10px var(--fire-primary); transition: height 0.1s linear; }
-        .nav-dot {
-            position: absolute; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; border-radius: 50%; background: #000; border: 1px solid var(--text-muted); cursor: pointer; transition: 0.3s;
+        /* --- UPDATED RIGHT NAV SYSTEM --- */
+        /* Made bigger and easier to click */
+        .right-nav-system { 
+            position: fixed; right: 30px; top: 15vh; bottom: 15vh; width: 40px; /* Wider hit area */
+            z-index: 950; display: flex; flex-direction: column; align-items: center; 
         }
+        .nav-track { position: absolute; top: 0; bottom: 0; width: 2px; background: rgba(255, 255, 255, 0.08); border-radius: 2px; overflow: hidden; }
+        .nav-progress-bar { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: var(--fire-gradient); box-shadow: 0 0 10px var(--fire-primary); transition: height 0.1s linear; }
+        
+        .nav-dot {
+            position: absolute; left: 50%; transform: translate(-50%, -50%);
+            width: 14px; height: 14px; /* Bigger Dots */
+            border-radius: 50%; background: #050505; border: 2px solid var(--text-muted); 
+            transition: 0.3s;
+        }
+        /* Invisible Hit Box expansion for easier clicking */
+        .nav-dot::before {
+            content: ''; position: absolute; top: -15px; bottom: -15px; left: -15px; right: -15px; background: transparent; border-radius: 50%;
+        }
+        
         .nav-dot::after {
-            content: attr(data-label); position: absolute; right: 20px; top: 50%; transform: translateY(-50%) translateX(10px);
-            font-size: 9px; color: var(--fire-secondary); opacity: 0; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; transition: 0.3s; pointer-events: none; font-weight: 700;
+            content: attr(data-label); position: absolute; right: 30px; top: 50%; transform: translateY(-50%) translateX(10px);
+            font-size: 11px; color: var(--fire-secondary); opacity: 0; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; transition: 0.3s; pointer-events: none; font-weight: 700;
         }
         .nav-dot:hover::after { opacity: 1; transform: translateY(-50%) translateX(0); }
-        .nav-dot:hover, .nav-dot.active { background: var(--fire-secondary); border-color: var(--fire-primary); box-shadow: 0 0 15px var(--fire-primary); transform: translate(-50%, -50%) scale(1.5); }
+        .nav-dot:hover, .nav-dot.active { background: var(--fire-secondary); border-color: var(--fire-primary); box-shadow: 0 0 20px var(--fire-primary); transform: translate(-50%, -50%) scale(1.3); }
 
-        /* --- NAV BAR --- */
+        /* --- UPDATED NAV BAR (ICON SWAP) --- */
         .nav-float {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px);
-            border: 1px solid var(--border); border-radius: 100px; padding: 10px 30px; z-index: 1000; display: flex; align-items: center; justify-content: space-between; width: auto; gap: 40px; transition: 0.3s;
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%); 
+            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 100px; 
+            padding: 12px 35px; z-index: 1000; display: flex; align-items: center; justify-content: space-between; 
+            width: auto; gap: 40px; transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-link { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; padding: 10px; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-link { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; padding: 5px; display: flex; align-items: center; justify-content: center; }
+        
+        /* Toggle classes for Scrolled State */
+        .nav-text { display: block; }
+        .nav-icon { display: none; font-size: 18px; }
+
+        /* SCROLLED STATE STYLES */
+        .nav-float.scrolled {
+            top: 15px; padding: 8px 25px; gap: 20px; background: rgba(0,0,0,0.95); border-color: var(--fire-primary);
+        }
+        .nav-float.scrolled .nav-text { display: none; }
+        .nav-float.scrolled .nav-icon { display: block; color: white; }
+        .nav-float.scrolled .btn-slide { padding: 8px; border-radius: 50%; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; }
+        .nav-float.scrolled .btn-text { display: none; }
+        .nav-float.scrolled .btn-icon { display: block; font-size: 14px; }
+        .btn-icon { display: none; }
+
         .nav-link:hover, .nav-link.active { color: var(--fire-secondary); text-shadow: 0 0 15px var(--fire-primary); }
 
         /* --- HERO --- */
@@ -115,7 +144,6 @@
         .video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; z-index: -1; mask-image: linear-gradient(to bottom, black 0%, black 70%, transparent 100%); }
         .editorial-layout { display: grid; grid-template-columns: 1.4fr 0.8fr 1.4fr; gap: 30px; max-width: 1200px; margin: 0 auto; align-items: center; }
         
-        /* New Burn-In Animation for Headline */
         .headline-huge {
             font-family: 'Cinzel', serif; font-size: 4.5rem; font-weight: 900; line-height: 0.9; text-transform: uppercase;
             color: transparent; text-shadow: 0 0 0px rgba(255,50,0,0);
@@ -139,7 +167,6 @@
         /* --- SKILLS & GENERAL SECTIONS --- */
         .section-container { max-width: 1000px; margin: 0 auto; padding: 140px 20px; position: relative; z-index: 2; }
         .section-header { text-align: center; margin-bottom: 80px; position: relative; }
-        /* Header Jolt Animation */
         .section-header.reveal.active { animation: headerJolt 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
         @keyframes headerJolt { 0% { transform: translateY(50px) scale(0.9); filter: blur(5px); } 60% { transform: translateY(-10px) scale(1.05); filter: blur(0); } 100% { transform: translateY(0) scale(1); } }
 
@@ -230,7 +257,6 @@
         }
         .contact-input:focus { outline: none; transform: scale(1.02); border-color: var(--fire-secondary); background: rgba(255,60,0,0.05); box-shadow: 0 0 30px rgba(255,100,0,0.3); }
         
-        /* Magnetic Button Base Style */
         .btn-slide { 
             position: relative; display: inline-block; padding: 14px 40px; border: 1px solid var(--fire-primary); color: white !important; 
             font-weight: 700; text-transform: uppercase; letter-spacing: 2px; background: transparent; border-radius: 50px; 
@@ -245,15 +271,25 @@
         #scrollTop.visible { opacity: 1; transform: translateY(0); }
         #scrollTop:hover { transform: translateY(-5px) scale(1.1); box-shadow: 0 0 40px var(--fire-primary); color: white; background: var(--fire-primary); border-color: white; }
 
-        /* CURSOR SYSTEM (Embers) */
-        .cursor-dot { position: fixed; width: 12px; height: 12px; background: white; border-radius: 50%; pointer-events: none; z-index: 10001; box-shadow: 0 0 20px white, 0 0 10px var(--fire-secondary); mix-blend-mode: difference; transition: transform 0.1s; }
+        /* CURSOR SYSTEM (Embers) - Made bigger */
+        .cursor-dot { 
+            position: fixed; width: 16px; height: 16px; /* Increased Size */
+            background: white; border-radius: 50%; pointer-events: none; z-index: 10001; 
+            box-shadow: 0 0 20px white, 0 0 10px var(--fire-secondary); mix-blend-mode: difference; transition: transform 0.1s; 
+        }
         .ember-particle { position: fixed; pointer-events: none; background: var(--fire-secondary); border-radius: 50%; z-index: 10000; mix-blend-mode: screen; }
         body.hovering .cursor-dot { transform: scale(1.5); background: var(--fire-secondary); box-shadow: 0 0 30px var(--fire-primary); mix-blend-mode: normal; }
         body.clicking .cursor-dot { transform: scale(0.5); background: var(--fire-primary); }
 
-        #global-spotlight { position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(1000px circle at var(--mouse-x) var(--mouse-y), rgba(255, 80, 0, 0.12), transparent 50%); }
+        /* Spotlight - Made smaller (400px) */
+        #global-spotlight { position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(255, 80, 0, 0.12), transparent 50%); }
         
-        .sticky-guardian { position: fixed; left: 30px; bottom: 30px; width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--fire-secondary); z-index: 900; overflow: hidden; box-shadow: 0 0 30px rgba(255,69,0,0.4); transition: 0.3s; }
+        /* Sticky Guardian - Added click interactivity styling */
+        .sticky-guardian { 
+            position: fixed; left: 30px; bottom: 30px; width: 70px; height: 70px; 
+            border-radius: 50%; border: 3px solid var(--fire-secondary); z-index: 900; 
+            overflow: hidden; box-shadow: 0 0 30px rgba(255,69,0,0.4); transition: 0.3s; cursor: pointer;
+        }
         .sticky-guardian:hover { transform: scale(1.1); box-shadow: 0 0 50px var(--fire-primary); border-color: white; }
         .sticky-guardian img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -285,7 +321,7 @@
 
     <div id="hover-preview"></div>
 
-    <div class="sticky-guardian hover-target">
+    <div class="sticky-guardian hover-target" onclick="window.scrollTo({top:0, behavior:'smooth'})">
         <img src="img/Levente_ProfPic_gif.gif" alt="Profile">
     </div>
 
@@ -301,11 +337,23 @@
             <img src="img/dragon_logo_bold.png" style="height: 32px; opacity: 0.9; filter: drop-shadow(0 0 10px var(--fire-primary));">
         </a>
         <div class="nav-links">
-            <a href="#skills" class="nav-link magnetic-btn">Skills</a>
-            <a href="#visuals" class="nav-link magnetic-btn">Visuals</a>
-            <a href="#projects" class="nav-link magnetic-btn">Games</a>
+            <a href="#skills" class="nav-link magnetic-btn">
+                <span class="nav-text">Skills</span>
+                <i class="fa fa-code nav-icon"></i>
+            </a>
+            <a href="#visuals" class="nav-link magnetic-btn">
+                <span class="nav-text">Visuals</span>
+                <i class="fa fa-eye nav-icon"></i>
+            </a>
+            <a href="#projects" class="nav-link magnetic-btn">
+                <span class="nav-text">Games</span>
+                <i class="fa fa-gamepad nav-icon"></i>
+            </a>
         </div>
-        <a href="#contact" class="btn-slide magnetic-btn">Contact</a>
+        <a href="#contact" class="btn-slide magnetic-btn">
+            <span class="btn-text">Contact</span>
+            <i class="fa fa-envelope btn-icon"></i>
+        </a>
     </nav>
 
     <section class="hero-section" id="hero">
@@ -724,14 +772,11 @@
             });
         });
 
-        // 2. INTERSECTION OBSERVER (Reveal + Divider)
+        // 2. INTERSECTION OBSERVER
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
-                } else {
-                    // Optional: Remove comment to make them re-trigger on scroll up
-                    // entry.target.classList.remove('active');
                 }
             });
         }, { threshold: 0.15, rootMargin: "0px 0px -100px 0px" });
@@ -741,6 +786,8 @@
         const sections = document.querySelectorAll('section, #reputation');
         const navContainer = document.getElementById('nav-markers-container');
         const progressBar = document.getElementById('nav-progress');
+        const navFloat = document.querySelector('.nav-float');
+
         function buildRightNav() {
             navContainer.innerHTML = '';
             sections.forEach(section => {
@@ -757,18 +804,39 @@
             });
         }
         window.addEventListener('load', buildRightNav); window.addEventListener('resize', buildRightNav);
+        
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            
+            // Progress bar
             progressBar.style.height = ((scrollY / docHeight) * 100) + '%';
+            
+            // Navbar Logic (Transform to icons)
+            if(scrollY > window.innerHeight - 200) {
+                navFloat.classList.add('scrolled');
+            } else {
+                navFloat.classList.remove('scrolled');
+            }
+
+            // Active State Logic
             let current = '';
             sections.forEach(section => { if (scrollY >= section.offsetTop - 300) current = section.getAttribute('id'); });
-            document.querySelectorAll('.nav-link').forEach(link => { link.classList.remove('active'); if (link.getAttribute('href').includes(current)) link.classList.add('active'); });
-            document.querySelectorAll('.nav-dot').forEach(dot => { dot.classList.remove('active'); if (dot.getAttribute('data-label') === current) dot.classList.add('active'); });
+            
+            document.querySelectorAll('.nav-link').forEach(link => { 
+                link.classList.remove('active'); 
+                if (link.getAttribute('href').includes(current)) link.classList.add('active'); 
+            });
+            
+            document.querySelectorAll('.nav-dot').forEach(dot => { 
+                dot.classList.remove('active'); 
+                if (dot.getAttribute('data-label') === current) dot.classList.add('active'); 
+            });
+            
             const btn = document.getElementById('scrollTop'); if(scrollY > 500) btn.classList.add('visible'); else btn.classList.remove('visible');
         });
 
-        // 4. TEXT SCRAMBLE (The Spice)
+        // 4. TEXT SCRAMBLE
         class TextScramble {
             constructor(el) { this.el = el; this.chars = '!<>-_\\/[]{}—=+*^?#________'; this.update = this.update.bind(this); }
             setText(newText) {
