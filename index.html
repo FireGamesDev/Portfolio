@@ -56,6 +56,18 @@
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
 
+        /* --- NEW: PHYSICS SCROLL CONTAINER --- */
+        #scroll-physics-container {
+            will-change: transform;
+            transform-origin: center top;
+            transition: transform 0.1s cubic-bezier(0.2, 1, 0.3, 1); /* Smooth snapping back */
+        }
+        
+        /* --- NEW: HEAT HAZE GLITCH ON SCROLL --- */
+        .heat-haze-text {
+            transition: text-shadow 0.1s;
+        }
+
         .grain-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9000; opacity: 0.07; 
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
@@ -84,10 +96,9 @@
         }
         @keyframes beamDrop { 0% { transform: translateY(-100%); } 100% { transform: translateY(150vh); } }
 
-        /* --- UPDATED RIGHT NAV SYSTEM --- */
-        /* Made bigger and easier to click */
+        /* --- RIGHT NAV SYSTEM --- */
         .right-nav-system { 
-            position: fixed; right: 30px; top: 15vh; bottom: 15vh; width: 40px; /* Wider hit area */
+            position: fixed; right: 30px; top: 15vh; bottom: 15vh; width: 40px;
             z-index: 950; display: flex; flex-direction: column; align-items: center; 
         }
         .nav-track { position: absolute; top: 0; bottom: 0; width: 2px; background: rgba(255, 255, 255, 0.08); border-radius: 2px; overflow: hidden; }
@@ -95,15 +106,13 @@
         
         .nav-dot {
             position: absolute; left: 50%; transform: translate(-50%, -50%);
-            width: 14px; height: 14px; /* Bigger Dots */
+            width: 14px; height: 14px;
             border-radius: 50%; background: #050505; border: 2px solid var(--text-muted); 
             transition: 0.3s;
         }
-        /* Invisible Hit Box expansion for easier clicking */
         .nav-dot::before {
             content: ''; position: absolute; top: -15px; bottom: -15px; left: -15px; right: -15px; background: transparent; border-radius: 50%;
         }
-        
         .nav-dot::after {
             content: attr(data-label); position: absolute; right: 30px; top: 50%; transform: translateY(-50%) translateX(10px);
             font-size: 11px; color: var(--fire-secondary); opacity: 0; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; transition: 0.3s; pointer-events: none; font-weight: 700;
@@ -111,7 +120,7 @@
         .nav-dot:hover::after { opacity: 1; transform: translateY(-50%) translateX(0); }
         .nav-dot:hover, .nav-dot.active { background: var(--fire-secondary); border-color: var(--fire-primary); box-shadow: 0 0 20px var(--fire-primary); transform: translate(-50%, -50%) scale(1.3); }
 
-        /* --- UPDATED NAV BAR (ICON SWAP) --- */
+        /* --- NAV BAR --- */
         .nav-float {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%); 
             background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px);
@@ -122,11 +131,9 @@
         .nav-links { display: flex; gap: 30px; align-items: center; }
         .nav-link { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; padding: 5px; display: flex; align-items: center; justify-content: center; }
         
-        /* Toggle classes for Scrolled State */
         .nav-text { display: block; }
         .nav-icon { display: none; font-size: 18px; }
 
-        /* SCROLLED STATE STYLES */
         .nav-float.scrolled {
             top: 15px; padding: 8px 25px; gap: 20px; background: rgba(0,0,0,0.95); border-color: var(--fire-primary);
         }
@@ -141,7 +148,7 @@
 
         /* --- HERO --- */
         .hero-section { min-height: 100vh; position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: center; padding: 100px 20px; }
-        .video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; z-index: -1; mask-image: linear-gradient(to bottom, black 0%, black 70%, transparent 100%); }
+        .video-bg { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; z-index: -1; mask-image: linear-gradient(to bottom, black 0%, black 70%, transparent 100%); pointer-events: none; }
         .editorial-layout { display: grid; grid-template-columns: 1.4fr 0.8fr 1.4fr; gap: 30px; max-width: 1200px; margin: 0 auto; align-items: center; }
         
         .headline-huge {
@@ -164,7 +171,7 @@
         .profile-portal img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1); }
         @keyframes portalPulse { 0%,100% { transform: scale(1); box-shadow: 0 0 40px var(--fire-primary), inset 0 0 20px var(--fire-primary); } 50% { transform: scale(1.03); box-shadow: 0 0 80px var(--fire-secondary), inset 0 0 50px var(--fire-secondary); } }
 
-        /* --- SKILLS & GENERAL SECTIONS --- */
+        /* --- SKILLS & SECTIONS --- */
         .section-container { max-width: 1000px; margin: 0 auto; padding: 140px 20px; position: relative; z-index: 2; }
         .section-header { text-align: center; margin-bottom: 80px; position: relative; }
         .section-header.reveal.active { animation: headerJolt 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
@@ -271,9 +278,9 @@
         #scrollTop.visible { opacity: 1; transform: translateY(0); }
         #scrollTop:hover { transform: translateY(-5px) scale(1.1); box-shadow: 0 0 40px var(--fire-primary); color: white; background: var(--fire-primary); border-color: white; }
 
-        /* CURSOR SYSTEM (Embers) - Made bigger */
+        /* CURSOR SYSTEM (Embers) */
         .cursor-dot { 
-            position: fixed; width: 16px; height: 16px; /* Increased Size */
+            position: fixed; width: 16px; height: 16px;
             background: white; border-radius: 50%; pointer-events: none; z-index: 10001; 
             box-shadow: 0 0 20px white, 0 0 10px var(--fire-secondary); mix-blend-mode: difference; transition: transform 0.1s; 
         }
@@ -281,10 +288,10 @@
         body.hovering .cursor-dot { transform: scale(1.5); background: var(--fire-secondary); box-shadow: 0 0 30px var(--fire-primary); mix-blend-mode: normal; }
         body.clicking .cursor-dot { transform: scale(0.5); background: var(--fire-primary); }
 
-        /* Spotlight - Made smaller (400px) */
+        /* Spotlight */
         #global-spotlight { position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(255, 80, 0, 0.12), transparent 50%); }
         
-        /* Sticky Guardian - Added click interactivity styling */
+        /* Sticky Guardian */
         .sticky-guardian { 
             position: fixed; left: 30px; bottom: 30px; width: 70px; height: 70px; 
             border-radius: 50%; border: 3px solid var(--fire-secondary); z-index: 900; 
@@ -356,335 +363,339 @@
         </a>
     </nav>
 
-    <section class="hero-section" id="hero">
-        <video id="hero-vid" autoplay muted loop class="video-bg" playsinline>
-            <source src="vid/resume_firegames.mp4" type="video/mp4">
-        </video>
-        <button id="mute-toggle" class="hover-target" style="position:absolute; top:100px; right:80px; background:transparent; border:1px solid rgba(255,255,255,0.2); color:white; width:50px; height:50px; border-radius:50%; cursor:pointer; transition:0.3s;"><i class="fa fa-volume-off" style="font-size:20px;"></i></button>
+    <video id="hero-vid" autoplay muted loop class="video-bg" playsinline>
+        <source src="vid/resume_firegames.mp4" type="video/mp4">
+    </video>
+
+    <main id="scroll-physics-container">
         
-        <div class="editorial-layout reveal active">
-            <div style="text-align: right;">
-                <div class="headline-huge">WHERE<br>REALITY<br>ENDS</div>
-                <div class="sub-headline" style="margin-top: 30px;">VIDEO GAMES<br>START.</div>
-            </div>
-
-            <div>
-                <div class="profile-portal hover-target">
-                    <img src="img/portrait.png" alt="Levente">
+        <section class="hero-section" id="hero">
+            <button id="mute-toggle" class="hover-target" style="position:absolute; top:100px; right:80px; background:transparent; border:1px solid rgba(255,255,255,0.2); color:white; width:50px; height:50px; border-radius:50%; cursor:pointer; transition:0.3s;"><i class="fa fa-volume-off" style="font-size:20px;"></i></button>
+            
+            <div class="editorial-layout reveal active">
+                <div style="text-align: right;">
+                    <div class="headline-huge heat-haze-text">WHERE<br>REALITY<br>ENDS</div>
+                    <div class="sub-headline heat-haze-text" style="margin-top: 30px;">VIDEO GAMES<br>START.</div>
                 </div>
-                <div style="text-align:center; margin-top:30px;">
-                    <h2 class="font-copper" style="font-size:1.8rem; text-shadow: 0 0 20px var(--fire-primary);">LEVENTE NEMETH</h2>
-                    <p style="color:var(--fire-secondary); letter-spacing:4px; font-size:12px; text-transform:uppercase; font-weight:800; text-shadow: 0 0 10px var(--fire-primary);">Dragon Dev</p>
+
+                <div>
+                    <div class="profile-portal hover-target">
+                        <img src="img/portrait.png" alt="Levente">
+                    </div>
+                    <div style="text-align:center; margin-top:30px;">
+                        <h2 class="font-copper heat-haze-text" style="font-size:1.8rem; text-shadow: 0 0 20px var(--fire-primary);">LEVENTE NEMETH</h2>
+                        <p style="color:var(--fire-secondary); letter-spacing:4px; font-size:12px; text-transform:uppercase; font-weight:800; text-shadow: 0 0 10px var(--fire-primary);">Dragon Dev</p>
+                    </div>
+                </div>
+
+                <div class="text-column">
+                    <p>
+                        <strong style="color:white; font-size:1.3rem; letter-spacing: 1px;">WHY DO I DO IT?</strong><br><br>
+                        It's about the <span style="color:var(--fire-secondary); font-weight:800; text-shadow: 0 0 15px var(--fire-primary);">JOY</span>. Creating digital experiences that touch people's lives. 
+                        Witnessing that spark of wonder makes every line of code worthwhile. 
+                        <br><br>
+                        Let's create <span style="color:var(--fire-secondary); font-weight:800; text-shadow: 0 0 15px var(--fire-primary);">EXPERIENCES</span> together.
+                    </p>
+                    <div style="margin-top: 40px;">
+                        <a href="#contact" class="btn-slide magnetic-btn">Start The Journey</a>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <div class="text-column">
-                <p>
-                    <strong style="color:white; font-size:1.3rem; letter-spacing: 1px;">WHY DO I DO IT?</strong><br><br>
-                    It's about the <span style="color:var(--fire-secondary); font-weight:800; text-shadow: 0 0 15px var(--fire-primary);">JOY</span>. Creating digital experiences that touch people's lives. 
-                    Witnessing that spark of wonder makes every line of code worthwhile. 
-                    <br><br>
-                    Let's create <span style="color:var(--fire-secondary); font-weight:800; text-shadow: 0 0 15px var(--fire-primary);">EXPERIENCES</span> together.
-                </p>
-                <div style="margin-top: 40px;">
-                    <a href="#contact" class="btn-slide magnetic-btn">Start The Journey</a>
+        <div class="section-divider"></div>
+
+        <section id="skills" class="section-container">
+            <div class="section-header reveal">
+                <div class="bg-num">01</div>
+                <span class="font-copper" style="color:var(--fire-secondary); letter-spacing: 2px;">The Arsenal</span>
+                <h2 class="font-copper scramble-text heat-haze-text" data-text="Skills & Systems">Skills & Systems</h2>
+            </div>
+
+            <div class="forge-grid" id="spotlight-grid">
+                <div class="forge-card span-2 hover-target reveal delay-1">
+                    <div><i class="fa fa-code"></i></div>
+                    <h3>Unity & C#</h3>
+                    <span class="xp-pill">4 Years Exp</span>
+                    <p>Robust system architecture, physics interactions, and scalable gameplay logic.</p>
+                </div>
+                <div class="forge-card hover-target reveal delay-2">
+                    <div><i class="fa fa-cogs"></i></div>
+                    <h3>Godot Engine</h3>
+                    <span class="xp-pill">3 Years Exp</span>
+                    <p>Rapid prototyping and independent 2D/3D game development.</p>
+                </div>
+                <div class="forge-card hover-target reveal delay-1">
+                    <div><i class="fa fa-globe"></i></div>
+                    <h3>Web Playable Games</h3>
+                    <span class="xp-pill">3 Years Exp</span>
+                    <p>WebGL optimization. Bringing console-quality feel to the browser.</p>
+                </div>
+                <div class="forge-card span-2 hover-target reveal delay-2">
+                    <div><i class="fa fa-magic"></i></div>
+                    <h3>Effects & UI & Passion</h3>
+                    <span class="xp-pill">Gameplay Arch</span>
+                    <p>Creating "juice" with Particle Systems, Shader Graph, and immersive User Interfaces.</p>
+                </div>
+                 <div class="forge-card hover-target reveal delay-1">
+                    <div><i class="fa fa-mobile"></i></div>
+                    <h3>Mobile Game Dev</h3>
+                    <span class="xp-pill">iOS & Android</span>
+                    <p>Implementing touch controls, handling different aspect ratios.</p>
+                </div>
+                 <div class="forge-card hover-target reveal delay-2">
+                    <div><i class="fa fa-terminal"></i></div>
+                    <h3>Creating Applications</h3>
+                    <span class="xp-pill">Python, Java, C#</span>
+                    <p>Building tools and backend logic to support pipelines.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <section id="visuals" class="section-container">
+            <div class="section-header reveal">
+                <div class="bg-num">02</div>
+                <span class="font-copper" style="color:var(--fire-secondary); letter-spacing: 2px;">The Gallery</span>
+                <h2 class="font-copper scramble-text heat-haze-text" data-text="Visuals">Visuals</h2>
+                <p style="font-size: 11px; color: #888; margin-top: 10px; letter-spacing: 1px; font-weight: 600;">SCREENSHOTS FROM MY PROJECTS</p>
+            </div>
+            <div class="hoard-grid reveal">
+                <div class="hoard-item hover-target"><img src="img/portfolio/dragon_icon.png" data-src="img/portfolio/dragon_icon.png"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/Tower.png" data-src="img/portfolio/Tower.png"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/New.gif" data-src="img/portfolio/New.gif"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/Maceman.png" data-src="img/portfolio/Maceman.png"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/Tank_icon.png" data-src="img/portfolio/Tank_icon.png"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/Brothers.png" data-src="img/portfolio/Brothers.png"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/DemonPortal.png" data-src="img/portfolio/DemonPortal.png"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/DuckGame.png" data-src="img/portfolio/DuckGame.png"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/DeepOfTheWater.png" data-src="img/portfolio/DeepOfTheWater.png"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/sorting_cubes.png" data-src="img/portfolio/sorting_cubes.png"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/dragon_icon.png" data-src="img/portfolio/dragon_icon.png"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/Tower.png" data-src="img/portfolio/Tower.png"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/New.gif" data-src="img/portfolio/New.gif"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/Maceman.png" data-src="img/portfolio/Maceman.png"></div>
+                <div class="hoard-item hover-target"><img src="img/portfolio/Tank_icon.png" data-src="img/portfolio/Tank_icon.png"></div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <section id="projects" class="section-container">
+            <div class="section-header reveal">
+                <div class="bg-num">03</div>
+                <span class="font-copper" style="color:var(--fire-secondary); letter-spacing: 2px;">Portfolio</span>
+                <h2 class="font-copper scramble-text heat-haze-text" data-text="Playable Realms">Playable Realms</h2>
+            </div>
+
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/dragontemples" target="_blank">
+                        <img src="img/portfolio/dragon_icon.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MOBILE</span></div>
+                            <h3>Dragon Temples</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/rose-of-the-fox" target="_blank">
+                        <img src="img/portfolio/New.gif">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                            <h3>Rose of the Fox</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/tower-of-fera" target="_blank">
+                        <img src="img/portfolio/Tower.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MOBILE</span></div>
+                            <h3>Tower of Fera</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/tanksn-magic" target="_blank">
+                        <img src="img/portfolio/Tank_icon.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MULTIPLAYER</span></div>
+                            <h3>Tanks & Magic</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/maceman" target="_blank">
+                        <img src="img/portfolio/Maceman.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                            <h3>Maceman</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/brothers" target="_blank">
+                        <img src="img/portfolio/Brothers.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">CO-OP</span></div>
+                            <h3>Brothers</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/demon-portal" target="_blank">
+                        <img src="img/portfolio/DemonPortal.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                            <h3>Demon Portal</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/deep-of-the-water" target="_blank">
+                        <img src="img/portfolio/DeepOfTheWater.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">HORROR</span></div>
+                            <h3>Deep of the Water</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/duckgame" target="_blank">
+                        <img src="img/portfolio/DuckGame.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                            <h3>Duck Game</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/sorting-cubes" target="_blank">
+                        <img src="img/portfolio/sorting_cubes.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">MOBILE</span></div>
+                            <h3>Sorting Cubes</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <div id="reputation" class="section-container" style="padding-top:80px;">
+            <div class="section-header reveal">
+                <div class="bg-num">04</div>
+                <span class="font-copper" style="color:var(--fire-secondary); letter-spacing: 2px;">Reputation</span>
+                <h2 class="font-copper scramble-text heat-haze-text" data-text="Whispers from the Realm">Whispers from the Realm</h2>
+            </div>
+            <div class="review-grid">
+                <div class="review-box hover-target reveal delay-1">
+                    <div class="fire-rating">
+                        <i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i>
+                    </div>
+                    <p>"Levente's passion and dedication truly shine through. He was incredibly helpful and skilled."</p>
+                    <span style="font-weight:700; color:white; font-size:12px; letter-spacing: 1px;">CLIENT</span>
+                </div>
+                <div class="review-box hover-target reveal delay-2">
+                    <div class="fire-rating">
+                        <i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i>
+                    </div>
+                    <p>"We love this game already! Levente is not only skilled but a passionate individual to work with."</p>
+                    <span style="font-weight:700; color:white; font-size:12px; letter-spacing: 1px;">STUDIO LEAD</span>
+                </div>
+                <div class="review-box hover-target reveal delay-1">
+                    <div class="fire-rating">
+                        <i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i>
+                    </div>
+                    <p>"Delivered exactly what we needed on time and with great quality. Highly recommended."</p>
+                    <span style="font-weight:700; color:white; font-size:12px; letter-spacing: 1px;">PROJECT MANAGER</span>
+                </div>
+                 <div class="review-box hover-target reveal delay-2">
+                    <div class="fire-rating">
+                        <i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i>
+                    </div>
+                    <p>"Amazing work as always. Very clean code and easy to communicate with."</p>
+                    <span style="font-weight:700; color:white; font-size:12px; letter-spacing: 1px;">RETURN CLIENT</span>
                 </div>
             </div>
         </div>
-    </section>
 
-    <div class="section-divider"></div>
-
-    <section id="skills" class="section-container">
-        <div class="section-header reveal">
-            <div class="bg-num">01</div>
-            <span class="font-copper" style="color:var(--fire-secondary); letter-spacing: 2px;">The Arsenal</span>
-            <h2 class="font-copper scramble-text" data-text="Skills & Systems">Skills & Systems</h2>
+        <div class="section-header reveal" style="margin-top: 120px; margin-bottom: 40px;">
+            <span class="font-copper" style="color: #888; letter-spacing: 2px; font-size: 14px;">TRUSTED BY</span>
+            <h2 class="font-copper" style="font-size: 2rem; margin-top: 10px;">MY PARTNERS</h2>
         </div>
-
-        <div class="forge-grid" id="spotlight-grid">
-            <div class="forge-card span-2 hover-target reveal delay-1">
-                <div><i class="fa fa-code"></i></div>
-                <h3>Unity & C#</h3>
-                <span class="xp-pill">4 Years Exp</span>
-                <p>Robust system architecture, physics interactions, and scalable gameplay logic.</p>
+        <div class="burning-container">
+            <div class="marquee-track">
+                <img src="img/partners/etherorcs.png" class="partner-logo hover-target">
+                <img src="img/partners/grumpy crumpet.png" class="partner-logo hover-target">
+                <img src="img/partners/logo_with_name.png" class="partner-logo hover-target">
+                <img src="img/partners/rf.png" class="partner-logo hover-target">
+                <img src="img/partners/crixus.png" class="partner-logo hover-target">
+                <img src="img/partners/etherorcs.png" class="partner-logo hover-target">
+                <img src="img/partners/grumpy crumpet.png" class="partner-logo hover-target">
+                <img src="img/partners/logo_with_name.png" class="partner-logo hover-target">
+                <img src="img/partners/rf.png" class="partner-logo hover-target">
+                <img src="img/partners/crixus.png" class="partner-logo hover-target">
             </div>
-            <div class="forge-card hover-target reveal delay-2">
-                <div><i class="fa fa-cogs"></i></div>
-                <h3>Godot Engine</h3>
-                <span class="xp-pill">3 Years Exp</span>
-                <p>Rapid prototyping and independent 2D/3D game development.</p>
-            </div>
-            <div class="forge-card hover-target reveal delay-1">
-                <div><i class="fa fa-globe"></i></div>
-                <h3>Web Playable Games</h3>
-                <span class="xp-pill">3 Years Exp</span>
-                <p>WebGL optimization. Bringing console-quality feel to the browser.</p>
-            </div>
-            <div class="forge-card span-2 hover-target reveal delay-2">
-                <div><i class="fa fa-magic"></i></div>
-                <h3>Effects & UI & Passion</h3>
-                <span class="xp-pill">Gameplay Arch</span>
-                <p>Creating "juice" with Particle Systems, Shader Graph, and immersive User Interfaces.</p>
-            </div>
-             <div class="forge-card hover-target reveal delay-1">
-                <div><i class="fa fa-mobile"></i></div>
-                <h3>Mobile Game Dev</h3>
-                <span class="xp-pill">iOS & Android</span>
-                <p>Implementing touch controls, handling different aspect ratios.</p>
-            </div>
-             <div class="forge-card hover-target reveal delay-2">
-                <div><i class="fa fa-terminal"></i></div>
-                <h3>Creating Applications</h3>
-                <span class="xp-pill">Python, Java, C#</span>
-                <p>Building tools and backend logic to support pipelines.</p>
-            </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <section id="visuals" class="section-container">
-        <div class="section-header reveal">
-            <div class="bg-num">02</div>
-            <span class="font-copper" style="color:var(--fire-secondary); letter-spacing: 2px;">The Gallery</span>
-            <h2 class="font-copper scramble-text" data-text="Visuals">Visuals</h2>
-            <p style="font-size: 11px; color: #888; margin-top: 10px; letter-spacing: 1px; font-weight: 600;">SCREENSHOTS FROM MY PROJECTS</p>
-        </div>
-        <div class="hoard-grid reveal">
-            <div class="hoard-item hover-target"><img src="img/portfolio/dragon_icon.png" data-src="img/portfolio/dragon_icon.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/Tower.png" data-src="img/portfolio/Tower.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/New.gif" data-src="img/portfolio/New.gif"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/Maceman.png" data-src="img/portfolio/Maceman.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/Tank_icon.png" data-src="img/portfolio/Tank_icon.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/Brothers.png" data-src="img/portfolio/Brothers.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/DemonPortal.png" data-src="img/portfolio/DemonPortal.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/DuckGame.png" data-src="img/portfolio/DuckGame.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/DeepOfTheWater.png" data-src="img/portfolio/DeepOfTheWater.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/sorting_cubes.png" data-src="img/portfolio/sorting_cubes.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/dragon_icon.png" data-src="img/portfolio/dragon_icon.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/Tower.png" data-src="img/portfolio/Tower.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/New.gif" data-src="img/portfolio/New.gif"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/Maceman.png" data-src="img/portfolio/Maceman.png"></div>
-            <div class="hoard-item hover-target"><img src="img/portfolio/Tank_icon.png" data-src="img/portfolio/Tank_icon.png"></div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <section id="projects" class="section-container">
-        <div class="section-header reveal">
-            <div class="bg-num">03</div>
-            <span class="font-copper" style="color:var(--fire-secondary); letter-spacing: 2px;">Portfolio</span>
-            <h2 class="font-copper scramble-text" data-text="Playable Realms">Playable Realms</h2>
         </div>
 
-        <div class="project-wrapper reveal">
-            <div class="project-card hover-target" data-tilt>
-                <a href="https://levimakesgames.itch.io/dragontemples" target="_blank">
-                    <img src="img/portfolio/dragon_icon.png">
-                    <div class="project-info">
-                        <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MOBILE</span></div>
-                        <h3>Dragon Temples</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="project-wrapper reveal">
-            <div class="project-card hover-target" data-tilt>
-                <a href="https://levimakesgames.itch.io/rose-of-the-fox" target="_blank">
-                    <img src="img/portfolio/New.gif">
-                    <div class="project-info">
-                        <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
-                        <h3>Rose of the Fox</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="project-wrapper reveal">
-            <div class="project-card hover-target" data-tilt>
-                <a href="https://levimakesgames.itch.io/tower-of-fera" target="_blank">
-                    <img src="img/portfolio/Tower.png">
-                    <div class="project-info">
-                        <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MOBILE</span></div>
-                        <h3>Tower of Fera</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="project-wrapper reveal">
-            <div class="project-card hover-target" data-tilt>
-                <a href="https://levimakesgames.itch.io/tanksn-magic" target="_blank">
-                    <img src="img/portfolio/Tank_icon.png">
-                    <div class="project-info">
-                        <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MULTIPLAYER</span></div>
-                        <h3>Tanks & Magic</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="project-wrapper reveal">
-            <div class="project-card hover-target" data-tilt>
-                <a href="https://levimakesgames.itch.io/maceman" target="_blank">
-                    <img src="img/portfolio/Maceman.png">
-                    <div class="project-info">
-                        <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
-                        <h3>Maceman</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="project-wrapper reveal">
-            <div class="project-card hover-target" data-tilt>
-                <a href="https://levimakesgames.itch.io/brothers" target="_blank">
-                    <img src="img/portfolio/Brothers.png">
-                    <div class="project-info">
-                        <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">CO-OP</span></div>
-                        <h3>Brothers</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="project-wrapper reveal">
-            <div class="project-card hover-target" data-tilt>
-                <a href="https://levimakesgames.itch.io/demon-portal" target="_blank">
-                    <img src="img/portfolio/DemonPortal.png">
-                    <div class="project-info">
-                        <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
-                        <h3>Demon Portal</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="project-wrapper reveal">
-            <div class="project-card hover-target" data-tilt>
-                <a href="https://levimakesgames.itch.io/deep-of-the-water" target="_blank">
-                    <img src="img/portfolio/DeepOfTheWater.png">
-                    <div class="project-info">
-                        <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">HORROR</span></div>
-                        <h3>Deep of the Water</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="project-wrapper reveal">
-            <div class="project-card hover-target" data-tilt>
-                <a href="https://levimakesgames.itch.io/duckgame" target="_blank">
-                    <img src="img/portfolio/DuckGame.png">
-                    <div class="project-info">
-                        <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
-                        <h3>Duck Game</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="project-wrapper reveal">
-            <div class="project-card hover-target" data-tilt>
-                <a href="https://levimakesgames.itch.io/sorting-cubes" target="_blank">
-                    <img src="img/portfolio/sorting_cubes.png">
-                    <div class="project-info">
-                        <div class="platform-tags"><span class="p-tag">MOBILE</span></div>
-                        <h3>Sorting Cubes</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
+        <div class="section-divider"></div>
 
-    <div class="section-divider"></div>
+        <section id="contact" class="section-container" style="padding-top: 120px;">
+            <div class="section-header reveal">
+                <div class="bg-num">05</div>
+                <span class="font-copper" style="color:var(--fire-secondary); letter-spacing: 2px;">Final Zone</span>
+                <h2 class="font-copper scramble-text heat-haze-text" data-text="Summon The Dev">Summon The Dev</h2>
+            </div>
 
-    <div id="reputation" class="section-container" style="padding-top:80px;">
-        <div class="section-header reveal">
-            <div class="bg-num">04</div>
-            <span class="font-copper" style="color:var(--fire-secondary); letter-spacing: 2px;">Reputation</span>
-            <h2 class="font-copper scramble-text" data-text="Whispers from the Realm">Whispers from the Realm</h2>
-        </div>
-        <div class="review-grid">
-            <div class="review-box hover-target reveal delay-1">
-                <div class="fire-rating">
-                    <i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i>
+            <div class="contact-grid reveal">
+                <div>
+                    <h4 style="color:white; margin-bottom: 40px; font-family: 'Copperplate'; letter-spacing: 1px;">SOCIAL UPLINK</h4>
+                    <a href="https://twitter.com/FireGamesDev1" target="_blank" class="social-link hover-target magnetic-btn">
+                        <img src="img/x.png" width="24" style="filter: invert(1);"><span style="color:#ccc; font-weight: 600;">Twitter / X</span>
+                    </a>
+                    <a href="https://levimakesgames.itch.io/" target="_blank" class="social-link hover-target magnetic-btn">
+                        <img src="img/itch.png" width="24" style="filter: invert(1);"><span style="color:#ccc; font-weight: 600;">Itch.io</span>
+                    </a>
+                    <a href="https://github.com/FireGamesDev" target="_blank" class="social-link hover-target magnetic-btn">
+                        <img src="img/Git.png" width="24" style="filter: invert(1);"><span style="color:#ccc; font-weight: 600;">Github</span>
+                    </a>
                 </div>
-                <p>"Levente's passion and dedication truly shine through. He was incredibly helpful and skilled."</p>
-                <span style="font-weight:700; color:white; font-size:12px; letter-spacing: 1px;">CLIENT</span>
-            </div>
-            <div class="review-box hover-target reveal delay-2">
-                <div class="fire-rating">
-                    <i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i>
+
+                <div>
+                    <h4 style="color:white; margin-bottom: 40px; font-family: 'Copperplate'; letter-spacing: 1px;">SEND A MESSAGE</h4>
+                    <form action="mail.php" method="POST">
+                        <input type="text" name="name" class="contact-input hover-target" placeholder="YOUR NAME" required>
+                        <input type="email" name="email" class="contact-input hover-target" placeholder="YOUR EMAIL" required>
+                        <textarea name="message" class="contact-input hover-target" rows="5" placeholder="PROJECT BRIEF / SUMMONING RITUAL..." required></textarea>
+                        <button type="submit" class="btn-slide magnetic-btn" style="width:100%; padding: 18px;">INITIATE CONTACT</button>
+                    </form>
                 </div>
-                <p>"We love this game already! Levente is not only skilled but a passionate individual to work with."</p>
-                <span style="font-weight:700; color:white; font-size:12px; letter-spacing: 1px;">STUDIO LEAD</span>
             </div>
-            <div class="review-box hover-target reveal delay-1">
-                <div class="fire-rating">
-                    <i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i>
-                </div>
-                <p>"Delivered exactly what we needed on time and with great quality. Highly recommended."</p>
-                <span style="font-weight:700; color:white; font-size:12px; letter-spacing: 1px;">PROJECT MANAGER</span>
-            </div>
-             <div class="review-box hover-target reveal delay-2">
-                <div class="fire-rating">
-                    <i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i>
-                </div>
-                <p>"Amazing work as always. Very clean code and easy to communicate with."</p>
-                <span style="font-weight:700; color:white; font-size:12px; letter-spacing: 1px;">RETURN CLIENT</span>
-            </div>
-        </div>
-    </div>
+        </section>
 
-    <div class="section-header reveal" style="margin-top: 120px; margin-bottom: 40px;">
-        <span class="font-copper" style="color: #888; letter-spacing: 2px; font-size: 14px;">TRUSTED BY</span>
-        <h2 class="font-copper" style="font-size: 2rem; margin-top: 10px;">MY PARTNERS</h2>
-    </div>
-    <div class="burning-container">
-        <div class="marquee-track">
-            <img src="img/partners/etherorcs.png" class="partner-logo hover-target">
-            <img src="img/partners/grumpy crumpet.png" class="partner-logo hover-target">
-            <img src="img/partners/logo_with_name.png" class="partner-logo hover-target">
-            <img src="img/partners/rf.png" class="partner-logo hover-target">
-            <img src="img/partners/crixus.png" class="partner-logo hover-target">
-            <img src="img/partners/etherorcs.png" class="partner-logo hover-target">
-            <img src="img/partners/grumpy crumpet.png" class="partner-logo hover-target">
-            <img src="img/partners/logo_with_name.png" class="partner-logo hover-target">
-            <img src="img/partners/rf.png" class="partner-logo hover-target">
-            <img src="img/partners/crixus.png" class="partner-logo hover-target">
-        </div>
-    </div>
-
-    <div class="section-divider"></div>
-
-    <section id="contact" class="section-container" style="padding-top: 120px;">
-        <div class="section-header reveal">
-            <div class="bg-num">05</div>
-            <span class="font-copper" style="color:var(--fire-secondary); letter-spacing: 2px;">Final Zone</span>
-            <h2 class="font-copper scramble-text" data-text="Summon The Dev">Summon The Dev</h2>
-        </div>
-
-        <div class="contact-grid reveal">
-            <div>
-                <h4 style="color:white; margin-bottom: 40px; font-family: 'Copperplate'; letter-spacing: 1px;">SOCIAL UPLINK</h4>
-                <a href="https://twitter.com/FireGamesDev1" target="_blank" class="social-link hover-target magnetic-btn">
-                    <img src="img/x.png" width="24" style="filter: invert(1);"><span style="color:#ccc; font-weight: 600;">Twitter / X</span>
-                </a>
-                <a href="https://levimakesgames.itch.io/" target="_blank" class="social-link hover-target magnetic-btn">
-                    <img src="img/itch.png" width="24" style="filter: invert(1);"><span style="color:#ccc; font-weight: 600;">Itch.io</span>
-                </a>
-                <a href="https://github.com/FireGamesDev" target="_blank" class="social-link hover-target magnetic-btn">
-                    <img src="img/Git.png" width="24" style="filter: invert(1);"><span style="color:#ccc; font-weight: 600;">Github</span>
-                </a>
-            </div>
-
-            <div>
-                <h4 style="color:white; margin-bottom: 40px; font-family: 'Copperplate'; letter-spacing: 1px;">SEND A MESSAGE</h4>
-                <form action="mail.php" method="POST">
-                    <input type="text" name="name" class="contact-input hover-target" placeholder="YOUR NAME" required>
-                    <input type="email" name="email" class="contact-input hover-target" placeholder="YOUR EMAIL" required>
-                    <textarea name="message" class="contact-input hover-target" rows="5" placeholder="PROJECT BRIEF / SUMMONING RITUAL..." required></textarea>
-                    <button type="submit" class="btn-slide magnetic-btn" style="width:100%; padding: 18px;">INITIATE CONTACT</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
+    </main>
     <div id="scrollTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">
         <i class="fa fa-arrow-up"></i>
     </div>
@@ -698,17 +709,13 @@
         window.addEventListener('mousemove', (e) => {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
-            // Simple cursor follow
             cursorDot.style.left = `${mouse.x}px`; 
             cursorDot.style.top = `${mouse.y}px`;
-            // Update spotlight center
             spotlight.style.setProperty('--mouse-x', `${mouse.x}px`);
             spotlight.style.setProperty('--mouse-y', `${mouse.y}px`);
-            // Spawn ember trail
             createEmber(mouse.x, mouse.y);
         });
 
-        // EMBER TRAIL SYSTEM
         function createEmber(x, y) {
             const ember = document.createElement('div');
             ember.classList.add('ember-particle');
@@ -725,7 +732,7 @@
             animation.onfinish = () => ember.remove();
         }
 
-        // AMBIENT BACKGROUND EMBERS (Canvas)
+        // 2. AMBIENT CANVAS EMBERS
         const canvas = document.getElementById('ember-canvas');
         const ctx = canvas.getContext('2d');
         let w, h;
@@ -758,21 +765,47 @@
         }
         animateEmbers();
 
-        // MAGNETIC BUTTONS
-        const magnets = document.querySelectorAll('.magnetic-btn');
-        magnets.forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - (rect.left + rect.width / 2);
-                const y = e.clientY - (rect.top + rect.height / 2);
-                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) scale(1.05)`;
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = `translate(0px, 0px) scale(1)`;
-            });
-        });
+        // 3. PHYSICS SCROLL (INERTIA & SKEW & HEAT HAZE)
+        const contentContainer = document.getElementById('scroll-physics-container');
+        const heatTexts = document.querySelectorAll('.heat-haze-text');
+        let currentScroll = window.scrollY;
+        let targetScroll = window.scrollY;
+        let skew = 0;
 
-        // 2. INTERSECTION OBSERVER
+        function loopScrollPhysics() {
+            targetScroll = window.scrollY;
+            // Calculate velocity based on difference between frames
+            let diff = targetScroll - currentScroll;
+            currentScroll = targetScroll;
+
+            // Apply Skew (Clamped to avoid extreme distortion)
+            skew = diff * 0.15; 
+            if (skew > 5) skew = 5; if (skew < -5) skew = -5;
+
+            // Skew content
+            contentContainer.style.transform = `skewY(${skew}deg)`;
+
+            // Apply Heat Glitch (Chromatic Aberration) based on speed
+            let glitchOffset = Math.abs(skew) * 2;
+            let blurAmount = Math.abs(skew) * 0.5;
+            
+            heatTexts.forEach(text => {
+                if(glitchOffset > 0.5) {
+                    // Red / Cyan split
+                    text.style.textShadow = `${glitchOffset}px 0 0 #ff0000, -${glitchOffset}px 0 0 #00ffff`;
+                    text.style.filter = `blur(${blurAmount}px)`;
+                } else {
+                    text.style.textShadow = 'none';
+                    text.style.filter = 'blur(0px)';
+                }
+            });
+
+            requestAnimationFrame(loopScrollPhysics);
+        }
+        loopScrollPhysics();
+
+
+        // 4. OBSERVER & REVEALS
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -782,7 +815,7 @@
         }, { threshold: 0.15, rootMargin: "0px 0px -100px 0px" });
         document.querySelectorAll('.reveal, .section-divider').forEach(el => observer.observe(el));
 
-        // 3. DYNAMIC RIGHT NAV & SCROLL TRACKING
+        // 5. UI LOGIC (NAV, PROGRESS)
         const sections = document.querySelectorAll('section, #reputation');
         const navContainer = document.getElementById('nav-markers-container');
         const progressBar = document.getElementById('nav-progress');
@@ -809,17 +842,10 @@
             const scrollY = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             
-            // Progress bar
             progressBar.style.height = ((scrollY / docHeight) * 100) + '%';
             
-            // Navbar Logic (Transform to icons)
-            if(scrollY > window.innerHeight - 200) {
-                navFloat.classList.add('scrolled');
-            } else {
-                navFloat.classList.remove('scrolled');
-            }
+            if(scrollY > window.innerHeight - 200) { navFloat.classList.add('scrolled'); } else { navFloat.classList.remove('scrolled'); }
 
-            // Active State Logic
             let current = '';
             sections.forEach(section => { if (scrollY >= section.offsetTop - 300) current = section.getAttribute('id'); });
             
@@ -827,16 +853,14 @@
                 link.classList.remove('active'); 
                 if (link.getAttribute('href').includes(current)) link.classList.add('active'); 
             });
-            
             document.querySelectorAll('.nav-dot').forEach(dot => { 
                 dot.classList.remove('active'); 
                 if (dot.getAttribute('data-label') === current) dot.classList.add('active'); 
             });
-            
             const btn = document.getElementById('scrollTop'); if(scrollY > 500) btn.classList.add('visible'); else btn.classList.remove('visible');
         });
 
-        // 4. TEXT SCRAMBLE
+        // 6. TEXT SCRAMBLE FX
         class TextScramble {
             constructor(el) { this.el = el; this.chars = '!<>-_\\/[]{}—=+*^?#________'; this.update = this.update.bind(this); }
             setText(newText) {
@@ -868,7 +892,18 @@
             el.addEventListener('mouseenter', () => fx.setText(originalText));
         });
 
-        // 5. GENERAL INTERACTION STATES
+        // 7. INTERACTIONS & TILT
+        const magnets = document.querySelectorAll('.magnetic-btn');
+        magnets.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - (rect.left + rect.width / 2);
+                const y = e.clientY - (rect.top + rect.height / 2);
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) scale(1.05)`;
+            });
+            btn.addEventListener('mouseleave', () => btn.style.transform = `translate(0px, 0px) scale(1)`);
+        });
+        
         document.querySelectorAll('.hover-target, a, button, input, textarea').forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
             el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
@@ -876,7 +911,6 @@
         window.addEventListener('mousedown', () => document.body.classList.add('clicking'));
         window.addEventListener('mouseup', () => document.body.classList.remove('clicking'));
 
-        // HOVER PREVIEW & 3D TILT & MUTE & SPOTLIGHT
         const preview = document.getElementById('hover-preview');
         document.querySelectorAll('.hoard-item img').forEach(img => {
             img.addEventListener('mouseenter', () => { preview.style.backgroundImage = `url(${img.getAttribute('data-src')})`; preview.style.opacity = '1'; });
@@ -890,6 +924,7 @@
             });
             card.addEventListener('mouseleave', () => card.style.transform = 'perspective(1500px) rotateX(0) rotateY(0) scale3d(1, 1, 1) translateZ(0px)');
         });
+        
         const grid = document.getElementById("spotlight-grid");
         if(grid) grid.addEventListener("mousemove", (e) => {
             const rect = grid.getBoundingClientRect();
@@ -899,6 +934,7 @@
                 card.style.setProperty("--card-mouse-y", `${e.clientY - cRect.top}px`);
             });
         });
+
         const vid = document.getElementById('hero-vid');
         const muteBtn = document.getElementById('mute-toggle');
         if(vid && muteBtn) muteBtn.addEventListener('click', function() {
