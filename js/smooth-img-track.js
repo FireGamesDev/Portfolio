@@ -42,7 +42,13 @@ track.onmousemove = e => {
     if (!track.style.transition) {
         track.style.transition = "transform 1.2s ease-out";
     }
-    track.style.transform = `translate(${nextPercentage + 36.5}%, 0%)`;
+    console.log(nextPercentage);
+    if(nextPercentage < -176/2){
+        track.style.transform = `translate(${nextPercentage - 36.5}%, 0%)`;
+    } else{
+        track.style.transform = `translate(${nextPercentage + 36.5}%, 0%)`;
+    }
+    
 
     const minPercentage = -100;
     const maxPercentage = 100;
