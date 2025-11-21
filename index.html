@@ -75,7 +75,17 @@
         }
         @keyframes noise { 0% { transform: translate(0,0); } 100% { transform: translate(5%,0); } }
 
-        #ember-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.6; }
+        #ember-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Behind content */
+            pointer-events: none;
+            opacity: 1;
+            mix-blend-mode: screen;
+        }
 
         .section-divider { width: 100%; height: 1px; background: transparent; margin: 0 auto; position: relative; overflow: hidden; opacity: 0.7; max-width: 1200px; }
         .section-divider::after {
@@ -314,7 +324,6 @@
     </style>
 </head>
 <body>
-
     <div id="global-spotlight"></div>
     <div class="grain-overlay"></div>
     <canvas id="ember-canvas"></canvas>
@@ -734,33 +743,58 @@
 
         // 2. AMBIENT CANVAS EMBERS
         const canvas = document.getElementById('ember-canvas');
-        const ctx = canvas.getContext('2d');
+        const bgCtx = canvas.getContext('2d');
         let w, h;
         const particles = [];
-        function resizeCanvas() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+
+        function resizeCanvas() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
+
         class Particle {
-            constructor() { this.reset(); this.y = Math.random() * h; }
+            constructor() {
+                this.reset();
+                this.y = Math.random() * h; // Start randomly on screen
+            }
             reset() {
-                this.x = Math.random() * w; this.y = h + Math.random() * 100;
-                this.speed = Math.random() * 0.5 + 0.1; this.size = Math.random() * 2 + 0.5;
-                this.opacity = Math.random() * 0.5 + 0.1; this.fade = Math.random() * 0.002 + 0.001;
-                this.color = Math.random() > 0.5 ? '#ff9900' : '#ff3300';
+                this.x = Math.random() * w;
+                this.y = h + Math.random() * 100; // Start just below screen
+                // INTENSITY SETTINGS
+                this.speed = Math.random() * 1.5 + 0.5; // Faster rising
+                this.size = Math.random() * 2.5 + 0.5;  // Varied sizes
+                this.opacity = Math.random() * 0.5 + 0.2; // Brighter
+                this.fade = Math.random() * 0.003 + 0.001;
+                this.color = Math.random() > 0.6 ? '#ff9900' : '#ff3300'; // Mix of Orange/Red
+                this.wiggle = (Math.random() - 0.5) * 0.5; // Horizontal drift
             }
             update() {
-                this.y -= this.speed; this.opacity -= this.fade;
+                this.y -= this.speed;
+                this.x += this.wiggle;
+                this.opacity -= this.fade;
+                // Reset if off-screen or invisible
                 if (this.y < -10 || this.opacity <= 0) this.reset();
             }
             draw() {
-                ctx.globalAlpha = this.opacity; ctx.fillStyle = this.color;
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+                bgCtx.globalAlpha = this.opacity;
+                bgCtx.fillStyle = this.color;
+                bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                bgCtx.fill();
             }
         }
-        for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+        // Create 300 particles for dense fire effect
+        for (let i = 0; i < 300; i++) particles.push(new Particle());
+
         function animateEmbers() {
-            ctx.clearRect(0, 0, w, h);
-            particles.forEach(p => { p.update(); p.draw(); });
+            bgCtx.clearRect(0, 0, w, h);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
             requestAnimationFrame(animateEmbers);
         }
         animateEmbers();
