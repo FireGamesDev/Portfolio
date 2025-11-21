@@ -164,38 +164,54 @@
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
 
-        /* --- PROJECTS (DISCOVERY EFFECT) --- */
+        /* --- PROJECTS (CUTSCENE STYLE) --- */
         .project-wrapper { perspective: 1000px; margin-bottom: 60px; }
         .project-card {
             width: 100%; aspect-ratio: 21/9; background: #050505; border-radius: 16px; overflow: hidden;
             border: 1px solid var(--border); position: relative; transform-style: preserve-3d;
             transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
-        .project-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: 0.5s; }
+        .project-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: 0.8s; }
         
-        /* DISCOVERY HOVER EFFECT */
         .project-card:hover {
             border-color: var(--fire-secondary);
-            transform: scale(1.05); /* Discovery Zoom */
-            box-shadow: 0 20px 60px -10px rgba(255,69,0,0.3);
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 69, 0, 0.4);
             z-index: 10;
         }
-        .project-card:hover img { opacity: 0.3; transform: scale(1.1); }
+        .project-card:hover img { opacity: 0.4; transform: scale(1.15); }
         
         .project-info {
             position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px;
-            background: linear-gradient(to top, rgba(0,0,0,1), transparent); opacity: 0; transform: translateZ(30px); transition: 0.4s;
+            background: linear-gradient(to top, rgba(0,0,0,1) 0%, transparent 100%); 
+            opacity: 0; transform: translateZ(30px); transition: 0.4s;
         }
-        .project-card:hover .project-info { opacity: 1; background: linear-gradient(to top, #000 20%, rgba(255,69,0,0.1) 100%); }
+        .project-card:hover .project-info { 
+            opacity: 1; 
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+        }
         
-        .project-card h3 { transition: 0.4s; font-family: 'Copperplate', serif; color: white; font-size: 24px; }
+        .project-card h3 { 
+            transition: 0.4s; font-family: 'Copperplate', serif; color: white; font-size: 28px; 
+            transform: translateY(20px); opacity: 0;
+        }
         .project-card:hover h3 {
-            color: var(--fire-secondary); /* Turn Orange */
-            transform: translateX(15px);
+            color: var(--fire-secondary);
+            transform: translateY(0); opacity: 1;
             text-shadow: 0 0 25px var(--fire-primary);
         }
 
-        /* --- PARTNERS (SMOOTH LOOP) --- */
+        .platform-tags { display: flex; gap: 10px; margin-bottom: 10px; opacity: 0; transform: translateY(20px); transition: 0.4s 0.1s; }
+        .project-card:hover .platform-tags { opacity: 1; transform: translateY(0); }
+        
+        .p-tag { 
+            background: rgba(0,0,0,0.6); padding: 6px 14px; font-size: 11px; font-weight: 700; 
+            border-radius: 4px; color: white; border: 1px solid var(--fire-secondary);
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        /* --- PARTNERS (SPACED LOOP) --- */
         .burning-container {
             position: relative; padding: 60px 0; background: rgba(0,0,0,0.5); overflow: hidden;
             border-top: 2px solid transparent; border-bottom: 2px solid transparent;
@@ -209,12 +225,13 @@
         .burning-container::after { bottom: 0; animation-delay: 1.5s; }
         @keyframes burnBorder { 0% { background-position: -100% 0; } 100% { background-position: 200% 0; } }
 
-        .marquee-track { display: flex; gap: 80px; width: max-content; animation: scroll 30s linear infinite; }
+        /* Large gap for clean separation */
+        .marquee-track { display: flex; gap: 150px; width: max-content; animation: scroll 40s linear infinite; }
         .partner-logo { height: 80px; opacity: 0.6; transition: 0.3s; filter: grayscale(100%); }
         .partner-logo:hover { opacity: 1; filter: grayscale(0%); transform: scale(1.2); drop-shadow: 0 0 20px var(--fire-secondary); }
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* --- REVIEWS (FIRE STARS) --- */
+        /* --- REVIEWS --- */
         .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .review-box {
             background: rgba(255,255,255,0.02); border-left: 3px solid var(--fire-primary);
@@ -222,9 +239,11 @@
             transition: 0.4s;
         }
         .review-box:hover { transform: translateX(10px) scale(1.02); background: rgba(255,255,255,0.05); box-shadow: 0 0 30px rgba(0,0,0,0.5); }
-        .fire-stars { color: var(--fire-secondary); text-shadow: 0 0 10px var(--fire-primary); font-size: 14px; margin-top: 10px; display: block; }
+        .fire-rating { display: flex; gap: 5px; margin-bottom: 15px; font-size: 14px; }
+        .fire-rating i { color: var(--fire-secondary); text-shadow: 0 0 10px var(--fire-primary); animation: flicker 2s infinite alternate; }
+        @keyframes flicker { 0% { opacity: 0.8; transform: scale(1); } 100% { opacity: 1; transform: scale(1.1); } }
 
-        /* --- SOCIALS & CONTACT (GROW) --- */
+        /* --- SOCIALS & CONTACT --- */
         .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
         
         .social-link {
@@ -251,8 +270,16 @@
         #scrollTop.visible { opacity: 1; transform: translateY(0); }
         #scrollTop:hover { transform: translateY(-5px); box-shadow: 0 0 30px var(--fire-primary); color: white; }
 
-        .cursor-dot { position: fixed; width: 8px; height: 8px; background: var(--fire-secondary); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 10px var(--fire-primary); transform: translate(-50%, -50%); }
-        .cursor-outline { position: fixed; width: 40px; height: 40px; border: 1px solid var(--fire-primary); border-radius: 50%; pointer-events: none; z-index: 10000; transition: 0.1s; transform: translate(-50%, -50%); }
+        /* Interactive Cursor */
+        .cursor-dot { position: fixed; width: 8px; height: 8px; background: var(--fire-secondary); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 10px var(--fire-primary); transform: translate(-50%, -50%); transition: transform 0.1s; }
+        .cursor-outline { position: fixed; width: 40px; height: 40px; border: 1px solid var(--fire-primary); border-radius: 50%; pointer-events: none; z-index: 10000; transition: width 0.2s, height 0.2s, transform 0.1s; transform: translate(-50%, -50%); }
+        
+        /* Hover Growth */
+        body.hovering .cursor-outline { width: 80px; height: 80px; background: rgba(255, 60, 0, 0.1); border-color: var(--fire-secondary); }
+        
+        /* Click Effect */
+        body.clicking .cursor-outline { width: 20px; height: 20px; background: var(--fire-primary); border-color: white; }
+
         #global-spotlight { position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 100, 0, 0.08), transparent 40%); }
 
         .btn-slide { position: relative; display: inline-block; padding: 12px 35px; border: 1px solid var(--fire-primary); color: white !important; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; background: transparent; border-radius: 50px; overflow: hidden; transition: 0.3s; }
@@ -260,13 +287,21 @@
         .btn-slide:hover::before { width: 100%; }
         .btn-slide:hover { border-color: var(--fire-secondary); box-shadow: 0 0 25px rgba(255,69,0,0.5); }
 
+        /* Sticky Left Image */
+        .sticky-guardian { position: fixed; left: 30px; bottom: 30px; width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--fire-secondary); z-index: 900; overflow: hidden; box-shadow: 0 0 20px rgba(255,69,0,0.3); }
+        .sticky-guardian img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* DRAGON GIF */
+        .dragon-companion { position: fixed; bottom: 110px; right: 20px; width: 100px; height: auto; z-index: 90; pointer-events: none; filter: drop-shadow(0 0 15px #ff3300); animation: dragonFloat 3s ease-in-out infinite; }
+        @keyframes dragonFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
         @media(max-width:900px) {
             .editorial-layout { grid-template-columns: 1fr; text-align: center; }
             .text-column { border-left: none; border-top: 2px solid var(--fire-primary); padding-top: 20px; }
             .nav-links { display: none; }
             .forge-grid, .contact-grid { grid-template-columns: 1fr; }
             .span-2 { grid-column: span 1; }
-            #hover-preview, .cursor-dot, .cursor-outline { display: none; }
+            #hover-preview, .cursor-dot, .cursor-outline, .sticky-guardian, .dragon-companion { display: none; }
             body { cursor: auto; }
         }
     </style>
@@ -285,6 +320,10 @@
 
     <div id="hover-preview"></div>
 
+    <div class="sticky-guardian hover-target">
+        <img src="img/Levente_ProfPic_gif.gif" alt="Profile">
+    </div>
+    
     <nav class="nav-float hover-target">
         <a href="#" onclick="window.scrollTo(0,0);">
             <img src="img/dragon_logo_bold.png" style="height: 28px; opacity: 0.9;">
@@ -294,7 +333,7 @@
             <a href="#visuals" class="nav-link hover-target">Visuals</a>
             <a href="#projects" class="nav-link hover-target">Games</a>
         </div>
-        <a href="#contact" class="btn-slide hover-target" style="padding: 8px 24px; font-size: 10px;">Summon Me</a>
+        <a href="#contact" class="btn-slide hover-target" style="padding: 8px 24px; font-size: 10px;">Contact</a>
     </nav>
 
     <section class="hero-section">
@@ -530,29 +569,29 @@
         </div>
         <div class="review-grid">
             <div class="review-box hover-target reveal delay-1">
-                <div class="fire-stars">
-                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                <div class="fire-rating">
+                    <i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i>
                 </div>
-                <p>"Levente's passion and dedication truly shine through."</p>
+                <p>"Levente's passion and dedication truly shine through. He was incredibly helpful."</p>
                 <span style="font-weight:700; color:white; font-size:12px;">Client</span>
             </div>
             <div class="review-box hover-target reveal delay-2">
-                <div class="fire-stars">
-                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                <div class="fire-rating">
+                    <i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i>
                 </div>
                 <p>"We love this game already! Levente is not only skilled but a passionate individual."</p>
                 <span style="font-weight:700; color:white; font-size:12px;">Studio Lead</span>
             </div>
             <div class="review-box hover-target reveal delay-1">
-                <div class="fire-stars">
-                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                <div class="fire-rating">
+                    <i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i>
                 </div>
                 <p>"Delivered exactly what we needed on time and with great quality."</p>
                 <span style="font-weight:700; color:white; font-size:12px;">Project Manager</span>
             </div>
              <div class="review-box hover-target reveal delay-2">
-                <div class="fire-stars">
-                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                <div class="fire-rating">
+                    <i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i><i class="fa fa-fire"></i>
                 </div>
                 <p>"Amazing work as always. Very clean code."</p>
                 <span style="font-weight:700; color:white; font-size:12px;">Return Client</span>
@@ -605,7 +644,7 @@
                     <input type="text" name="name" class="contact-input hover-target" placeholder="Name" required>
                     <input type="email" name="email" class="contact-input hover-target" placeholder="Email" required>
                     <textarea name="message" class="contact-input hover-target" rows="5" placeholder="Project Brief..." required></textarea>
-                    <button type="submit" class="btn-slide hover-target" style="width:100%;">Send Fire</button>
+                    <button type="submit" class="btn-slide hover-target" style="width:100%;">Contact</button>
                 </form>
             </div>
         </div>
@@ -620,18 +659,25 @@
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
         const spotlight = document.getElementById('global-spotlight');
+        
         window.addEventListener('mousemove', (e) => {
             cursorDot.style.left = `${e.clientX}px`; cursorDot.style.top = `${e.clientY}px`;
             cursorOutline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 400, fill: "forwards" });
             spotlight.style.setProperty('--mouse-x', `${e.clientX}px`);
             spotlight.style.setProperty('--mouse-y', `${e.clientY}px`);
         });
+
+        // Interaction States
         document.querySelectorAll('.hover-target, a, button, input, textarea').forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
             el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
         });
+        
+        // Click Effect
+        window.addEventListener('mousedown', () => document.body.classList.add('clicking'));
+        window.addEventListener('mouseup', () => document.body.classList.remove('clicking'));
 
-        // 2. INTERSECTION OBSERVER (Dynamic Show/Hide)
+        // 2. INTERSECTION OBSERVER
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -693,6 +739,8 @@
             const rect = grid.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
+            grid.style.setProperty("--mouse-x", `${x}px`);
+            grid.style.setProperty("--mouse-y", `${y}px`);
             document.querySelectorAll(".forge-card").forEach(card => {
                 const cRect = card.getBoundingClientRect();
                 card.style.setProperty("--card-mouse-x", `${e.clientX - cRect.left}px`);
