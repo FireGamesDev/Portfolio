@@ -91,6 +91,41 @@
         }
         @keyframes beamDrop { 0% { transform: translateY(-100%); } 100% { transform: translateY(150vh); } }
 
+        /* --- NEW RIGHT SIDE PROPORTIONAL NAV --- */
+        .right-nav-system {
+            position: fixed; right: 30px; top: 15vh; bottom: 15vh; width: 20px;
+            z-index: 950; display: flex; flex-direction: column; align-items: center;
+        }
+        .nav-track {
+            position: absolute; top: 0; bottom: 0; width: 2px; background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px; overflow: hidden;
+        }
+        .nav-progress-bar {
+            position: absolute; top: 0; left: 0; width: 100%; height: 0%;
+            background: var(--fire-gradient);
+            box-shadow: 0 0 10px var(--fire-primary);
+            transition: height 0.1s linear;
+        }
+        .nav-dot {
+            position: absolute; left: 50%; transform: translate(-50%, -50%);
+            width: 10px; height: 10px; border-radius: 50%;
+            background: #000; border: 1px solid var(--text-muted);
+            cursor: pointer; transition: 0.3s;
+        }
+        /* Tooltip Label */
+        .nav-dot::after {
+            content: attr(data-label);
+            position: absolute; right: 25px; top: 50%; transform: translateY(-50%) translateX(10px);
+            font-size: 10px; color: var(--fire-secondary); opacity: 0; text-transform: uppercase;
+            white-space: nowrap; transition: 0.3s; pointer-events: none; font-weight: 700;
+            text-shadow: 0 0 5px black;
+        }
+        .nav-dot:hover::after { opacity: 1; transform: translateY(-50%) translateX(0); }
+        .nav-dot:hover, .nav-dot.active {
+            background: var(--fire-secondary); border-color: var(--fire-primary);
+            box-shadow: 0 0 15px var(--fire-primary); transform: translate(-50%, -50%) scale(1.4);
+        }
+
         /* --- NAV BAR --- */
         .nav-float {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
@@ -319,7 +354,7 @@
         @media(max-width:900px) {
             .editorial-layout { grid-template-columns: 1fr; text-align: center; }
             .text-column { border-left: none; border-top: 2px solid var(--fire-primary); padding-top: 20px; }
-            .nav-links { display: none; }
+            .nav-links, .right-nav-system { display: none; } /* Hide side nav on mobile */
             .forge-grid, .contact-grid { grid-template-columns: 1fr; }
             .span-2 { grid-column: span 1; }
             #hover-preview, .cursor-dot, .cursor-outline, .sticky-guardian { display: none; }
@@ -345,6 +380,13 @@
         <img src="img/Levente_ProfPic_gif.gif" alt="Profile">
     </div>
 
+    <div class="right-nav-system">
+        <div class="nav-track">
+            <div class="nav-progress-bar" id="nav-progress"></div>
+        </div>
+        <div id="nav-markers-container"></div>
+    </div>
+
     <nav class="nav-float hover-target">
         <a href="#" onclick="window.scrollTo(0,0);">
             <img src="img/dragon_logo_bold.png" style="height: 28px; opacity: 0.9;">
@@ -357,11 +399,11 @@
         <a href="#contact" class="btn-slide hover-target" style="padding: 8px 24px; font-size: 10px;">Contact</a>
     </nav>
 
-    <section class="hero-section">
+    <section class="hero-section" id="hero">
         <video id="hero-vid" autoplay muted loop class="video-bg" playsinline>
             <source src="vid/resume_firegames.mp4" type="video/mp4">
         </video>
-        <button id="mute-toggle" class="hover-target" style="position:absolute; top:100px; right:30px; background:transparent; border:1px solid rgba(255,255,255,0.2); color:white; width:40px; height:40px; border-radius:50%; cursor:pointer;"><i class="fa fa-volume-off"></i></button>
+        <button id="mute-toggle" class="hover-target" style="position:absolute; top:100px; right:80px; background:transparent; border:1px solid rgba(255,255,255,0.2); color:white; width:40px; height:40px; border-radius:50%; cursor:pointer;"><i class="fa fa-volume-off"></i></button>
         
         <div class="editorial-layout reveal active">
             <div style="text-align: right;">
@@ -583,7 +625,7 @@
         </div>
     </section>
 
-    <div class="section-container" style="padding-top:0;">
+    <div id="reputation" class="section-container" style="padding-top:0;">
         <div class="section-header reveal">
             <span class="font-copper">Reputation</span>
             <h2 class="font-copper">Whispers from the Realm</h2>
@@ -694,7 +736,6 @@
             el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
         });
         
-        // Click Effect
         window.addEventListener('mousedown', () => document.body.classList.add('clicking'));
         window.addEventListener('mouseup', () => document.body.classList.remove('clicking'));
 
@@ -710,17 +751,64 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // 3. ACTIVE NAV
+        // 3. DYNAMIC RIGHT NAV GENERATOR (Proportional Spacing)
+        const sections = document.querySelectorAll('section, #reputation'); // Include specific divs you want to track
+        const navContainer = document.getElementById('nav-markers-container');
+        const progressBar = document.getElementById('nav-progress');
+
+        function buildRightNav() {
+            navContainer.innerHTML = ''; // Clear existing
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            
+            sections.forEach(section => {
+                const id = section.getAttribute('id');
+                if(!id) return;
+                
+                // Calculate percentage position relative to document total height
+                const rect = section.getBoundingClientRect();
+                const absoluteTop = window.scrollY + rect.top;
+                const percent = (absoluteTop / document.documentElement.scrollHeight) * 100;
+
+                // Create Dot
+                const dot = document.createElement('div');
+                dot.classList.add('nav-dot', 'hover-target');
+                dot.style.top = percent + '%';
+                dot.setAttribute('data-label', id); // Uses the ID as label
+                dot.onclick = () => section.scrollIntoView({behavior: 'smooth'});
+                
+                navContainer.appendChild(dot);
+            });
+        }
+        
+        // Rebuild nav on load and resize to ensure math is correct
+        window.addEventListener('load', buildRightNav);
+        window.addEventListener('resize', buildRightNav);
+
+        // 4. ACTIVE NAV (Both Top and Side)
         window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('.nav-link');
+            const scrollY = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            
+            // Update Right Nav Progress Bar
+            const progress = (scrollY / docHeight) * 100;
+            progressBar.style.height = progress + '%';
+
+            // Find current section
             let current = '';
             sections.forEach(section => {
                 if (scrollY >= section.offsetTop - 300) current = section.getAttribute('id');
             });
-            navLinks.forEach(link => {
+
+            // Update Top Nav
+            document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href').includes(current)) link.classList.add('active');
+            });
+
+            // Update Side Nav Dots
+            document.querySelectorAll('.nav-dot').forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-label') === current) dot.classList.add('active');
             });
 
             // Scroll Top Button
@@ -728,7 +816,7 @@
             if(scrollY > 500) btn.classList.add('visible'); else btn.classList.remove('visible');
         });
 
-        // 4. HOVER PREVIEW
+        // 5. HOVER PREVIEW
         const preview = document.getElementById('hover-preview');
         document.querySelectorAll('.hoard-item img').forEach(img => {
             img.addEventListener('mouseenter', () => {
@@ -741,7 +829,7 @@
             img.addEventListener('mouseleave', () => preview.style.opacity = '0');
         });
 
-        // 5. 3D TILT
+        // 6. 3D TILT
         document.querySelectorAll('.project-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
@@ -754,25 +842,30 @@
             });
         });
 
-        // 6. SPOTLIGHT GLOW
+        // 7. SPOTLIGHT GLOW
         const grid = document.getElementById("spotlight-grid");
-        grid.addEventListener("mousemove", (e) => {
-            const rect = grid.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            document.querySelectorAll(".forge-card").forEach(card => {
-                const cRect = card.getBoundingClientRect();
-                card.style.setProperty("--card-mouse-x", `${e.clientX - cRect.left}px`);
-                card.style.setProperty("--card-mouse-y", `${e.clientY - cRect.top}px`);
+        if(grid) {
+            grid.addEventListener("mousemove", (e) => {
+                const rect = grid.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                document.querySelectorAll(".forge-card").forEach(card => {
+                    const cRect = card.getBoundingClientRect();
+                    card.style.setProperty("--card-mouse-x", `${e.clientX - cRect.left}px`);
+                    card.style.setProperty("--card-mouse-y", `${e.clientY - cRect.top}px`);
+                });
             });
-        });
+        }
 
-        // 7. MUTE TOGGLE
+        // 8. MUTE TOGGLE
         const vid = document.getElementById('hero-vid');
-        document.getElementById('mute-toggle').addEventListener('click', function() {
-            vid.muted = !vid.muted;
-            this.innerHTML = vid.muted ? '<i class="fa fa-volume-off"></i>' : '<i class="fa fa-volume-up"></i>';
-        });
+        const muteBtn = document.getElementById('mute-toggle');
+        if(vid && muteBtn){
+            muteBtn.addEventListener('click', function() {
+                vid.muted = !vid.muted;
+                this.innerHTML = vid.muted ? '<i class="fa fa-volume-off"></i>' : '<i class="fa fa-volume-up"></i>';
+            });
+        }
     </script>
 </body>
 </html>
