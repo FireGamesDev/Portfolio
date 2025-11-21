@@ -40,7 +40,7 @@
             font-weight: 300;
             overflow-x: hidden;
             margin: 0;
-            cursor: none; /* Custom cursor */
+            cursor: none;
         }
 
         ::-webkit-scrollbar { width: 6px; }
@@ -49,23 +49,23 @@
 
         a { text-decoration: none !important; cursor: none; color: inherit; transition: 0.3s; }
 
-        /* --- ANIMATIONS (SCROLL REVEAL) --- */
+        /* --- ANIMATIONS --- */
         .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
 
-        /* --- SPINE (FAST & BOLD) --- */
+        /* --- SPINE --- */
         .spine-container { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 1; display: flex; justify-content: center; }
         .spine-line { width: 2px; height: 100%; background: rgba(255, 60, 0, 0.1); position: relative; overflow: hidden; }
         .spine-beam {
             position: absolute; top: 0; left: 0; width: 100%; height: 60vh;
             background: linear-gradient(to bottom, transparent, var(--fire-primary), var(--fire-secondary), transparent);
-            filter: blur(4px); animation: beamDrop 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; /* Fast speed */
+            filter: blur(4px); animation: beamDrop 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
         @keyframes beamDrop { 0% { transform: translateY(-100%); } 100% { transform: translateY(150vh); } }
 
-        /* --- NAV BAR (FLAME HOVER) --- */
+        /* --- NAV BAR --- */
         .nav-float {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
             background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px);
@@ -78,13 +78,12 @@
             font-size: 12px; font-weight: 700; color: var(--text-muted); 
             text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
         }
-        /* Flame Hover Effect */
         .nav-link:hover, .nav-link.active {
             color: var(--fire-secondary);
             text-shadow: 0 0 10px var(--fire-primary), 0 0 20px var(--fire-primary);
         }
 
-        /* --- HERO: EDITORIAL / NEWSPAPER STYLE --- */
+        /* --- HERO (EDITORIAL) --- */
         .hero-section {
             min-height: 100vh; position: relative; z-index: 2;
             display: flex; flex-direction: column; justify-content: center;
@@ -96,16 +95,11 @@
             mask-image: linear-gradient(to bottom, black 0%, black 80%, transparent 100%);
         }
         
-        /* Editorial Grid */
         .editorial-layout {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1.5fr;
-            grid-template-rows: auto auto;
-            gap: 40px; max-width: 1200px; margin: 0 auto;
-            align-items: center;
+            display: grid; grid-template-columns: 1.5fr 1fr 1.5fr;
+            gap: 40px; max-width: 1200px; margin: 0 auto; align-items: center;
         }
         
-        /* Big Typography */
         .headline-huge {
             font-family: 'Cinzel', serif; font-size: 5rem; font-weight: 900;
             line-height: 0.9; color: white; text-transform: uppercase;
@@ -122,7 +116,6 @@
             border-left: 2px solid var(--fire-primary); padding-left: 20px;
         }
         
-        /* Profile Image Portal */
         .profile-portal {
             width: 200px; height: 200px; border-radius: 50%;
             margin: 0 auto; position: relative; z-index: 2;
@@ -133,7 +126,7 @@
         .profile-portal img { width: 100%; height: 100%; object-fit: cover; }
         @keyframes portalPulse { 0%,100% { transform: scale(1); box-shadow: 0 0 30px var(--fire-primary); } 50% { transform: scale(1.05); box-shadow: 0 0 60px var(--fire-secondary); } }
 
-        /* --- SKILLS (Highlight XP) --- */
+        /* --- SKILLS --- */
         .section-container { max-width: 1000px; margin: 0 auto; padding: 120px 20px; position: relative; z-index: 2; }
         .section-header { text-align: center; margin-bottom: 80px; }
         .section-header h2 { font-size: 2.5rem; margin-top: 10px; color: white; }
@@ -145,14 +138,10 @@
             display: flex; flex-direction: column; transition: 0.3s;
             backdrop-filter: blur(10px);
         }
-        .forge-card:hover {
-            transform: translateY(-5px); border-color: var(--fire-primary);
-            box-shadow: 0 10px 40px rgba(255,69,0,0.15);
-        }
+        .forge-card:hover { transform: translateY(-5px); border-color: var(--fire-primary); box-shadow: 0 10px 40px rgba(255,69,0,0.15); }
         .forge-card i { font-size: 28px; color: #666; margin-bottom: 15px; transition: 0.3s; }
         .forge-card:hover i { color: var(--fire-secondary); transform: scale(1.2); text-shadow: 0 0 15px var(--fire-primary); }
         
-        /* XP Highlight Pill */
         .xp-pill {
             display: inline-block; background: rgba(255, 69, 0, 0.15);
             border: 1px solid var(--fire-primary); color: var(--fire-secondary);
@@ -161,13 +150,12 @@
             box-shadow: 0 0 10px rgba(255,69,0,0.2);
         }
 
-        /* --- VISUALS (No Hoard Title) --- */
+        /* --- VISUALS --- */
         .hoard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 4px; }
         .hoard-item { aspect-ratio: 1/1; overflow: hidden; background: #000; border: 1px solid rgba(255,255,255,0.1); cursor: none; }
         .hoard-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 0.3s; filter: grayscale(100%); }
         .hoard-item:hover img { opacity: 1; filter: grayscale(0%); transform: scale(1.1); }
         
-        /* Large Preview */
         #hover-preview {
             position: fixed; pointer-events: none; z-index: 9999;
             width: 500px; height: 300px; background: #000;
@@ -176,37 +164,42 @@
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
 
-        /* --- PROJECTS (Grow + Orange Title) --- */
+        /* --- PROJECTS (DISCOVERY EFFECT) --- */
         .project-wrapper { perspective: 1000px; margin-bottom: 60px; }
         .project-card {
             width: 100%; aspect-ratio: 21/9; background: #050505; border-radius: 16px; overflow: hidden;
             border: 1px solid var(--border); position: relative; transform-style: preserve-3d;
-            transition: transform 0.1s ease-out, border-color 0.3s;
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
         .project-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: 0.5s; }
-        .project-card:hover { border-color: var(--fire-secondary); }
-        .project-card:hover img { opacity: 0.3; transform: scale(1.02); }
+        
+        /* DISCOVERY HOVER EFFECT */
+        .project-card:hover {
+            border-color: var(--fire-secondary);
+            transform: scale(1.05); /* Discovery Zoom */
+            box-shadow: 0 20px 60px -10px rgba(255,69,0,0.3);
+            z-index: 10;
+        }
+        .project-card:hover img { opacity: 0.3; transform: scale(1.1); }
         
         .project-info {
             position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px;
-            background: linear-gradient(to top, #000, transparent); opacity: 0; transform: translateZ(30px); transition: 0.4s;
+            background: linear-gradient(to top, rgba(0,0,0,1), transparent); opacity: 0; transform: translateZ(30px); transition: 0.4s;
         }
-        .project-card:hover .project-info { opacity: 1; }
+        .project-card:hover .project-info { opacity: 1; background: linear-gradient(to top, #000 20%, rgba(255,69,0,0.1) 100%); }
         
-        /* TITLE ANIMATION ON HOVER */
-        .project-card h3 { transition: 0.4s; font-family: 'Copperplate', serif; color: white; }
+        .project-card h3 { transition: 0.4s; font-family: 'Copperplate', serif; color: white; font-size: 24px; }
         .project-card:hover h3 {
-            color: var(--fire-secondary);
-            transform: scale(1.2) translateX(20px); /* Grow and move */
-            text-shadow: 0 0 20px var(--fire-primary);
+            color: var(--fire-secondary); /* Turn Orange */
+            transform: translateX(15px);
+            text-shadow: 0 0 25px var(--fire-primary);
         }
 
-        /* --- PARTNERS (Burning Border) --- */
+        /* --- PARTNERS (SMOOTH LOOP) --- */
         .burning-container {
             position: relative; padding: 60px 0; background: rgba(0,0,0,0.5); overflow: hidden;
             border-top: 2px solid transparent; border-bottom: 2px solid transparent;
         }
-        /* Fire Border Effect */
         .burning-container::before, .burning-container::after {
             content: ''; position: absolute; left: 0; width: 100%; height: 2px;
             background: linear-gradient(90deg, transparent, var(--fire-primary), var(--fire-secondary), transparent);
@@ -216,12 +209,22 @@
         .burning-container::after { bottom: 0; animation-delay: 1.5s; }
         @keyframes burnBorder { 0% { background-position: -100% 0; } 100% { background-position: 200% 0; } }
 
-        .marquee-track { display: flex; gap: 100px; animation: scroll 40s linear infinite; width: max-content; }
-        .partner-logo { height: 100px; opacity: 0.6; transition: 0.3s; filter: grayscale(100%); }
-        .partner-logo:hover { opacity: 1; filter: grayscale(0%); transform: scale(1.1); drop-shadow: 0 0 15px var(--fire-secondary); }
+        .marquee-track { display: flex; gap: 80px; width: max-content; animation: scroll 30s linear infinite; }
+        .partner-logo { height: 80px; opacity: 0.6; transition: 0.3s; filter: grayscale(100%); }
+        .partner-logo:hover { opacity: 1; filter: grayscale(0%); transform: scale(1.2); drop-shadow: 0 0 20px var(--fire-secondary); }
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* --- SOCIALS & CONTACT (Grow Animations) --- */
+        /* --- REVIEWS (FIRE STARS) --- */
+        .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .review-box {
+            background: rgba(255,255,255,0.02); border-left: 3px solid var(--fire-primary);
+            padding: 30px; font-style: italic; color: var(--text-muted); backdrop-filter: blur(5px);
+            transition: 0.4s;
+        }
+        .review-box:hover { transform: translateX(10px) scale(1.02); background: rgba(255,255,255,0.05); box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        .fire-stars { color: var(--fire-secondary); text-shadow: 0 0 10px var(--fire-primary); font-size: 14px; margin-top: 10px; display: block; }
+
+        /* --- SOCIALS & CONTACT (GROW) --- */
         .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
         
         .social-link {
@@ -230,51 +233,30 @@
             padding: 25px; border-radius: 12px; margin-bottom: 20px; transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1.2);
         }
         .social-link:hover {
-            transform: scale(1.15); /* BIG GROW */
-            border-color: var(--fire-primary);
-            background: rgba(255, 69, 0, 0.1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: scale(1.1); border-color: var(--fire-primary);
+            background: rgba(255, 69, 0, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         
         .contact-input {
             width: 100%; background: transparent; border: 1px solid var(--border);
             padding: 15px; color: white; margin-bottom: 20px; border-radius: 8px; transition: 0.3s;
         }
-        /* INPUT GROW ON SELECT */
         .contact-input:focus {
-            outline: none; transform: scale(1.05);
-            border-color: var(--fire-secondary);
-            background: rgba(255,255,255,0.02);
-            box-shadow: 0 0 20px rgba(255,100,0,0.2);
+            outline: none; transform: scale(1.05); border-color: var(--fire-secondary);
+            background: rgba(255,255,255,0.02); box-shadow: 0 0 20px rgba(255,100,0,0.2);
         }
 
-        /* --- SCROLL TO TOP --- */
-        #scrollTop {
-            position: fixed; bottom: 40px; right: 40px;
-            width: 60px; height: 60px; background: rgba(0,0,0,0.8);
-            border: 2px solid var(--fire-primary); border-radius: 50%;
-            color: var(--fire-secondary); display: flex; justify-content: center; align-items: center;
-            cursor: pointer; opacity: 0; transition: 0.4s; transform: translateY(20px); z-index: 900;
-        }
+        /* --- UTILS --- */
+        #scrollTop { position: fixed; bottom: 40px; right: 40px; width: 60px; height: 60px; background: rgba(0,0,0,0.8); border: 2px solid var(--fire-primary); border-radius: 50%; color: var(--fire-secondary); display: flex; justify-content: center; align-items: center; cursor: pointer; opacity: 0; transition: 0.4s; transform: translateY(20px); z-index: 900; }
         #scrollTop.visible { opacity: 1; transform: translateY(0); }
         #scrollTop:hover { transform: translateY(-5px); box-shadow: 0 0 30px var(--fire-primary); color: white; }
 
-        /* --- CURSOR & SPOTLIGHT --- */
         .cursor-dot { position: fixed; width: 8px; height: 8px; background: var(--fire-secondary); border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 10px var(--fire-primary); transform: translate(-50%, -50%); }
         .cursor-outline { position: fixed; width: 40px; height: 40px; border: 1px solid var(--fire-primary); border-radius: 50%; pointer-events: none; z-index: 10000; transition: 0.1s; transform: translate(-50%, -50%); }
         #global-spotlight { position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 100, 0, 0.08), transparent 40%); }
 
-        /* --- UTILS --- */
-        .btn-slide {
-            position: relative; display: inline-block; padding: 12px 35px;
-            border: 1px solid var(--fire-primary); color: white !important;
-            font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
-            background: transparent; border-radius: 50px; overflow: hidden; transition: 0.3s;
-        }
-        .btn-slide::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 0%; height: 100%;
-            background: var(--fire-gradient); transition: 0.4s; z-index: -1;
-        }
+        .btn-slide { position: relative; display: inline-block; padding: 12px 35px; border: 1px solid var(--fire-primary); color: white !important; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; background: transparent; border-radius: 50px; overflow: hidden; transition: 0.3s; }
+        .btn-slide::before { content: ''; position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--fire-gradient); transition: 0.4s; z-index: -1; }
         .btn-slide:hover::before { width: 100%; }
         .btn-slide:hover { border-color: var(--fire-secondary); box-shadow: 0 0 25px rgba(255,69,0,0.5); }
 
@@ -319,6 +301,7 @@
         <video id="hero-vid" autoplay muted loop class="video-bg" playsinline>
             <source src="vid/resume_firegames.mp4" type="video/mp4">
         </video>
+        <button id="mute-toggle" class="hover-target" style="position:absolute; top:100px; right:30px; background:transparent; border:1px solid rgba(255,255,255,0.2); color:white; width:40px; height:40px; border-radius:50%; cursor:pointer;"><i class="fa fa-volume-off"></i></button>
         
         <div class="editorial-layout reveal active">
             <div style="text-align: right;">
@@ -362,7 +345,7 @@
                 <div><i class="fa fa-code"></i></div>
                 <h3>Unity & C#</h3>
                 <span class="xp-pill">4 Years Exp</span>
-                <p>Robust system architecture, physics interactions, and scalable gameplay logic for complex projects.</p>
+                <p>Robust system architecture, physics interactions, and scalable gameplay logic.</p>
             </div>
             <div class="forge-card hover-target reveal delay-2">
                 <div><i class="fa fa-cogs"></i></div>
@@ -374,7 +357,7 @@
                 <div><i class="fa fa-globe"></i></div>
                 <h3>Web Playable Games</h3>
                 <span class="xp-pill">3 Years Exp</span>
-                <p>WebGL optimization. Bringing console-quality feel to the browser directly.</p>
+                <p>WebGL optimization. Bringing console-quality feel to the browser.</p>
             </div>
             <div class="forge-card span-2 hover-target reveal delay-2">
                 <div><i class="fa fa-magic"></i></div>
@@ -546,25 +529,33 @@
             <h2 class="font-copper">Whispers from the Realm</h2>
         </div>
         <div class="review-grid">
-            <div class="forge-card reveal delay-1 hover-target">
-                <i class="fa fa-quote-left"></i>
-                <p>"Levente's passion and dedication truly shine through. He was incredibly helpful in bringing our vision to life."</p>
-                <span class="font-copper" style="margin-top:10px; display:block; color:white;">Client</span>
+            <div class="review-box hover-target reveal delay-1">
+                <div class="fire-stars">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                </div>
+                <p>"Levente's passion and dedication truly shine through."</p>
+                <span style="font-weight:700; color:white; font-size:12px;">Client</span>
             </div>
-            <div class="forge-card reveal delay-2 hover-target">
-                <i class="fa fa-quote-left"></i>
-                <p>"We love this game already! Levente is not only skilled but a passionate individual who genuinely cares."</p>
-                <span class="font-copper" style="margin-top:10px; display:block; color:white;">Studio Lead</span>
+            <div class="review-box hover-target reveal delay-2">
+                <div class="fire-stars">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                </div>
+                <p>"We love this game already! Levente is not only skilled but a passionate individual."</p>
+                <span style="font-weight:700; color:white; font-size:12px;">Studio Lead</span>
             </div>
-            <div class="forge-card reveal delay-1 hover-target">
-                <i class="fa fa-quote-left"></i>
+            <div class="review-box hover-target reveal delay-1">
+                <div class="fire-stars">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                </div>
                 <p>"Delivered exactly what we needed on time and with great quality."</p>
-                <span class="font-copper" style="margin-top:10px; display:block; color:white;">Project Manager</span>
+                <span style="font-weight:700; color:white; font-size:12px;">Project Manager</span>
             </div>
-             <div class="forge-card reveal delay-2 hover-target">
-                <i class="fa fa-quote-left"></i>
+             <div class="review-box hover-target reveal delay-2">
+                <div class="fire-stars">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                </div>
                 <p>"Amazing work as always. Very clean code."</p>
-                <span class="font-copper" style="margin-top:10px; display:block; color:white;">Return Client</span>
+                <span style="font-weight:700; color:white; font-size:12px;">Return Client</span>
             </div>
         </div>
     </div>
@@ -625,12 +616,15 @@
     </div>
 
     <script>
-        // 1. CURSOR
+        // 1. CURSOR & SPOTLIGHT
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
+        const spotlight = document.getElementById('global-spotlight');
         window.addEventListener('mousemove', (e) => {
             cursorDot.style.left = `${e.clientX}px`; cursorDot.style.top = `${e.clientY}px`;
             cursorOutline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 400, fill: "forwards" });
+            spotlight.style.setProperty('--mouse-x', `${e.clientX}px`);
+            spotlight.style.setProperty('--mouse-y', `${e.clientY}px`);
         });
         document.querySelectorAll('.hover-target, a, button, input, textarea').forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
@@ -643,7 +637,7 @@
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
                 } else {
-                    entry.target.classList.remove('active'); // Reversed on scroll up
+                    entry.target.classList.remove('active');
                 }
             });
         }, { threshold: 0.1 });
@@ -686,14 +680,14 @@
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
-                card.style.transform = `perspective(1000px) rotateX(${-y / 25}deg) rotateY(${x / 25}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.transform = `perspective(1000px) rotateX(${-y / 25}deg) rotateY(${x / 25}deg) scale3d(1.05, 1.05, 1.05)`;
             });
             card.addEventListener('mouseleave', () => {
                 card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
             });
         });
 
-        // 6. SPOTLIGHT
+        // 6. SPOTLIGHT GLOW
         const grid = document.getElementById("spotlight-grid");
         grid.addEventListener("mousemove", (e) => {
             const rect = grid.getBoundingClientRect();
@@ -704,6 +698,13 @@
                 card.style.setProperty("--card-mouse-x", `${e.clientX - cRect.left}px`);
                 card.style.setProperty("--card-mouse-y", `${e.clientY - cRect.top}px`);
             });
+        });
+
+        // 7. MUTE TOGGLE
+        const vid = document.getElementById('hero-vid');
+        document.getElementById('mute-toggle').addEventListener('click', function() {
+            vid.muted = !vid.muted;
+            this.innerHTML = vid.muted ? '<i class="fa fa-volume-off"></i>' : '<i class="fa fa-volume-up"></i>';
         });
     </script>
 </body>
