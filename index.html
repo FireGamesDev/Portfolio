@@ -133,7 +133,7 @@
         /* --- NAV BAR --- */
         .nav-float {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%); 
-            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px);
+            background: rgba(5, 5, 5, 0.85);background: rgba(10, 10, 10, 0.95);
             border: 1px solid var(--border); border-radius: 100px; 
             padding: 12px 35px; z-index: 1000; display: flex; align-items: center; justify-content: space-between; 
             width: auto; gap: 40px; transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
@@ -193,7 +193,7 @@
         .forge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
         .forge-card {
             background: rgba(10, 10, 10, 0.7); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 35px; min-height: 260px;
-            display: flex; flex-direction: column; transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1); backdrop-filter: blur(15px); position: relative; overflow: hidden;
+            display: flex; flex-direction: column; transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);background: rgba(10, 10, 10, 0.95); position: relative; overflow: hidden;
         }
         .forge-card::before { content: ''; position: absolute; top:0; left:0; width: 100%; height: 100%; background: radial-gradient(800px circle at var(--card-mouse-x) var(--card-mouse-y), rgba(255, 60, 0, 0.1), transparent 50%); opacity: 0; transition: opacity 0.5s; pointer-events: none; }
         .forge-card:hover::before { opacity: 1; }
@@ -215,7 +215,7 @@
         .hoard-item:hover::after { opacity: 0.5; inset: 5px; }
 
         #hover-preview {
-            position: fixed; pointer-events: none; z-index: 9999; width: 450px; height: 280px; background: #000;
+            position: fixed; pointer-events: none; z-index: 9999; width: 900px; height: 560px; background: #000;
             border: 2px solid var(--fire-secondary); background-size: cover; background-position: center;
             opacity: 0; transition: opacity 0.3s, transform 0.2s cubic-bezier(0.1, 0.8, 0.2, 1); border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.9);
         }
@@ -241,7 +241,7 @@
         .project-card:hover .platform-tags { opacity: 1; transform: translateY(0); }
         .p-tag { 
             background: rgba(0,0,0,0.7); padding: 8px 16px; font-size: 10px; font-weight: 800; border-radius: 4px; color: white; 
-            border: 1px solid var(--fire-secondary); box-shadow: 0 0 15px rgba(255, 69, 0, 0.2); text-transform: uppercase; letter-spacing: 2px; backdrop-filter: blur(5px);
+            border: 1px solid var(--fire-secondary); box-shadow: 0 0 15px rgba(255, 69, 0, 0.2); text-transform: uppercase; letter-spacing: 2px; background: rgba(10, 10, 10, 0.95);
         }
 
         /* --- PARTNERS & REVIEWS --- */
@@ -254,7 +254,7 @@
         .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 35px; }
         .review-box {
             background: rgba(255,255,255,0.01); border-left: 2px solid var(--fire-primary); padding: 40px; font-style: italic; 
-            color: var(--text-muted); backdrop-filter: blur(5px); transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1); position: relative;
+            color: var(--text-muted); background: rgba(10, 10, 10, 0.95); transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1); position: relative;
         }
         .review-box::before { content:'"'; position: absolute; top: 10px; left: 20px; font-size: 60px; color: var(--fire-primary); opacity: 0.2; font-family: 'Copperplate'; }
         .review-box:hover { transform: translateX(15px) scale(1.03); background: rgba(255,60,0,0.05); box-shadow: 0 10px 40px rgba(0,0,0,0.5); border-color: var(--fire-secondary); }
@@ -439,7 +439,7 @@
         .health-fill { width: 100%; height: 100%; background: var(--fire-primary); box-shadow: 0 0 10px var(--fire-primary); transition: width 0.2s; }
         .game-instruction { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Cinzel'; font-size: 40px; font-weight:900; color: white; opacity: 0; transition: 0.5s; text-shadow: 0 0 30px var(--fire-primary); pointer-events: none; text-align: center; letter-spacing: 5px; }
         body.gaming .game-instruction.show { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-        .game-over-screen { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.85); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 15005; backdrop-filter: blur(5px); }
+        .game-over-screen { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.85); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 15005; background: rgba(10, 10, 10, 0.95); }
         .game-over-screen.active { opacity: 1; pointer-events: auto; }
         .go-title { font-family: 'Cinzel'; font-size: 50px; color: white; margin-bottom: 20px; text-shadow: 0 0 30px red; }
         .restart-btn { background: transparent; border: 2px solid var(--fire-secondary); color: var(--fire-secondary); padding: 15px 40px; font-family: 'Space Mono'; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
@@ -626,22 +626,7 @@
                 <h2 class="font-copper scramble-text heat-haze-text" data-text="Visuals">Visuals</h2>
                 <p style="font-size: 11px; color: #888; margin-top: 10px; letter-spacing: 1px; font-weight: 600;">SCREENSHOTS FROM MY PROJECTS</p>
             </div>
-            <div class="hoard-grid reveal">
-                <div class="hoard-item hover-target"><img src="img/portfolio/dragon_icon.png" data-src="img/portfolio/dragon_icon.png"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/Tower.png" data-src="img/portfolio/Tower.png"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/New.gif" data-src="img/portfolio/New.gif"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/Maceman.png" data-src="img/portfolio/Maceman.png"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/Tank_icon.png" data-src="img/portfolio/Tank_icon.png"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/Brothers.png" data-src="img/portfolio/Brothers.png"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/DemonPortal.png" data-src="img/portfolio/DemonPortal.png"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/DuckGame.png" data-src="img/portfolio/DuckGame.png"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/DeepOfTheWater.png" data-src="img/portfolio/DeepOfTheWater.png"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/sorting_cubes.png" data-src="img/portfolio/sorting_cubes.png"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/dragon_icon.png" data-src="img/portfolio/dragon_icon.png"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/Tower.png" data-src="img/portfolio/Tower.png"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/New.gif" data-src="img/portfolio/New.gif"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/Maceman.png" data-src="img/portfolio/Maceman.png"></div>
-                <div class="hoard-item hover-target"><img src="img/portfolio/Tank_icon.png" data-src="img/portfolio/Tank_icon.png"></div>
+            <div class="hoard-grid reveal" id="screenshot-grid">
             </div>
         </section>
 
@@ -656,43 +641,118 @@
 
             <div class="project-wrapper reveal">
                 <div class="project-card hover-target" data-tilt>
-                    <a href="https://levimakesgames.itch.io/dragontemples" target="_blank">
-                        <img src="img/portfolio/dragon_icon.png">
+                    <a href="https://levimakesgames.itch.io/break-the-bottle" target="_blank">
+                        <img src="img/portfolio/ship_in_bottle.gif">
                         <div class="project-info">
-                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MOBILE</span></div>
-                            <h3>Dragon Temples</h3>
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MOBILE</span><span class="p-tag">CASUAL</span></div>
+                            <h3>Break The Bottle!</h3>
                         </div>
                     </a>
                 </div>
             </div>
+
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/archery-loop" target="_blank">
+                        <img src="img/portfolio/gameplay_tower_of_fera.gif">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MOBILE</span><span class="p-tag">ADVENTURE</span></div>
+                            <h3>Archery Loop</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
             <div class="project-wrapper reveal">
                 <div class="project-card hover-target" data-tilt>
                     <a href="https://levimakesgames.itch.io/rose-of-the-fox" target="_blank">
                         <img src="img/portfolio/New.gif">
                         <div class="project-info">
-                            <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">ADVENTURE</span></div>
                             <h3>Rose of the Fox</h3>
                         </div>
                     </a>
                 </div>
             </div>
+
             <div class="project-wrapper reveal">
                 <div class="project-card hover-target" data-tilt>
-                    <a href="https://levimakesgames.itch.io/tower-of-fera" target="_blank">
-                        <img src="img/portfolio/Tower.png">
+                    <a href="https://levimakesgames.itch.io/safari" target="_blank">
+                        <img src="img/portfolio/screenshots/safari2.gif">
                         <div class="project-info">
-                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MOBILE</span></div>
-                            <h3>Tower of Fera</h3>
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MANAGEMENT</span></div>
+                            <h3>Safari</h3>
                         </div>
                     </a>
                 </div>
             </div>
+
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/spacecruiser" target="_blank">
+                        <img src="img/portfolio/space_cruiser.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MOBILE</span><span class="p-tag">SHOOTER</span></div>
+                            <h3>Space Cruiser</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/dragontemples" target="_blank">
+                        <img src="img/portfolio/dragon_icon.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">MOBILE</span><span class="p-tag">ADVENTURE</span></div>
+                            <h3>Dragon Temples</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+             <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/nightbearer" target="_blank">
+                        <img src="img/portfolio/nightbearer.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">VISUAL</span></div>
+                            <h3>Nightbearer</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/duckgame" target="_blank">
+                        <img src="img/portfolio/DuckGame.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">CASUAL</span></div>
+                            <h3>Duck Game</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+             <div class="project-wrapper reveal">
+                <div class="project-card hover-target" data-tilt>
+                    <a href="https://levimakesgames.itch.io/the-deer" target="_blank">
+                        <img src="img/portfolio/castle.png">
+                        <div class="project-info">
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">BASE DEFENSE</span></div>
+                            <h3>The Deer</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
             <div class="project-wrapper reveal">
                 <div class="project-card hover-target" data-tilt>
                     <a href="https://levimakesgames.itch.io/tanksn-magic" target="_blank">
                         <img src="img/portfolio/Tank_icon.png">
                         <div class="project-info">
-                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MULTIPLAYER</span></div>
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">MULTIPLAYER</span><span class="p-tag">SHOOTER</span></div>
                             <h3>Tanks & Magic</h3>
                         </div>
                     </a>
@@ -703,7 +763,7 @@
                     <a href="https://levimakesgames.itch.io/maceman" target="_blank">
                         <img src="img/portfolio/Maceman.png">
                         <div class="project-info">
-                            <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">ADVENTURE</span></div>
                             <h3>Maceman</h3>
                         </div>
                     </a>
@@ -714,7 +774,7 @@
                     <a href="https://levimakesgames.itch.io/brothers" target="_blank">
                         <img src="img/portfolio/Brothers.png">
                         <div class="project-info">
-                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">CO-OP</span></div>
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">CO-OP</span><span class="p-tag">ADVENTURE</span></div>
                             <h3>Brothers</h3>
                         </div>
                     </a>
@@ -725,7 +785,7 @@
                     <a href="https://levimakesgames.itch.io/demon-portal" target="_blank">
                         <img src="img/portfolio/DemonPortal.png">
                         <div class="project-info">
-                            <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">ADVENTURE</span></div>
                             <h3>Demon Portal</h3>
                         </div>
                     </a>
@@ -736,34 +796,13 @@
                     <a href="https://levimakesgames.itch.io/deep-of-the-water" target="_blank">
                         <img src="img/portfolio/DeepOfTheWater.png">
                         <div class="project-info">
-                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">HORROR</span></div>
+                            <div class="platform-tags"><span class="p-tag">DESKTOP</span><span class="p-tag">EXPLORING</span></div>
                             <h3>Deep of the Water</h3>
                         </div>
                     </a>
                 </div>
             </div>
-            <div class="project-wrapper reveal">
-                <div class="project-card hover-target" data-tilt>
-                    <a href="https://levimakesgames.itch.io/duckgame" target="_blank">
-                        <img src="img/portfolio/DuckGame.png">
-                        <div class="project-info">
-                            <div class="platform-tags"><span class="p-tag">DESKTOP</span></div>
-                            <h3>Duck Game</h3>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="project-wrapper reveal">
-                <div class="project-card hover-target" data-tilt>
-                    <a href="https://levimakesgames.itch.io/sorting-cubes" target="_blank">
-                        <img src="img/portfolio/sorting_cubes.png">
-                        <div class="project-info">
-                            <div class="platform-tags"><span class="p-tag">MOBILE</span></div>
-                            <h3>Sorting Cubes</h3>
-                        </div>
-                    </a>
-                </div>
-            </div>
+            
         </section>
 
         <div class="section-divider"></div>
@@ -866,6 +905,34 @@
     </div>
 
     <script>
+        const screenshots = document.getElementById('screenshot-grid');
+        let html = '';
+
+        const startFiles = [
+            'fox.gif', 
+            'safari1.gif', 
+            'safari2.gif', 
+            'sorting1.gif'
+        ];
+
+        startFiles.forEach(file => {
+            html += `
+            <div class="hoard-item hover-target">
+                <img src="img/portfolio/screenshots/${file}" data-src="img/portfolio/screenshots/${file}">
+            </div>`;
+        });
+
+        for(let i = 1; i <= 33; i++) {
+            html += `
+            <div class="hoard-item hover-target">
+                <img src="img/portfolio/screenshots/${i}.png" data-src="img/portfolio/screenshots/${i}.png" loading="lazy">
+            </div>`;
+
+           
+        }
+
+        screenshots.innerHTML = html;
+
         // 1. MOUSE TRACKING & CURSOR
         const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
         const cursorDot = document.querySelector('.cursor-dot');
@@ -878,7 +945,14 @@
             cursorDot.style.top = `${mouse.y}px`;
             spotlight.style.setProperty('--mouse-x', `${mouse.x}px`);
             spotlight.style.setProperty('--mouse-y', `${mouse.y}px`);
-            createEmber(mouse.x, mouse.y);
+            //createEmber(mouse.x, mouse.y);
+        });
+
+        window.addEventListener('mousedown', (e) => {
+            // Spawn 5 embers at once for a nice burst effect
+            for(let i = 0; i < 5; i++) {
+                createEmber(e.clientX, e.clientY);
+            }
         });
 
         function createEmber(x, y) {
@@ -937,13 +1011,14 @@
                 bgCtx.globalAlpha = this.opacity;
                 bgCtx.fillStyle = this.color;
                 bgCtx.beginPath();
-                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                bgCtx.fillRect(this.x, this.y, this.size, this.size);
+                //bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 bgCtx.fill();
             }
         }
 
         // Create 300 particles for dense fire effect
-        for (let i = 0; i < 300; i++) particles.push(new Particle());
+        for (let i = 0; i < 60; i++) particles.push(new Particle());
 
         function animateEmbers() {
             bgCtx.clearRect(0, 0, w, h);
@@ -968,6 +1043,14 @@
             let diff = targetScroll - currentScroll;
             currentScroll = targetScroll;
 
+            if(Math.abs(diff) < 0.1) {
+                currentScroll = targetScroll;
+                // Reset skew when idle so it looks sharp
+                contentContainer.style.transform = `skewY(0deg)`; 
+                requestAnimationFrame(loopScrollPhysics);
+                return; 
+            }
+
             // Apply Skew (Clamped to avoid extreme distortion)
             skew = diff * 0.15; 
             if (skew > 5) skew = 5; if (skew < -5) skew = -5;
@@ -979,6 +1062,7 @@
             let glitchOffset = Math.abs(skew) * 2;
             let blurAmount = Math.abs(skew) * 0.5;
             
+            
             heatTexts.forEach(text => {
                 if(glitchOffset > 0.5) {
                     // Red / Cyan split
@@ -989,7 +1073,7 @@
                     text.style.filter = 'blur(0px)';
                 }
             });
-
+            
             requestAnimationFrame(loopScrollPhysics);
         }
         loopScrollPhysics();
@@ -1104,7 +1188,7 @@
         const preview = document.getElementById('hover-preview');
         document.querySelectorAll('.hoard-item img').forEach(img => {
             img.addEventListener('mouseenter', () => { preview.style.backgroundImage = `url(${img.getAttribute('data-src')})`; preview.style.opacity = '1'; });
-            img.addEventListener('mousemove', (e) => { preview.style.left = `${e.clientX + 20}px`; preview.style.top = `${e.clientY - 150}px`; });
+            img.addEventListener('mousemove', (e) => { preview.style.left = `${e.clientX + 100}px`; preview.style.top = `${e.clientY - 150}px`; });
             img.addEventListener('mouseleave', () => preview.style.opacity = '0');
         });
         document.querySelectorAll('.project-card').forEach(card => {
