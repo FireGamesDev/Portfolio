@@ -1017,7 +1017,6 @@
             }
         }
 
-        // Create 300 particles for dense fire effect
         for (let i = 0; i < 60; i++) particles.push(new Particle());
 
         function animateEmbers() {
@@ -1327,12 +1326,18 @@
             });
 
             // --- GAME ENGINE ---
-            let enemies = [], bullets = [], particles = [];
+            let enemies = [], bullets = [], particles = [], floatingTexts = [];
+            let lastEnemySpawn = 0;
+            const spawnInterval = 1000; // 1 second
+            let animationId;
 
             function initGame() {
+
+                cancelAnimationFrame(animationId);
+
                 resizeGame();
                 score = 0; coreHealth = 100; frame = 0; isGameOver = false;
-                enemies = []; bullets = []; particles = [];
+                enemies = []; bullets = []; particles = []; floatingTexts = [];
                 
                 // UI Reset
                 goScreen.classList.remove('active');
@@ -1342,7 +1347,7 @@
                 // HIDE SYSTEM CURSOR (Use Game Crosshair)
                 document.body.style.cursor = 'none';
                 
-                loop();
+                requestAnimationFrame(loop);
             }
 
             function triggerGameOver() {
@@ -1393,6 +1398,29 @@
                 }
             }
 
+            class FloatingText {
+                constructor(x, y, text) {
+                    this.x = x;
+                    this.y = y;
+                    this.text = text;
+                    this.life = 1.0; // Opacity
+                    this.velocity = -2; // Upward speed
+                }
+                update() {
+                    this.y += this.velocity; // Move up
+                    this.life -= 0.02; // Fade out over ~50 frames
+                }
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.life;
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = 'bold 16px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(this.text, this.x, this.y);
+                    ctx.restore();
+                }
+            }
+
             class Particle {
                 constructor(x, y, color) {
                     this.x = x; this.y = y; this.color = color;
@@ -1413,9 +1441,9 @@
             }
 
             // --- LOOP ---
-            function loop() {
+            function loop(timestamp) {
                 if(!gameActive) return;
-                requestAnimationFrame(loop);
+                animationId = requestAnimationFrame(loop);
                 
                 ctx.save();
                 if(cameraShake > 0) {
@@ -1430,34 +1458,78 @@
                 ctx.shadowBlur = 30; ctx.shadowColor = '#ff9900'; ctx.fillStyle = '#ff9900';
                 ctx.beginPath(); ctx.arc(width/2, height/2, 20 + Math.sin(frame*0.1)*2, 0, Math.PI*2); ctx.fill(); ctx.shadowBlur = 0;
 
-                if(!isGameOver) {
-                    frame++;
-                    if(frame % 50 === 0) enemies.push(new Enemy());
+                if (!isGameOver) {
+                    // --- TIME-BASED SPAWNING ---
+                    if (timestamp - lastEnemySpawn > spawnInterval) {
+                        enemies.push(new Enemy());
+                        lastEnemySpawn = timestamp;
+                    }
 
-                    bullets.forEach((b, bi) => {
-                        b.update(); b.draw();
-                        enemies.forEach((e, ei) => {
-                            if(Math.hypot(b.x - e.x, b.y - e.y) < e.size + 10) {
+                    // --- BULLETS (Backward Loop) ---
+                    for (let bi = bullets.length - 1; bi >= 0; bi--) {
+                        let b = bullets[bi];
+                        b.update();
+                        b.draw();
+
+                        for (let ei = enemies.length - 1; ei >= 0; ei--) {
+                            let e = enemies[ei];
+                            if (Math.hypot(b.x - e.x, b.y - e.y) < e.size + 10) {
                                 createExplosion(e.x, e.y, 15, '#ff9900');
-                                enemies.splice(ei, 1); bullets.splice(bi, 1);
-                                score += 100; scoreVal.innerText = score; cameraShake = 3;
-                            }
-                        });
-                        if(b.y < 0 || b.y > height || b.x < 0 || b.x > width) bullets.splice(bi, 1);
-                    });
 
-                    enemies.forEach((e, ei) => {
-                        e.update(); e.draw();
-                        if(Math.hypot(width/2 - e.x, height/2 - e.y) < 30) {
-                            enemies.splice(ei, 1);
-                            createExplosion(width/2, height/2, 20, '#ff3300');
-                            coreHealth -= 20; healthFill.style.width = coreHealth + '%'; cameraShake = 10;
-                            if(coreHealth <= 0) triggerGameOver();
+                                floatingTexts.push(new FloatingText(e.x, e.y, "+100"));
+
+                                enemies.splice(ei, 1);
+                                bullets.splice(bi, 1); // Bullet destroyed
+                                score += 100;
+                                scoreVal.innerText = score;
+                                cameraShake = 3;
+                                break; // Move to next bullet
+                            }
                         }
-                    });
+
+                        // Boundary Check (if bullet wasn't spliced in collision)
+                        if (bullets[bi] && (b.y < 0 || b.y > height || b.x < 0 || b.x > width)) {
+                            bullets.splice(bi, 1);
+                        }
+                    }
+
+                    // --- ENEMIES (Backward Loop) ---
+                    for (let ei = enemies.length - 1; ei >= 0; ei--) {
+                        let e = enemies[ei];
+                        e.update();
+                        e.draw();
+
+                        // Core Collision
+                        if (Math.hypot(width / 2 - e.x, height / 2 - e.y) < 30) {
+                            enemies.splice(ei, 1);
+                            createExplosion(width / 2, height / 2, 20, '#ff3300');
+                            
+                            // --- FIXED HEALTH BAR CALCULATION ---
+                            coreHealth -= 20; 
+                            healthFill.style.width = Math.max(0, coreHealth) + '%'; 
+                            
+                            cameraShake = 10;
+                            if (coreHealth <= 0) triggerGameOver();
+                        }
+                    }
                 }
 
-                particles.forEach((p, pi) => { p.update(); p.draw(); if(p.life <= 0) particles.splice(pi, 1); });
+                // Particles (Backward Loop)
+                for (let pi = particles.length - 1; pi >= 0; pi--) {
+                    let p = particles[pi];
+                    p.update();
+                    p.draw();
+                    if (p.life <= 0) particles.splice(pi, 1);
+                }
+
+                for (let i = floatingTexts.length - 1; i >= 0; i--) {
+                    let ft = floatingTexts[i];
+                    ft.update();
+                    ft.draw();
+                    if (ft.life <= 0) {
+                        floatingTexts.splice(i, 1);
+                    }
+                }
 
                 // Draw Crosshair (Only if playing)
                 if(!isGameOver) {
